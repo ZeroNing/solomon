@@ -1,0 +1,57 @@
+#server:
+#  port: 8083
+#i18n:
+#  language: zh
+#  messages:
+#    baseNames: i18n/messages
+#spring:
+#  application:
+#    name: gateway-api
+#  cloud:
+#    sentinel:
+#      transport:
+#        #配置Sentin dashboard地址
+#        dashboard: localhost:8080
+#        # 默认8719端口，假如被占用了会自动从8719端口+1进行扫描，直到找到未被占用的 端口
+#        port: 8719
+#        eager: true
+#    gateway:
+#      discovery:
+#        locator:
+#          #        lower-case-service-id: true
+#          enabled: true
+#      routes:
+#        - id: user-api
+#          uri: lb://user-api
+#          order: 0
+#          predicates:
+#            - Path=/api/user/**
+#          filters:
+#            - StripPrefix=2
+#        - id: test-api
+#          uri: lb://test-api
+#          order: 0
+#          predicates:
+#            - Path=/api/test/**
+#          filters:
+#            - StripPrefix=2
+#  redis:
+#    host: 192.168.8.222
+#    port: 6379
+#    password: 123456
+#  rabbitmq:
+#    host: 192.168.8.222
+#    port: 5672
+#    username: admin
+#    password: admin
+#    publisher-returns: true
+#dubbo:
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  provider:
+#    version: 1.0.0
+#    timeout: 10000
+#  consumer:
+#    version: 1.0.0
+#    check: false
