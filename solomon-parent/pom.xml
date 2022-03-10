@@ -52,6 +52,9 @@
     <seata.version>1.4.2</seata.version>
     <mybatis.plus.version>3.5.1</mybatis.plus.version>
     <redisson.version>3.15.1</redisson.version>
+    <hutool.version>5.7.18</hutool.version>
+    <spring.loadbalancer.version>3.0.4</spring.loadbalancer.version>
+    <spring.bootstrap.version>3.0.4</spring.bootstrap.version>
   </properties>
 
   <dependencyManagement>

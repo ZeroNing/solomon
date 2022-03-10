@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-bootstrap</artifactId>
-      <version>3.0.4</version>
+      <version>${spring.bootstrap.version}</version>
     </dependency>
 
   </dependencies>
