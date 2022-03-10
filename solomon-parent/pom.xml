@@ -55,6 +55,8 @@
     <hutool.version>5.7.18</hutool.version>
     <spring.loadbalancer.version>3.0.4</spring.loadbalancer.version>
     <spring.bootstrap.version>3.0.4</spring.bootstrap.version>
+    <maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+    <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
   </properties>
 
   <dependencyManagement>
