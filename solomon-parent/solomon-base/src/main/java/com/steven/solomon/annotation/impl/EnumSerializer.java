@@ -67,7 +67,7 @@ public class EnumSerializer extends JsonSerializer<String> implements Contextual
     }
 
     JsonEnum enumLabel = beanProperty.getAnnotation(JsonEnum.class);
-    if (ValidateUtils.isEmpty(enumLabel)) {
+    if (ValidateUtils.isEmpty(enumLabel) || enumLabel.ignore()) {
       return serializerProvider.findValueSerializer(beanProperty.getType(), beanProperty);
     }
     return new EnumSerializer(enumLabel.enumClass(),beanProperty.getName(),enumLabel.methodNames());

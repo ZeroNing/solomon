@@ -1,6 +1,7 @@
 package com.steven.solomon.base.model;
 
 
+import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.utils.date.DateTimeUtils;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class BaseEntity implements Serializable {
   /**
    * 删除标记
    */
+  @JsonEnum(enumClass = DelFlagEnum.class)
   private              String        delFlag;
   /**
    * 创建人id

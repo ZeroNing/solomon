@@ -15,4 +15,6 @@ public interface BaseCode {
   String JSON_DATA = "data";
 
   String SERVER_ID = "serverId";
+
+  String HTTP_ACCEPT_LANGUAGE = "Accept-Language";
 }

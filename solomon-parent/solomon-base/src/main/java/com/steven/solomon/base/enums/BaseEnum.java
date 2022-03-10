@@ -24,7 +24,7 @@ public interface BaseEnum {
    *
    * @return 国际化信息
    */
-  default String Description() {
+  default String Desc() {
     return I18nUtils.getEnumMessage(key());
   }
 

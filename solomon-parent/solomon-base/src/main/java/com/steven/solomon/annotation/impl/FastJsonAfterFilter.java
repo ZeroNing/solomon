@@ -33,6 +33,9 @@ public class FastJsonAfterFilter extends AfterFilter {
     for (Field field : fields) {
       try {
         JsonEnum fastJsonEnum = field.getAnnotation(JsonEnum.class);
+        if(fastJsonEnum.ignore()){
+          continue;
+        }
         Method   method       = clazz.getMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
         Class<? extends Enum> enumClass = fastJsonEnum.enumClass();
         String enumValue = (String) method.invoke(o);

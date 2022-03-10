@@ -24,9 +24,6 @@ public class RabbitMQInitConfig implements CommandLineRunner {
     @Autowired
     private CachingConnectionFactory rabbitConnectionFactory;
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-
     /**
      * 所有的队列监听容器MAP
      */
@@ -34,8 +31,13 @@ public class RabbitMQInitConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        MessageListenerConfig messageListenerConfig = new MessageListenerConfig();
-        messageListenerConfig.init(admin, rabbitConnectionFactory);
+        /**
+         * 初始化mq
+         */
+        new MessageListenerConfig().init(admin, rabbitConnectionFactory);
+        /**
+         * 将自定义异常处理器初始化完成
+         */
         AbstractExceptionHandler.exceptionHandlerMap = SpringUtil.getBeansOfType(AbstractExceptionHandler.class);
     }
 }

@@ -1,7 +1,7 @@
 package com.steven.solomon.utils;
 
+import com.steven.solomon.base.code.BaseCode;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import com.sun.org.apache.xerces.internal.xinclude.XIncludeHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -15,11 +15,11 @@ public class LocaleUtils {
     public Locale DEFAULT_LOCALE;
 
     public Locale getLocale(ServerRequest serverRequest){
-        return getLocale(serverRequest.headers().firstHeader(XIncludeHandler.HTTP_ACCEPT_LANGUAGE));
+        return getLocale(serverRequest.headers().firstHeader(BaseCode.HTTP_ACCEPT_LANGUAGE));
     }
 
     public Locale getLocale(ServerWebExchange serverWebExchange){
-        return getLocale(serverWebExchange.getRequest().getHeaders().getFirst(XIncludeHandler.HTTP_ACCEPT_LANGUAGE));
+        return getLocale(serverWebExchange.getRequest().getHeaders().getFirst(BaseCode.HTTP_ACCEPT_LANGUAGE));
     }
 
     private Locale getLocale(String language){

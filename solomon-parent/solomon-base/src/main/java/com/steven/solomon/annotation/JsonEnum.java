@@ -24,4 +24,6 @@ public @interface JsonEnum {
   Class<? extends Enum> enumClass();
 
   String[] methodNames() default {BaseMethodNameEnum.DESCRIPTION};
+
+  boolean ignore() default false;
 }
