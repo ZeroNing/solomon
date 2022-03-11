@@ -31,7 +31,7 @@ import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-public class MessageListenerConfig {
+public class RabbitMQListenerConfig {
 
     private final Logger logger = LoggerUtils.logger(getClass());
 

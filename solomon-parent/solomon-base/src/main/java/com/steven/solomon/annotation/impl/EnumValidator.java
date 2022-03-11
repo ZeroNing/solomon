@@ -28,10 +28,7 @@ public class EnumValidator implements ConstraintValidator<CheckEnum, Object> {
     if (!required && ValidateUtils.isEmpty(value)) {
       return true;
     }
-    if (ValidateUtils.isEmpty(value)) {
-      return false;
-    }
-    if (ValidateUtils.isEmpty(enumClass)) {
+    if (ValidateUtils.isEmpty(value) || ValidateUtils.isEmpty(enumClass)) {
       return false;
     }
     return EnumUtils.exist(enumClass, value);

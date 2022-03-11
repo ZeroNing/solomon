@@ -1,16 +1,12 @@
 package com.steven.solomon.config.init;
 
-import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.base.excetion.AbstractExceptionHandler;
-import com.steven.solomon.config.rabbitMQ.MessageListenerConfig;
-import com.steven.solomon.servic.AbstractConsumer;
+import com.steven.solomon.config.rabbitMQ.RabbitMQListenerConfig;
 import com.steven.solomon.utils.spring.SpringUtil;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.swing.Spring;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,7 +33,7 @@ public class RabbitMQInitConfig implements CommandLineRunner {
         /**
          * 初始化mq
          */
-        new MessageListenerConfig().init(admin, rabbitConnectionFactory);
+        new RabbitMQListenerConfig().init(admin, rabbitConnectionFactory);
         /**
          * 将自定义异常处理器初始化完成
          */

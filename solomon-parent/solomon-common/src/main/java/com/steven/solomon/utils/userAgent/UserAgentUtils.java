@@ -74,7 +74,7 @@ public final class UserAgentUtils {
    * @param request
    * @return
    */
-  public final com.steven.solomon.model.userAgent.UserAgent getUserAgentVO(HttpServletRequest request) {
+  public final com.steven.solomon.base.model.userAgent.UserAgent getUserAgentVO(HttpServletRequest request) {
     String agent = getAgentString(request);
     return getUserAgentVO(agent);
   }
@@ -97,9 +97,9 @@ public final class UserAgentUtils {
    * @param agent userAgent字符串
    * @return UserAgentModel
    */
-  public final com.steven.solomon.model.userAgent.UserAgent getUserAgentVO(String agent) {
-    UserAgent userAgent = userAgentAnalyzer.parse(agent);
-    com.steven.solomon.model.userAgent.UserAgent agentVO = new com.steven.solomon.model.userAgent.UserAgent();
+  public final com.steven.solomon.base.model.userAgent.UserAgent getUserAgentVO(String agent) {
+    UserAgent                                         userAgent = userAgentAnalyzer.parse(agent);
+    com.steven.solomon.base.model.userAgent.UserAgent agentVO   = new com.steven.solomon.base.model.userAgent.UserAgent();
     agentVO.setDevice(getDeviceName(userAgent));
     agentVO.setDeviceType(getDeviceClass(userAgent));
     agentVO.setDeviceBrand(getDeviceBrand(userAgent));
@@ -110,7 +110,7 @@ public final class UserAgentUtils {
   }
 
   public static void main(String[] args) {
-    com.steven.solomon.model.userAgent.UserAgent userAgent = new UserAgentUtils().getUserAgentVO(
+    com.steven.solomon.base.model.userAgent.UserAgent userAgent = new UserAgentUtils().getUserAgentVO(
           "Mozilla/5.0 (Linux; Android 9; EVR-L29 Build/HUAWEIEVR-L29; xx-xx) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/70.0.3538.110 Mobile Safari/537.36"
       );
       System.out.println("系统以及版本:" + userAgent.getOsNameVersion());

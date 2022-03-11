@@ -1,7 +1,7 @@
 package com.steven.solomon.servic.impl;
 
 import com.steven.solomon.annotation.RabbitMq;
-import com.steven.solomon.model.rabbitMQ.InitRabbitBinding;
+import com.steven.solomon.base.model.rabbitMQ.InitRabbitBinding;
 import com.steven.solomon.servic.BaseMQService;
 import org.springframework.amqp.core.AbstractExchange;
 import org.springframework.amqp.core.Binding;

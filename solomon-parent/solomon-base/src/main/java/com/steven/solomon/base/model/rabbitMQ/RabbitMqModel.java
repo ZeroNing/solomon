@@ -1,4 +1,4 @@
-package com.steven.solomon.model.rabbitMQ;
+package com.steven.solomon.base.model.rabbitMQ;
 
 import com.steven.solomon.base.model.BaseMq;
 

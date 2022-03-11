@@ -3,7 +3,7 @@ package com.steven.solomon.servic;
 import com.rabbitmq.client.Channel;
 import com.steven.solomon.annotation.RabbitMqRetry;
 import com.steven.solomon.base.cache.CacheTime;
-import com.steven.solomon.model.rabbitMQ.RabbitMqModel;
+import com.steven.solomon.base.model.rabbitMQ.RabbitMqModel;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.redis.ICaheService;

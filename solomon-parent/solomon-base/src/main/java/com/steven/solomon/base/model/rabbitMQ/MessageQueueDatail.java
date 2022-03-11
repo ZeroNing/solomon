@@ -1,4 +1,4 @@
-package com.steven.solomon.model.rabbitMQ;
+package com.steven.solomon.base.model.rabbitMQ;
 
 import java.io.Serializable;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
