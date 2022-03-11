@@ -53,6 +53,11 @@ public class SpringUtil implements ApplicationContextAware {
 		return ValidateUtils.isEmpty(context.getBean(name,beanClass),errorCode);
 	}
 
+	/**
+	 * 根据注解找到使用注解的类
+	 * @param annotationType 注解class
+	 * @return
+	 */
 	public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
 		return context.getBeansWithAnnotation(annotationType);
 	}
