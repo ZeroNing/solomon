@@ -35,20 +35,8 @@ public class RabbitMqService implements MqService {
    */
 //  private volatile boolean hasInit = false;
 
-
-
   public Collection<AbstractMessageListenerContainer> getAllQueueContainerList(){
     return RabbitMQInitConfig.allQueueContainerMap.values();
-  }
-
-  private boolean convertAndSend(BaseMq baseMq) {
-    RabbitMqModel rabbitMQModel = (RabbitMqModel) baseMq;
-    if (ValidateUtils.isEmpty(rabbitMQModel) || ValidateUtils.isEmpty(rabbitMQModel.getExchange())) {
-      return false;
-    }
-    rabbitTemplate.convertAndSend(rabbitMQModel.getExchange(), rabbitMQModel.getRoutingKey(), rabbitMQModel,new CorrelationData(
-        UUID.randomUUID().toString()));
-    return true;
   }
 
   public List<MessageQueueDatail> statAllMessageQueueDetail() {
@@ -127,4 +115,13 @@ public class RabbitMqService implements MqService {
 //    return allQueueContainerMap;
 //  }
 
+  private boolean convertAndSend(BaseMq baseMq) {
+    RabbitMqModel rabbitMQModel = (RabbitMqModel) baseMq;
+    if (ValidateUtils.isEmpty(rabbitMQModel) || ValidateUtils.isEmpty(rabbitMQModel.getExchange())) {
+      return false;
+    }
+    rabbitTemplate.convertAndSend(rabbitMQModel.getExchange(), rabbitMQModel.getRoutingKey(), rabbitMQModel,new CorrelationData(
+        UUID.randomUUID().toString()));
+    return true;
+  }
 }

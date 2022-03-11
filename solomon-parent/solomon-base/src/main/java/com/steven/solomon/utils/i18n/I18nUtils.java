@@ -1,5 +1,6 @@
 package com.steven.solomon.utils.i18n;
 
+import com.steven.solomon.base.code.BaseCode;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.Locale;
@@ -14,10 +15,6 @@ public class I18nUtils {
   private static Logger log = LoggerUtils.logger(I18nUtils.class);
 
   private static ResourceBundleMessageSource resourceBundleMessageSource;
-
-  private static final String BASE_EXCEPTION_CODE = "ERROR_CODE_";
-
-  private static final String BASE_ENUM_CODE = "ENUM_CODE_";
 
   I18nUtils(ResourceBundleMessageSource resourceBundleMessageSource) {
     I18nUtils.resourceBundleMessageSource = resourceBundleMessageSource;
@@ -34,7 +31,7 @@ public class I18nUtils {
     if(ValidateUtils.isEmpty(code)){
       return null;
     }
-    return getMessage(BASE_EXCEPTION_CODE + code, args);
+    return getMessage(BaseCode.BASE_EXCEPTION_CODE + code, args);
   }
 
   /**
@@ -48,7 +45,7 @@ public class I18nUtils {
     if(ValidateUtils.isEmpty(code)){
       return null;
     }
-    return getMessage(BASE_EXCEPTION_CODE + code,locale, args);
+    return getMessage(BaseCode.BASE_EXCEPTION_CODE + code,locale, args);
   }
 
   /**
@@ -62,7 +59,7 @@ public class I18nUtils {
     if(ValidateUtils.isEmpty(code)){
       return null;
     }
-    return getMessage(BASE_ENUM_CODE + code, args);
+    return getMessage(BaseCode.BASE_ENUM_CODE + code, args);
   }
 
   /**

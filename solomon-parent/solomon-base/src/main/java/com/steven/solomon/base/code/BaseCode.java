@@ -17,4 +17,8 @@ public interface BaseCode {
   String SERVER_ID = "serverId";
 
   String HTTP_ACCEPT_LANGUAGE = "Accept-Language";
+
+  String BASE_EXCEPTION_CODE = "ERROR_CODE_";
+
+  String BASE_ENUM_CODE = "ENUM_CODE_";
 }
