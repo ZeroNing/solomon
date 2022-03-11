@@ -77,7 +77,7 @@ public class InitRabbitBinding implements Serializable {
    */
   private Map<String, Object> initArgs(RabbitMq rabbitMq, boolean isInitDlxMap) {
     String  DLX_PREFIX = "dlx_";
-    boolean dlx        = rabbitMq.isDlx() || rabbitMq.isTtl();
+    boolean dlx        = !void.class.equals(rabbitMq.dlxClazz()) || rabbitMq.delay() != 0L;
 
     if (!dlx || !isInitDlxMap) {
       return null;
@@ -89,7 +89,7 @@ public class InitRabbitBinding implements Serializable {
       args.put(BaseRabbitMqCode.DLX_ROUTING_KEY, DLX_PREFIX + rabbitMq.routingKey());
     }
 
-    if (rabbitMq.isTtl()) {
+    if (rabbitMq.delay() != 0L) {
       args.put(BaseRabbitMqCode.DLX_TTL, rabbitMq.delay());
     }
     return args;

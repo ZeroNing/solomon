@@ -58,19 +58,9 @@ public @interface RabbitMq {
 	String exchangeTypes() default ExchangeTypes.DIRECT;
 
 	/**
-	 * 是否需要死信队列 默认为false
+	 * 延迟默认0秒
 	 */
-	boolean isDlx() default false;
-
-	/**
-	 * 是否需要延迟队列 默认为false
-	 */
-	boolean isTtl() default false;
-
-	/**
-	 * 开启延迟默认60秒
-	 */
-	long delay() default 60000L;
+	long delay() default 0L;
 
 	/**
 	 * 死信队列Class

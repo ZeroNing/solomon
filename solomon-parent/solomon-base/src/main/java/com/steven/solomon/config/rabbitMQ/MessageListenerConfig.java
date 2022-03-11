@@ -6,7 +6,6 @@ import com.steven.solomon.base.code.BaseCode;
 import com.steven.solomon.config.init.RabbitMQInitConfig;
 import com.steven.solomon.profile.RabbitMQProfile;
 import com.steven.solomon.servic.AbstractConsumer;
-import com.steven.solomon.servic.AbstractDlxConsumer;
 import com.steven.solomon.servic.BaseMQService;
 import com.steven.solomon.servic.impl.AbstractMQService;
 import com.steven.solomon.utils.logger.LoggerUtils;
@@ -46,7 +45,7 @@ public class MessageListenerConfig {
      */
     public void init(RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
         // 查询AbstractConsumer父类下的子类转换为List集合 初始化消费队列
-        this.init(new ArrayList<>(SpringUtil.getBeansOfType(AbstractConsumer.class).values()),admin,rabbitConnectionFactory);
+        this.init(new ArrayList<>(SpringUtil.getBeansWithAnnotation(RabbitMq.class).values()),admin,rabbitConnectionFactory);
     }
 
     /**
@@ -54,7 +53,7 @@ public class MessageListenerConfig {
      *
      * @param clazzList 消费者集合数组
      */
-    private void init(List<AbstractConsumer> clazzList,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
+    private void init(List<Object> clazzList,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
         // 判断消费者队列是否存在
         if (ValidateUtils.isEmpty(clazzList)) {
             logger.info("MessageListenerConfig:没有rabbitMq消费者");
@@ -65,14 +64,9 @@ public class MessageListenerConfig {
 
         Map<String, AbstractMQService> abstractMQMap = SpringUtil.getBeansOfType(AbstractMQService.class);
         // 遍历消费者队列进行初始化绑定以及监听
-        for (AbstractConsumer abstractConsumer : clazzList) {
+        for (Object abstractConsumer : clazzList) {
             // 根据反射获取rabbitMQ注解信息
             rabbitMq = AnnotationUtils.findAnnotation(abstractConsumer.getClass(), RabbitMq.class);
-            // 判断注解是否为空
-            if (ValidateUtils.isEmpty(rabbitMq)) {
-                logger.info("MessageListenerConfig:{} 类找不到rabbitMq", abstractConsumer.getClass().getName());
-                continue;
-            }
             if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(rabbitMq.queues())){
                 logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列", rabbitMq.queues());
                 continue;
@@ -80,7 +74,7 @@ public class MessageListenerConfig {
             // 初始化队列绑定
             Queue queue = initBinding(abstractMQMap,true, false,admin);
             // 启动监听器并保存已启动的MQ
-            RabbitMQInitConfig.allQueueContainerMap.put(queue.getName(), this.startContainer(abstractConsumer, queue,admin,rabbitConnectionFactory));
+            RabbitMQInitConfig.allQueueContainerMap.put(queue.getName(), this.startContainer((AbstractConsumer) abstractConsumer, queue,admin,rabbitConnectionFactory));
             // 初始化死信队列
             this.initDlx(queue,admin,rabbitConnectionFactory,abstractMQMap);
         }
@@ -91,24 +85,24 @@ public class MessageListenerConfig {
      */
     private void initDlx(Queue queue,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory,Map<String, AbstractMQService> abstractMQMap) {
         // 判断消费队列是否需要死信队列 只要死信队列或者延时队列为true即可判断为开启死信队列
-        boolean dlx = rabbitMq.isDlx() || rabbitMq.isTtl() ? true : false;
         Class<?> clazz = rabbitMq.dlxClazz();
         String queues = queue.getName();
-        if (!dlx) {
+        if (void.class.equals(clazz)) {
             logger.info("MessageListenerConfig:initDlx 队列:{}不需要死信队列", queues);
             return;
         }
         // 判断设置死信队列的类必须是为AbstractDlxConsumer下的子类
-        if (!AbstractDlxConsumer.class.isAssignableFrom(clazz) || AbstractDlxConsumer.class.equals(clazz)) {
+        if (!AbstractConsumer.class.isAssignableFrom(clazz) || AbstractConsumer.class.equals(clazz)) {
             logger.info("MessageListenerConfig:队列:{}死信队列设置错误,死信队列类名为:{}", queues, clazz.getName());
             return;
         }
         // 获取死信队列类
-        AbstractDlxConsumer abstractConsumer = (AbstractDlxConsumer) SpringUtil.getBean(clazz);
+        AbstractConsumer abstractConsumer = (AbstractConsumer) SpringUtil.getBean(clazz);
         // 初始化队列绑定
         queue = initBinding(abstractMQMap,false, true,admin);
         // 启动监听器
         this.startContainer(abstractConsumer, queue,admin,rabbitConnectionFactory);
+        logger.info("MessageListenerConfig队列:{}绑定{}死信队列",queues,queue.getName());
     }
 
     /**
@@ -116,7 +110,7 @@ public class MessageListenerConfig {
      *
      * @param abstractConsumer 抽象的消费者
      */
-    private DirectMessageListenerContainer startContainer(Object abstractConsumer, Queue queue,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
+    private DirectMessageListenerContainer startContainer(AbstractConsumer abstractConsumer, Queue queue,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
         // 新建监听器
         DirectMessageListenerContainer container = new DirectMessageListenerContainer(rabbitConnectionFactory);
         // 新建消息侦听器适配器

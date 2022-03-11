@@ -1,10 +1,13 @@
 package com.steven.solomon.config.init;
 
+import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.base.excetion.AbstractExceptionHandler;
 import com.steven.solomon.config.rabbitMQ.MessageListenerConfig;
+import com.steven.solomon.servic.AbstractConsumer;
 import com.steven.solomon.utils.spring.SpringUtil;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.swing.Spring;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
