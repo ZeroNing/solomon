@@ -61,11 +61,10 @@ public class InitRabbitBinding implements Serializable {
   }
 
   private String getName(String name, boolean isAddDlxPrefix) {
-    String DLX_PREFIX = "dlx_";
     if (ValidateUtils.isEmpty(name)) {
       return name;
     }
-    return isAddDlxPrefix ? DLX_PREFIX + name : name;
+    return isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name;
   }
 
   /**
@@ -76,17 +75,16 @@ public class InitRabbitBinding implements Serializable {
    * @return 死信队列参数
    */
   private Map<String, Object> initArgs(RabbitMq rabbitMq, boolean isInitDlxMap) {
-    String  DLX_PREFIX = "dlx_";
     boolean dlx        = !void.class.equals(rabbitMq.dlxClazz()) || rabbitMq.delay() != 0L;
 
     if (!dlx || !isInitDlxMap) {
       return null;
     }
     Map<String, Object> args = new HashMap<>(3);
-    args.put(BaseRabbitMqCode.DLX_EXCHANGE_KEY, DLX_PREFIX + rabbitMq.exchange());
+    args.put(BaseRabbitMqCode.DLX_EXCHANGE_KEY, BaseRabbitMqCode.DLX_PREFIX + rabbitMq.exchange());
 
     if (ValidateUtils.isNotEmpty(rabbitMq.routingKey())) {
-      args.put(BaseRabbitMqCode.DLX_ROUTING_KEY, DLX_PREFIX + rabbitMq.routingKey());
+      args.put(BaseRabbitMqCode.DLX_ROUTING_KEY, BaseRabbitMqCode.DLX_PREFIX + rabbitMq.routingKey());
     }
 
     if (rabbitMq.delay() != 0L) {
