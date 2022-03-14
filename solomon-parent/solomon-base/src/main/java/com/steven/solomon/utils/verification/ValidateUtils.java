@@ -14,6 +14,13 @@ public class ValidateUtils extends EmptyUtils {
 
   private static Logger logger = LoggerUtils.logger(ValidateUtils.class);
 
+  /**
+   * 获取默认值
+   * @param obj 参数
+   * @param def 默认值
+   * @param <T>
+   * @return
+   */
   public static <T> T getOrDefault(T obj,T def){
     return isEmpty(obj) ? def : obj;
   }
