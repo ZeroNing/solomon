@@ -43,7 +43,7 @@
     <dubbo.version>3.0.5</dubbo.version>
     <dubbo-start.version>3.0.5</dubbo-start.version>
     <strive.version>1.0-SNAPSHOT</strive.version>
-    <Spring.cloud.gateway.version>3.0.5</Spring.cloud.gateway.version>
+    <Spring.cloud.gateway.version>3.0.4</Spring.cloud.gateway.version>
     <Spring.cloud.loadbalancer.version>3.0.4</Spring.cloud.loadbalancer.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.context.support.version>1.0.11</spring.context.support.version>
@@ -196,23 +196,6 @@
         <artifactId>validation-api</artifactId>
         <version>${javax.validation}</version>
       </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${hibernate.validator.version}</version>
-      </dependency>
-      <!-- 校验注解所有需要jar包 结束 -->
-      <dependency>
-        <groupId>javax.persistence</groupId>
-        <artifactId>persistence-api</artifactId>
-        <version>${persistence.api.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hibernate.javax.persistence</groupId>
-        <artifactId>hibernate-jpa-2.1-api</artifactId>
-        <version>${hibernate.jpa.2.1.api.version}</version>
-      </dependency>
 
       <!-- google图片处理 -->
       <dependency>
@@ -254,6 +237,12 @@
         <groupId>com.drewnoakes</groupId>
         <artifactId>metadata-extractor</artifactId>
         <version>${exif.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        <version>${spring.bootstrap.version}</version>
       </dependency>
     </dependencies>
 
