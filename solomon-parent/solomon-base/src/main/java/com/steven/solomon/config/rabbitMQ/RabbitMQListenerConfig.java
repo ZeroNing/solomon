@@ -9,14 +9,12 @@ import com.steven.solomon.servic.AbstractConsumer;
 import com.steven.solomon.servic.BaseMQService;
 import com.steven.solomon.servic.impl.AbstractMQService;
 import com.steven.solomon.utils.logger.LoggerUtils;
-import com.steven.solomon.utils.rabbit.MqService;
 import com.steven.solomon.utils.spring.SpringUtil;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
@@ -36,9 +34,6 @@ public class RabbitMQListenerConfig {
     private final Logger logger = LoggerUtils.logger(getClass());
 
     private RabbitMq rabbitMq;
-
-    @Resource(name="rabbitMqService")
-    private MqService mqService;
 
     /**
      * 初始化MQ监听器
@@ -132,14 +127,14 @@ public class RabbitMQListenerConfig {
         RabbitMqRetry rabbitMqRetry = AnnotationUtils.findAnnotation(abstractConsumer.getClass(), RabbitMqRetry.class);
         if (ValidateUtils.isNotEmpty(rabbitMqRetry) && AbstractConsumer.class.isAssignableFrom(abstractConsumer.getClass())) {
             //设置重试机制
-            container.setAdviceChain(rabbitRetryTemplate(rabbitMqRetry));
+            container.setAdviceChain(setRabbitRetry(rabbitMqRetry));
         }
         // 启动对应的适配器
         container.start();
         return container;
     }
 
-    public RetryOperationsInterceptor rabbitRetryTemplate(RabbitMqRetry rabbitMqRetry) {
+    public RetryOperationsInterceptor setRabbitRetry(RabbitMqRetry rabbitMqRetry) {
         RetryTemplate retryTemplate = new RetryTemplate();
         retryTemplate.setBackOffPolicy(backOffPolicyByProperties(rabbitMqRetry));
         retryTemplate.setRetryPolicy(retryPolicyByProperties(rabbitMqRetry));
@@ -152,24 +147,18 @@ public class RabbitMQListenerConfig {
 
     public ExponentialBackOffPolicy backOffPolicyByProperties(RabbitMqRetry rabbitMqRetry) {
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
-
-        long initialInterval = rabbitMqRetry.initialInterval();
-        long maxInterval = rabbitMqRetry.maxInterval();
-        double multiplier = rabbitMqRetry.multiplier();
-
         // 重试间隔
-        backOffPolicy.setInitialInterval(initialInterval);
+        backOffPolicy.setInitialInterval(rabbitMqRetry.initialInterval());
         // 重试最大间隔
-        backOffPolicy.setMaxInterval(maxInterval);
+        backOffPolicy.setMaxInterval(rabbitMqRetry.maxInterval());
         // 重试间隔乘法策略
-        backOffPolicy.setMultiplier(multiplier);
+        backOffPolicy.setMultiplier(rabbitMqRetry.multiplier());
         return backOffPolicy;
     }
 
     public SimpleRetryPolicy retryPolicyByProperties(RabbitMqRetry rabbitMqRetry) {
-        int retryNumber = rabbitMqRetry.retryNumber();
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(retryNumber);
+        retryPolicy.setMaxAttempts(rabbitMqRetry.retryNumber());
         return retryPolicy;
     }
 
