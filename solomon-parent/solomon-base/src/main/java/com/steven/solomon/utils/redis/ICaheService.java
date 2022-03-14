@@ -3,6 +3,7 @@ package com.steven.solomon.utils.redis;
 public interface ICaheService {
   /**
    * 指定缓存失效时间
+   * @param group 组
    * @param key 键
    * @param time 时间(秒)
    * @return
@@ -11,6 +12,7 @@ public interface ICaheService {
 
   /**
    * 根据key 获取过期时间
+   * @param group 组
    * @param key 键 不能为null
    * @return 时间(秒) 返回0代表为永久有效
    */
@@ -18,7 +20,7 @@ public interface ICaheService {
 
   /**
    * 判断key是否存在
-   *
+   * @param group 组
    * @param key 键
    * @return true 存在 false不存在
    */
@@ -32,6 +34,7 @@ public interface ICaheService {
 
   /**
    * 普通缓存获取
+   * @param group 组
    * @param key 键
    * @return 值
    */
@@ -39,6 +42,7 @@ public interface ICaheService {
 
   /**
    * 普通缓存放入
+   * @param group 组
    * @param key   键
    * @param value 值
    * @return true成功 false失败
@@ -47,6 +51,7 @@ public interface ICaheService {
 
   /**
    * 普通缓存放入并设置时间
+   * @param group 组
    * @param key   键
    * @param value 值
    * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
@@ -56,6 +61,7 @@ public interface ICaheService {
 
   /**
    * 设置setnx的锁
+   * @param group 组
    * @param key   键
    * @param value 值
    * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
@@ -65,6 +71,7 @@ public interface ICaheService {
 
   /**
    * 删除锁
+   * @param group 组
    * @param key 键
    */
   void deleteLock(String group,String key);
