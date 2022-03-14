@@ -3,17 +3,19 @@ package com.steven.solomon.servic;
 import com.rabbitmq.client.Channel;
 import com.steven.solomon.annotation.RabbitMqRetry;
 import com.steven.solomon.base.cache.CacheTime;
+import com.steven.solomon.base.code.BaseICacheCode;
 import com.steven.solomon.base.model.rabbitMQ.RabbitMqModel;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.redis.ICaheService;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import java.nio.charset.StandardCharsets;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+
+import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 
 /**
  * RabbitMq消费器
@@ -59,8 +61,8 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
    * 记录失败次数并决定是否拒绝此消息
    */
   public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId) throws Exception {
-    String key  = "rabbitMQ-correlationId-fail-lock:" + correlationId;
-    Integer lock = (Integer) iCaheService.get(key);
+    String key  = "rabbitMQ-correlationId-lock:" + correlationId;
+    Integer lock = (Integer) iCaheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,key);
     Integer actualLock = ValidateUtils.isEmpty(lock) ? 1 : lock + 1;
     logger.info("rabbitMQ 失败记录:消费者correlationId为:{},deliveryTag为:{},失败次数为:{}", correlationId, deliveryTag,actualLock);
     int retryNumber = getRetryNumber();
@@ -74,7 +76,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       channel.basicNack(messageProperties.getDeliveryTag(), false, false);
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
-      iCaheService.set(key, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
+      iCaheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,key, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
     }
   }
 

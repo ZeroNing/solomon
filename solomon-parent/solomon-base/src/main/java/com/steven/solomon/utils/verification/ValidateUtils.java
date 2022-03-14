@@ -2,16 +2,21 @@ package com.steven.solomon.utils.verification;
 
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.utils.logger.LoggerUtils;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.lang.ObjectUtils;
 import org.slf4j.Logger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ValidateUtils extends EmptyUtils {
 
   private static final Pattern IS_NUMBER_PATTERN = Pattern.compile("-?[0-9]+(\\.[0-9]+)?");
 
   private static Logger logger = LoggerUtils.logger(ValidateUtils.class);
+
+  public static <T> T getOrDefault(T obj,T def){
+    return isEmpty(obj) ? def : obj;
+  }
 
   public static boolean equals(String contrast, String var) {
     boolean flag = false;

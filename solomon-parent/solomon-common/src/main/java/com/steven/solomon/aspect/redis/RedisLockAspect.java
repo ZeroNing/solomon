@@ -1,12 +1,10 @@
 package com.steven.solomon.aspect.redis;
 
 import com.steven.solomon.annotation.Lock;
+import com.steven.solomon.base.code.BaseICacheCode;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.utils.redis.ICaheService;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import java.lang.reflect.Method;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -16,6 +14,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * Redis Lock的AOP实现类
@@ -50,13 +52,13 @@ public class RedisLockAspect {
     String             url     = request.getRequestURL().toString();
     String             key     = url;
     //通过setnx设置值，如果值不存在，则获得该锁
-    boolean flag = iCaheService.lockSet(key, 0, lock.expire());
+    boolean flag = iCaheService.lockSet(BaseICacheCode.REDIS_LOCK,key, 0, lock.expire());
     if (flag) {
       try {
         Object result = point.proceed();
         return result;
       } finally {
-        iCaheService.deleteLock(key);
+        iCaheService.deleteLock(BaseICacheCode.REDIS_LOCK,key);
       }
     } else {
       //查找错误处理器
