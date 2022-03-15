@@ -1,0 +1,59 @@
+server:
+  port: 8001
+spring:
+  datasource:
+    password: Select*From136623;
+    username: tenancy
+    url: jdbc:mysql://106.52.186.166:3306/tenancy?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: tenancy-api
+  cloud:
+    nacos:
+      config:
+        server-addr: 106.52.186.166:8848
+        file-extension: yaml
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+dubbo:
+  registry:
+    address: nacos://${spring.cloud.nacos.config.server-addr}
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  file:
+    name: ./logs/${spring.application.name}.log
+  #    name: user.log
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS # 日志日期格式
+  charset:
+    console: UTF-8 #控制台字符集
+    file: UTF-8 #输出文件字符集
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB # 最大的日志文件大小
+      max-history: 30 # 要保留的存档日志文件的最大数量
+
+seata:
+  tx-service-group: my_test_tx_group  #对应seataServer.properties中的service.vgroupMapping.my_test_tx_group 集群分组
+  registry:
+    type: nacos   #注册中心类型：nacos
+    nacos:
+      application: seata-server      # seata-server注册在nacos中的服务名
+      server-addr: ${spring.cloud.nacos.config.server-addr}    # nacos的地址端口
+      group : SEATA_GROUP            # seata-server在nacos的分组
+#      namespace: seata_dev           # seata-server在nacos的命名空间ID
+      username: nacos                # nacos账号
+      password: nacos                # nacos密码
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.config.server-addr}
+      group: SEATA_GROUP
+#      namespace: seata_dev                 # seata-server的配置文件的命名空间ID
+      dataId: seata       # seata-server在nacos的配置dataId
+      username: nacos
+      password: nacos
