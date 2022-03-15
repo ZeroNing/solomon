@@ -6,6 +6,7 @@ import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.utils.date.DateTimeUtils;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 基础实体类
@@ -41,17 +42,22 @@ public class BaseEntity implements Serializable {
   /**
    * 备注
    */
-  private String remark;
+  private              String        remark;
 
   public BaseEntity() {
     super();
+    this.id = UUID.randomUUID().toString();
   }
 
-  public void create(String createId){
+  public void create() {
     this.createDate = DateTimeUtils.getLocalDateTime();
     this.updateDate = DateTimeUtils.getLocalDateTime();
     this.delFlag    = DelFlagEnum.NOT_DELETE.Value();
-    this.createId = createId;
+  }
+
+  public void create(String createId) {
+    this.create();
+    this.createId   = createId;
   }
 
   public void update(String updateId) {
