@@ -81,7 +81,7 @@ public class I18nUtils {
    */
   private static String getMessage(String code, String... args) {
     Locale locale = LocaleContextHolder.getLocale();
-    return resourceBundleMessageSource.getMessage(code, args, locale);
+    return getMessage(code,locale,args);
   }
 
   private static String getMessage(String code,Locale locale, String... args) {

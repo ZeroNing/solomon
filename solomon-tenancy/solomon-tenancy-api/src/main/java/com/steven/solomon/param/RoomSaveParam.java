@@ -35,13 +35,11 @@ public class RoomSaveParam implements Serializable {
   /**
    * 所属权人
    */
-  @NotEmpty(message = TenancyErrorCode.OWNER_NOT_NULL)
   private String owner;
 
   /**
    * 手机号码
    */
-  @NotEmpty(message = TenancyErrorCode.PHONE_NOT_NULL)
   private String phone;
 
   /**

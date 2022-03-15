@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
   public String handleException(HttpServletResponse response, Exception ex, Locale locale) throws IOException {
     //获取异常名字
     String exceptionSimpleName = ex.getClass().getSimpleName();
-    logger.info("GlobalExceptionHandler处理全局异常,当前异常是:{}", exceptionSimpleName);
+    logger.info("GlobalExceptionHandler处理全局异常,当前异常是:", ex);
     BaseExceptionVO baseExceptionVO = BaseGlobalExceptionHandler.handler(ex,null,serverId,locale);
     response.setStatus(baseExceptionVO.getStatusCode());
     return AjaxResultUtils.responseErrorJson(baseExceptionVO);

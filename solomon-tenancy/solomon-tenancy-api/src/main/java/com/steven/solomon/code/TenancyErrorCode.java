@@ -45,5 +45,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
   /**
    * 总层数不允许为空
    */
-  String TOTAL_FLOORS_NOT_NULL="TOTAL_FLOORS_NOT_NULL";
+  String TOTAL_FLOORS_NOT_NULL ="TOTAL_FLOORS_NOT_NULL";
+  /**
+   * 房间记录不存在
+   */
+  String ROOM_IS_NULL          = "ROOM_IS_NULL";
 }

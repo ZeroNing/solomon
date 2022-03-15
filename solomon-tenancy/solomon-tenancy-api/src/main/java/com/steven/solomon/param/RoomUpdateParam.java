@@ -1,32 +1,40 @@
 package com.steven.solomon.param;
 
+import com.steven.solomon.code.TenancyErrorCode;
 import java.io.Serializable;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class RoomUpdateParam implements Serializable {
 
   /**
    * 主键id
    */
+  @NotEmpty(message = TenancyErrorCode.ID_NOT_NULL)
   private String id;
 
   /**
    * 省份id
    */
-  private String provinceId;
+  @NotNull(message = TenancyErrorCode.PROVINCE_ID_NOT_NULL)
+  private Long provinceId;
 
   /**
    * 市id
    */
-  private String cityId;
+  @NotNull(message = TenancyErrorCode.CITY_ID_NOT_NULL)
+  private Long cityId;
 
   /**
    * 区id
    */
-  private String areaId;
+  @NotNull(message = TenancyErrorCode.AREA_ID_NOT_NULL)
+  private Long areaId;
 
   /**
    * 地址
    */
+  @NotEmpty(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   private String address;
 
   /**
@@ -42,6 +50,7 @@ public class RoomUpdateParam implements Serializable {
   /**
    * 总层数
    */
+  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
   private Integer totalFloors;
 
   public String getId() {
@@ -52,27 +61,27 @@ public class RoomUpdateParam implements Serializable {
     this.id = id;
   }
 
-  public String getProvinceId() {
+  public Long getProvinceId() {
     return provinceId;
   }
 
-  public void setProvinceId(String provinceId) {
+  public void setProvinceId(Long provinceId) {
     this.provinceId = provinceId;
   }
 
-  public String getCityId() {
+  public Long getCityId() {
     return cityId;
   }
 
-  public void setCityId(String cityId) {
+  public void setCityId(Long cityId) {
     this.cityId = cityId;
   }
 
-  public String getAreaId() {
+  public Long getAreaId() {
     return areaId;
   }
 
-  public void setAreaId(String areaId) {
+  public void setAreaId(Long areaId) {
     this.areaId = areaId;
   }
 

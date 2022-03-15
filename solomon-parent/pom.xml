@@ -251,6 +251,12 @@
         <artifactId>spring-cloud-starter-bootstrap</artifactId>
         <version>${spring.bootstrap.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-crypto</artifactId>
+        <version>${hutool.version}</version>
+      </dependency>
     </dependencies>
 
   </dependencyManagement>
