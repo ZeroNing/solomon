@@ -47,7 +47,7 @@
     <Spring.cloud.loadbalancer.version>3.0.4</Spring.cloud.loadbalancer.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.context.support.version>1.0.11</spring.context.support.version>
-    <nacos.client.version>1.4.1</nacos.client.version>
+    <nacos.client.version>2.0.3</nacos.client.version>
     <jedis.version>4.0.0</jedis.version>
     <seata.version>1.4.2</seata.version>
     <mybatis.plus.version>3.5.1</mybatis.plus.version>
@@ -196,6 +196,13 @@
         <artifactId>validation-api</artifactId>
         <version>${javax.validation}</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate.validator.version}</version>
+      </dependency>
+      <!-- 校验注解所有需要jar包 结束 -->
 
       <!-- google图片处理 -->
       <dependency>

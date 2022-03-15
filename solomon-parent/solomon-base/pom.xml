@@ -87,6 +87,12 @@
       <artifactId>validation-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+    <!-- 校验注解所有需要jar包 结束 -->
+
     <!-- google图片处理 -->
     <dependency>
       <groupId>net.coobird</groupId>
