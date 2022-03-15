@@ -29,41 +29,33 @@ public class BaseEntity implements Serializable {
   /**
    * 创建人id
    */
-  private              String        createBy;
+  private              String        createId;
   /**
    * 更新人id
    */
-  private              String        updateBy;
-  /**
-   * 创建人名称
-   */
-  private              String        createName;
-  /**
-   * 更新人名称
-   */
-  private              String        updateName;
+  private              String        updateId;
   /**
    * 主键id
    */
   private              String        id;
+  /**
+   * 备注
+   */
+  private String remark;
 
   public BaseEntity() {
     super();
   }
 
-  public void create(){
+  public void create(String createId){
     this.createDate = DateTimeUtils.getLocalDateTime();
     this.updateDate = DateTimeUtils.getLocalDateTime();
     this.delFlag    = DelFlagEnum.NOT_DELETE.Value();
+    this.createId = createId;
   }
 
-  public void create(String createName){
-    this.createName = createName;
-    this.create();
-  }
-
-  public void update(String updateName) {
-    this.updateName = updateName;
+  public void update(String updateId) {
+    this.updateId = updateId;
     update();
   }
 
@@ -71,8 +63,8 @@ public class BaseEntity implements Serializable {
     this.updateDate = DateTimeUtils.getLocalDateTime();
   }
 
-  public void delete(String deleteName) {
-    this.updateName = deleteName;
+  public void delete(String updateId) {
+    this.updateId = updateId;
     delete();
   }
 
@@ -105,38 +97,6 @@ public class BaseEntity implements Serializable {
     this.delFlag = delFlag;
   }
 
-  public String getCreateBy() {
-    return createBy;
-  }
-
-  public void setCreateBy(String createBy) {
-    this.createBy = createBy;
-  }
-
-  public String getUpdateBy() {
-    return updateBy;
-  }
-
-  public void setUpdateBy(String updateBy) {
-    this.updateBy = updateBy;
-  }
-
-  public String getCreateName() {
-    return createName;
-  }
-
-  public void setCreateName(String createName) {
-    this.createName = createName;
-  }
-
-  public String getUpdateName() {
-    return updateName;
-  }
-
-  public void setUpdateName(String updateName) {
-    this.updateName = updateName;
-  }
-
   public String getId() {
     return id;
   }
@@ -145,4 +105,27 @@ public class BaseEntity implements Serializable {
     this.id = id;
   }
 
+  public String getCreateId() {
+    return createId;
+  }
+
+  public void setCreateId(String createId) {
+    this.createId = createId;
+  }
+
+  public String getUpdateId() {
+    return updateId;
+  }
+
+  public void setUpdateId(String updateId) {
+    this.updateId = updateId;
+  }
+
+  public String getRemark() {
+    return remark;
+  }
+
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
 }
