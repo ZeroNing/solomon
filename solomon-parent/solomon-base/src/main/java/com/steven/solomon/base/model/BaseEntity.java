@@ -57,7 +57,8 @@ public class BaseEntity implements Serializable {
 
   public void create(String createId) {
     this.create();
-    this.createId   = createId;
+    this.createId = createId;
+    this.updateId   = createId;
   }
 
   public void update(String updateId) {

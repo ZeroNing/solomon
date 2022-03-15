@@ -58,4 +58,8 @@ public interface BaseExceptionCode {
    */
   String LOGIN_TOKEN_EXCEPTION_CODE       = "L0001";
 
+  /**
+   * id不能为空
+   */
+  String ID_NOT_NULL="ID_NOT_NULL";
 }

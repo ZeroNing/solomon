@@ -4,6 +4,7 @@ import com.steven.solomon.code.TenancyErrorCode;
 import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
 
 public class RoomSaveParam implements Serializable {
 
