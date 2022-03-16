@@ -1,7 +1,6 @@
 package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -17,10 +16,11 @@ import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.RoomService;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 @Service
 @DubboService
@@ -94,7 +94,9 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   @Override
   public Room get(RoomGetParam param) {
     Room room = baseMapper.selectById(param.getId());
-    room.setAddress(RSAUtils.decrypt(room.getAddress()));
+    if(ValidateUtils.isNotEmpty(room)){
+      room.setAddress(RSAUtils.decrypt(room.getAddress()));
+    }
     return room;
   }
 }

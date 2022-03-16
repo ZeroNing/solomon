@@ -50,4 +50,18 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房间记录不存在
    */
   String ROOM_IS_NULL          = "ROOM_IS_NULL";
+  /**
+   * 身份证不允许为空
+   */
+  String IDENTITY_CARD_NOT_NULL = "IDENTITY_CARD_NOT_NULL";
+
+  /**
+   * 名称不允许为空
+   */
+  String NAME_NOT_NULL = "NAME_NOT_NULL";
+
+  /**
+   * 租户信息不存在
+   */
+  String TENANT_IS_NULL = "TENANT_IS_NULL";
 }
