@@ -92,14 +92,15 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
 
   /**
    * 消费方法
+   * @param body 请求数据
    */
   public abstract void handleMessage(T body);
 
   /**
    * 保存消费失败的消息
    *
-   * @param message
-   * @param e
+   * @param message mq所包含的信息
+   * @param e 异常
    */
   public abstract void saveFailMessage(Message message, Exception e);
 }

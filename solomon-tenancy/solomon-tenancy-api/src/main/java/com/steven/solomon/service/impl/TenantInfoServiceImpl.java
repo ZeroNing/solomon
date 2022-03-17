@@ -1,6 +1,7 @@
 package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -61,14 +62,14 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
         ValidateUtils.isEmpty(areaService.findById(param.getCityId()),TenancyErrorCode.CITY_NON_EXISTENT,param.getCityId().toString());
         ValidateUtils.isEmpty(areaService.findById(param.getAreaId()),TenancyErrorCode.AREA_NON_EXISTENT,param.getAreaId().toString());
 
-        entity.setProvinceId(param.getProvinceId());
-        entity.setCityId(param.getCityId());
-        entity.setAreaId(param.getAreaId());
-        entity.setAddress(RSAUtils.encrypt(param.getAddress()));
-        entity.setPhone(param.getPhone());
-        entity.setName(param.getName());
-        entity.setIdentityCard(RSAUtils.encrypt(param.getIdentityCard()));
-        baseMapper.updateById(entity);
+        LambdaUpdateWrapper<TenantInfo> updateQueryWrapper = new LambdaUpdateWrapper<TenantInfo>();
+        updateQueryWrapper.eq(TenantInfo::getId,param.getId()).set(TenantInfo::getAddress,param.getAddress())
+            .set(TenantInfo::getUpdateDate,entity.getUpdateDate()).set(TenantInfo::getUpdateId,entity.getUpdateId())
+            .set(TenantInfo::getProvinceId,param.getProvinceId()).set(TenantInfo::getCityId,param.getCityId())
+            .set(TenantInfo::getAreaId,param.getAreaId()).set(TenantInfo::getAddress,RSAUtils.encrypt(param.getAddress()))
+            .set(TenantInfo::getPhone,param.getPhone()).set(TenantInfo::getName,param.getName())
+            .set(TenantInfo::getIdentityCard,RSAUtils.encrypt(param.getIdentityCard()));
+        baseMapper.update(null,updateQueryWrapper);
     }
 
     @Override

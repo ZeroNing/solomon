@@ -1,12 +1,14 @@
 package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Room;
+import com.steven.solomon.entity.TenantInfo;
 import com.steven.solomon.mapper.RoomMapper;
 import com.steven.solomon.param.RoomGetParam;
 import com.steven.solomon.param.RoomPageParam;
@@ -56,18 +58,18 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   @Transactional(readOnly = false)
   public void update(RoomUpdateParam param) throws BaseException {
     Room room = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()),TenancyErrorCode.ROOM_IS_NULL);
-
+    room.update("1");
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()),TenancyErrorCode.PROVINCE_NON_EXISTENT,param.getProvinceId().toString());
     ValidateUtils.isEmpty(areaService.findById(param.getCityId()),TenancyErrorCode.CITY_NON_EXISTENT,param.getCityId().toString());
     ValidateUtils.isEmpty(areaService.findById(param.getAreaId()),TenancyErrorCode.AREA_NON_EXISTENT,param.getAreaId().toString());
 
-    room.setProvinceId(param.getProvinceId());
-    room.setCityId(param.getCityId());
-    room.setAreaId(param.getAreaId());
-    room.setAddress(RSAUtils.encrypt(param.getAddress()));
-    room.setPhone(param.getPhone());
-    room.setOwner(param.getOwner());
-    room.setTotalFloors(param.getTotalFloors());
+
+    LambdaUpdateWrapper<Room> updateQueryWrapper = new LambdaUpdateWrapper<Room>();
+    updateQueryWrapper.eq(Room::getId,param.getId()).set(Room::getProvinceId,param.getProvinceId())
+        .set(Room::getUpdateDate,room.getUpdateDate()).set(Room::getUpdateId,room.getUpdateId())
+        .set(Room::getCityId,param.getCityId()).set(Room::getAreaId,param.getAreaId())
+        .set(Room::getAddress,RSAUtils.encrypt(param.getAddress())).set(Room::getPhone,param.getPhone())
+        .set(Room::getOwner,param.getOwner()).set(Room::getTotalFloors,param.getTotalFloors());
     baseMapper.updateById(room);
   }
 
