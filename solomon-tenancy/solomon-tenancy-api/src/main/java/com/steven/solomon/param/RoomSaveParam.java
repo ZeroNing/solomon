@@ -2,7 +2,7 @@ package com.steven.solomon.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
 import java.io.Serializable;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
@@ -29,7 +29,7 @@ public class RoomSaveParam implements Serializable {
   /**
    * 地址
    */
-  @NotEmpty(message = TenancyErrorCode.ADDRESS_NOT_NULL)
+  @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   private String address;
 
   /**

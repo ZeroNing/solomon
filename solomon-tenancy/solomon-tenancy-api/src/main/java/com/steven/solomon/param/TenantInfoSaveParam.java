@@ -2,7 +2,7 @@ package com.steven.solomon.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -11,19 +11,19 @@ public class TenantInfoSaveParam implements Serializable {
     /**
      * 租客名称
      */
-    @NotEmpty(message = TenancyErrorCode.NAME_NOT_NULL)
+    @NotBlank(message = TenancyErrorCode.NAME_NOT_NULL)
     private String name;
 
     /**
      * 身份证号码
      */
-    @NotEmpty(message = TenancyErrorCode.IDENTITY_CARD_NOT_NULL)
+    @NotBlank(message = TenancyErrorCode.IDENTITY_CARD_NOT_NULL)
     private String identityCard;
 
     /**
      * 手机号码
      */
-    @NotEmpty(message = TenancyErrorCode.PHONE_NOT_NULL)
+    @NotBlank(message = TenancyErrorCode.PHONE_NOT_NULL)
     private String phone;
 
     /**
@@ -47,7 +47,7 @@ public class TenantInfoSaveParam implements Serializable {
     /**
      * 地址
      */
-    @NotEmpty(message = TenancyErrorCode.ADDRESS_NOT_NULL)
+    @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
     private String address;
 
     public String getName() {
