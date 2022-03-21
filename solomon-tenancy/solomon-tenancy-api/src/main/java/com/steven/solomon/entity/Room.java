@@ -3,8 +3,10 @@ package com.steven.solomon.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.base.model.BaseEntity;
 
+import java.util.UUID;
+
 @TableName("room")
-public class Room extends BaseEntity {
+public class Room extends BaseEntity<String> {
   /**
    * 省份id
    */
@@ -42,6 +44,7 @@ public class Room extends BaseEntity {
 
   public Room(){
     super();
+    setId(UUID.randomUUID().toString());
     super.create();
   }
 

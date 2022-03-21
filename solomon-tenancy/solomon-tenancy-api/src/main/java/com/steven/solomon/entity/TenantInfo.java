@@ -2,8 +2,11 @@ package com.steven.solomon.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.base.model.BaseEntity;
+
+import java.util.UUID;
+
 @TableName("tenant_info")
-public class TenantInfo extends BaseEntity {
+public class TenantInfo extends BaseEntity<String> {
 
     /**
      * 租客名称
@@ -42,6 +45,7 @@ public class TenantInfo extends BaseEntity {
 
     public TenantInfo(){
         super();
+        setId(UUID.randomUUID().toString());
         super.create();
     }
 

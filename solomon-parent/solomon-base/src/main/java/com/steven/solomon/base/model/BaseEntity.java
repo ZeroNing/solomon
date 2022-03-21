@@ -4,20 +4,37 @@ package com.steven.solomon.base.model;
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.utils.date.DateTimeUtils;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * 基础实体类
  */
-public class BaseEntity implements Serializable {
+public class BaseEntity<I> implements Serializable {
 
   private static final long          serialVersionUID = 1L;
+
+  /**
+   * 主键id
+   */
+  private              I        id;
+
+  /**
+   * 创建人id
+   */
+  private              I        createId;
+
   /**
    * 创建时间
    */
   private              LocalDateTime createDate;
+
+  /**
+   * 更新人id
+   */
+  private              I        updateId;
+
   /**
    * 更新时间
    */
@@ -27,18 +44,7 @@ public class BaseEntity implements Serializable {
    */
   @JsonEnum(enumClass = DelFlagEnum.class)
   private              String        delFlag;
-  /**
-   * 创建人id
-   */
-  private              String        createId;
-  /**
-   * 更新人id
-   */
-  private              String        updateId;
-  /**
-   * 主键id
-   */
-  private              String        id;
+
   /**
    * 备注
    */
@@ -46,7 +52,6 @@ public class BaseEntity implements Serializable {
 
   public BaseEntity() {
     super();
-    this.id = UUID.randomUUID().toString();
   }
 
   public void create() {
@@ -55,13 +60,13 @@ public class BaseEntity implements Serializable {
     this.delFlag    = DelFlagEnum.NOT_DELETE.Value();
   }
 
-  public void create(String createId) {
+  public void create(I createId) {
     this.create();
     this.createId = createId;
     this.updateId   = createId;
   }
 
-  public void update(String updateId) {
+  public void update(I updateId) {
     this.updateId = updateId;
     update();
   }
@@ -70,7 +75,7 @@ public class BaseEntity implements Serializable {
     this.updateDate = DateTimeUtils.getLocalDateTime();
   }
 
-  public void delete(String updateId) {
+  public void delete(I updateId) {
     this.updateId = updateId;
     delete();
   }
@@ -104,35 +109,35 @@ public class BaseEntity implements Serializable {
     this.delFlag = delFlag;
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getCreateId() {
-    return createId;
-  }
-
-  public void setCreateId(String createId) {
-    this.createId = createId;
-  }
-
-  public String getUpdateId() {
-    return updateId;
-  }
-
-  public void setUpdateId(String updateId) {
-    this.updateId = updateId;
-  }
-
   public String getRemark() {
     return remark;
   }
 
   public void setRemark(String remark) {
     this.remark = remark;
+  }
+
+  public I getId() {
+    return id;
+  }
+
+  public void setId(I id) {
+    this.id = id;
+  }
+
+  public I getCreateId() {
+    return createId;
+  }
+
+  public void setCreateId(I createId) {
+    this.createId = createId;
+  }
+
+  public I getUpdateId() {
+    return updateId;
+  }
+
+  public void setUpdateId(I updateId) {
+    this.updateId = updateId;
   }
 }
