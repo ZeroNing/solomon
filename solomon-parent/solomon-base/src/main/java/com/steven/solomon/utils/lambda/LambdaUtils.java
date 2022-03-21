@@ -1,15 +1,10 @@
 package com.steven.solomon.utils.lambda;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class LambdaUtils {
@@ -105,9 +100,9 @@ public class LambdaUtils {
   /**
    * 汇总
    * @param list 数据集合
-   * @param func 分组汇总相加的字段
+   * ram func 分组汇总相加的字段
    */
-  public static <T> Integer sum(Collection<T> list, ToIntFunction<T> func) {
+  public static <T extends Number> Integer sum(Collection<T> list, ToIntFunction<T> func) {
     return list.stream().mapToInt(func).sum();
   }
   /**
@@ -116,7 +111,7 @@ public class LambdaUtils {
    * @param predicate 条件筛选数据
    * @param func 分组汇总相加的字段
    */
-  public static <T> Integer sum(Collection<T> list, Predicate<T> predicate, ToIntFunction<T> func) {
+  public static <T extends Number> Integer sum(Collection<T> list, Predicate<T> predicate, ToIntFunction<T> func) {
     return list.stream().filter(predicate).mapToInt(func).sum();
   }
   /**
@@ -124,7 +119,7 @@ public class LambdaUtils {
    * @param list 数据集合
    * @param func 分组汇总相加的字段
    */
-  public static <T> Long sum(Collection<T> list, ToLongFunction<T> func) {
+  public static <T extends Number> Long sum(Collection<T> list, ToLongFunction<T> func) {
     return list.stream().mapToLong(func).sum();
   }
   /**
@@ -133,7 +128,7 @@ public class LambdaUtils {
    * @param predicate 条件筛选数据
    * @param func 分组汇总相加的字段
    */
-  public static <T> Long sum(Collection<T> list, Predicate<T> predicate, ToLongFunction<T> func) {
+  public static <T extends Number> Long sum(Collection<T> list, Predicate<T> predicate, ToLongFunction<T> func) {
     return list.stream().filter(predicate).mapToLong(func).sum();
   }
   /**
@@ -141,7 +136,7 @@ public class LambdaUtils {
    * @param list 数据集合
    * @param func 分组汇总相加的字段
    */
-  public static <T> Double sum(Collection<T> list, ToDoubleFunction<T> func) {
+  public static <T extends Number> Double sum(Collection<T> list, ToDoubleFunction<T> func) {
     return list.stream().mapToDouble(func).sum();
   }
   /**
@@ -150,7 +145,7 @@ public class LambdaUtils {
    * @param predicate 条件筛选数据
    * @param func 分组汇总相加的字段
    */
-  public static <T> Double sum(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
+  public static <T extends Number> Double sum(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
     return list.stream().filter(predicate).mapToDouble(func).sum();
   }
   /**
@@ -196,7 +191,7 @@ public class LambdaUtils {
    * @param groupByFunc 分组字段
    * @param sumFunc  分组汇总相加的字段
    */
-  public static<K, T> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc,ToLongFunction<T> sumFunc){
+  public static<K, T extends Number> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc,ToLongFunction<T> sumFunc){
     return list.stream().collect(Collectors.groupingBy(groupByFunc,Collectors.summingLong(sumFunc)));
   }
   /**
@@ -206,7 +201,7 @@ public class LambdaUtils {
    * @param predicate 条件筛选数据
    * @param sumFunc  分组汇总相加的字段
    */
-  public static<K, T> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,ToLongFunction<T> sumFunc){
+  public static<K, T extends Number> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,ToLongFunction<T> sumFunc){
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc,Collectors.summingLong(sumFunc)));
   }
   /**
@@ -215,7 +210,7 @@ public class LambdaUtils {
    * @param groupByFunc 分组字段
    * @param sumFunc  分组汇总相加的字段
    */
-  public static<K, T> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc,ToDoubleFunction<T> sumFunc){
+  public static<K, T extends Number> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc,ToDoubleFunction<T> sumFunc){
     return list.stream().collect(Collectors.groupingBy(groupByFunc,Collectors.summingDouble(sumFunc)));
   }
   /**
@@ -225,7 +220,7 @@ public class LambdaUtils {
    * @param predicate 条件筛选数据
    * @param sumFunc  分组汇总相加的字段
    */
-  public static<K, T> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,ToDoubleFunction<T> sumFunc){
+  public static<K, T extends Number> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,ToDoubleFunction<T> sumFunc){
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc,Collectors.summingDouble(sumFunc)));
   }
 
