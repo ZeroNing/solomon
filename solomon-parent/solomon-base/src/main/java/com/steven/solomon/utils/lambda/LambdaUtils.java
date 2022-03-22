@@ -233,4 +233,165 @@ public class LambdaUtils {
     return sourceList.stream().filter(predicate).collect(Collectors.toList());
   }
 
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * ram func 分组汇总相加的字段
+   */
+  public static <T> Integer max(Collection<T> list, ToIntFunction<T> func) {
+    return list.stream().mapToInt(func).max().getAsInt();
+  }
+
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Integer max(Collection<T> list, Predicate<T> predicate, ToIntFunction<T> func) {
+    return list.stream().filter(predicate).mapToInt(func).max().getAsInt();
+  }
+
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Long max(Collection<T> list, ToLongFunction<T> func) {
+    return list.stream().mapToLong(func).max().getAsLong();
+  }
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Long max(Collection<T> list, Predicate<T> predicate, ToLongFunction<T> func) {
+    return list.stream().filter(predicate).mapToLong(func).max().getAsLong();
+  }
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T,K> Double max(Collection<T> list, ToDoubleFunction<T> func) {
+    return list.stream().mapToDouble(func).max().getAsDouble();
+  }
+  /**
+   * 找出最大值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double max(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
+    return list.stream().filter(predicate).mapToDouble(func).max().getAsDouble();
+  }
+
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * ram func 分组汇总相加的字段
+   */
+  public static <T> Integer min(Collection<T> list, ToIntFunction<T> func) {
+    return list.stream().mapToInt(func).min().getAsInt();
+  }
+
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Integer min(Collection<T> list, Predicate<T> predicate, ToIntFunction<T> func) {
+    return list.stream().filter(predicate).mapToInt(func).min().getAsInt();
+  }
+
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Long min(Collection<T> list, ToLongFunction<T> func) {
+    return list.stream().mapToLong(func).min().getAsLong();
+  }
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Long min(Collection<T> list, Predicate<T> predicate, ToLongFunction<T> func) {
+    return list.stream().filter(predicate).mapToLong(func).min().getAsLong();
+  }
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T,K> Double min(Collection<T> list, ToDoubleFunction<T> func) {
+    return list.stream().mapToDouble(func).min().getAsDouble();
+  }
+  /**
+   * 找出最小值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double min(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
+    return list.stream().filter(predicate).mapToDouble(func).min().getAsDouble();
+  }
+
+  /**
+   * 平均值
+   * @param list 数据集合
+   * ram func 分组汇总相加的字段
+   */
+  public static <T> Double average(Collection<T> list, ToIntFunction<T> func) {
+    return list.stream().mapToInt(func).average().getAsDouble();
+  }
+
+  /**
+   * 平均值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double average(Collection<T> list, Predicate<T> predicate, ToIntFunction<T> func) {
+    return list.stream().filter(predicate).mapToInt(func).average().getAsDouble();
+  }
+
+  /**
+   * 平均值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double average(Collection<T> list, ToLongFunction<T> func) {
+    return list.stream().mapToLong(func).average().getAsDouble();
+  }
+  /**
+   * 平均值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double average(Collection<T> list, Predicate<T> predicate, ToLongFunction<T> func) {
+    return list.stream().filter(predicate).mapToLong(func).average().getAsDouble();
+  }
+  /**
+   * 平均值
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T,K> Double average(Collection<T> list, ToDoubleFunction<T> func) {
+    return list.stream().mapToDouble(func).average().getAsDouble();
+  }
+  /**
+   * 平均值
+   * @param list 数据集合
+   * @param predicate 条件筛选数据
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> Double average(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
+    return list.stream().filter(predicate).mapToDouble(func).average().getAsDouble();
+  }
 }
