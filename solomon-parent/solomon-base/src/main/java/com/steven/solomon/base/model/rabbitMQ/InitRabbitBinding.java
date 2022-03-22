@@ -18,9 +18,9 @@ public class InitRabbitBinding implements Serializable {
 
   Map<String, Object> args;
 
-  public InitRabbitBinding(RabbitMq rabbitMq, boolean isInitDlxMap, boolean isAddDlxPrefix) {
+  public InitRabbitBinding(RabbitMq rabbitMq,String queueName, boolean isInitDlxMap, boolean isAddDlxPrefix) {
     // 队列名
-    queue = this.getName(rabbitMq.queues(), isAddDlxPrefix);
+    queue = this.getName(queueName, isAddDlxPrefix);
     // 交换机名
     exchange = this.getName(rabbitMq.exchange(), isAddDlxPrefix);
     // 路由
@@ -74,7 +74,7 @@ public class InitRabbitBinding implements Serializable {
    * @param isInitDlxMap 是否初始化死信队列参数
    * @return 死信队列参数
    */
-  private Map<String, Object> initArgs(RabbitMq rabbitMq, boolean isInitDlxMap) {
+  private Map<String, Object> initArgs(RabbitMq rabbitMq,boolean isInitDlxMap) {
     boolean dlx        = !void.class.equals(rabbitMq.dlxClazz()) || rabbitMq.delay() != 0L;
 
     if (!dlx || !isInitDlxMap) {

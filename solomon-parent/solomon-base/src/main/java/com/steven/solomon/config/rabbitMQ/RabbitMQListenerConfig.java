@@ -11,10 +11,6 @@ import com.steven.solomon.servic.impl.AbstractMQService;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.spring.SpringUtil;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
@@ -28,6 +24,11 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class RabbitMQListenerConfig {
 
@@ -62,16 +63,30 @@ public class RabbitMQListenerConfig {
         for (Object abstractConsumer : clazzList) {
             // 根据反射获取rabbitMQ注解信息
             rabbitMq = AnnotationUtils.findAnnotation(abstractConsumer.getClass(), RabbitMq.class);
-            if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(rabbitMq.queues())){
-                logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列", rabbitMq.queues());
+            String[] queues = rabbitMq.queues();
+            boolean isSkip = false;
+            for (String queue : queues) {
+                /**
+                 * 判断配置文件中是否存在去除启动的rabbitmq队列
+                 */
+                if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(queue)){
+                    logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列", rabbitMq.queues());
+                    isSkip = true;
+                }
+            }
+            if (isSkip) {
                 continue;
             }
-            // 初始化队列绑定
-            Queue queue = initBinding(abstractMQMap,true, false,admin);
-            // 启动监听器并保存已启动的MQ
-            RabbitMQInitConfig.allQueueContainerMap.put(queue.getName(), this.startContainer((AbstractConsumer) abstractConsumer, queue,admin,rabbitConnectionFactory));
-            // 初始化死信队列
-            this.initDlx(queue,admin,rabbitConnectionFactory,abstractMQMap);
+
+            for (String queueName : queues) {
+                // 初始化队列绑定
+                Queue queue = initBinding(abstractMQMap,queueName,true, false,admin);
+                // 启动监听器并保存已启动的MQ
+                RabbitMQInitConfig.allQueueContainerMap.put(queue.getName(), this.startContainer((AbstractConsumer) abstractConsumer, queue,admin,rabbitConnectionFactory));
+                // 初始化死信队列
+                this.initDlx(queue,admin,rabbitConnectionFactory,abstractMQMap);
+            }
+
         }
     }
 
@@ -81,23 +96,25 @@ public class RabbitMQListenerConfig {
     private void initDlx(Queue queue,RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory,Map<String, AbstractMQService> abstractMQMap) {
         // 判断消费队列是否需要死信队列 只要死信队列或者延时队列为true即可判断为开启死信队列
         Class<?> clazz = rabbitMq.dlxClazz();
-        String queues = queue.getName();
+
+        String queueName = queue.getName();
         if (void.class.equals(clazz)) {
-            logger.info("MessageListenerConfig:initDlx 队列:{}不需要死信队列", queues);
+            logger.info("MessageListenerConfig:initDlx 队列:{}不需要死信队列", queueName);
             return;
         }
+
         // 判断设置死信队列的类必须是为AbstractDlxConsumer下的子类
         if (!AbstractConsumer.class.isAssignableFrom(clazz) || AbstractConsumer.class.equals(clazz)) {
-            logger.info("MessageListenerConfig:队列:{}死信队列设置错误,死信队列类名为:{}", queues, clazz.getName());
+            logger.info("MessageListenerConfig:队列:{}死信队列设置错误,死信队列类名为:{}", queueName, clazz.getName());
             return;
         }
         // 获取死信队列类
         AbstractConsumer abstractConsumer = (AbstractConsumer) SpringUtil.getBean(clazz);
         // 初始化队列绑定
-        queue = initBinding(abstractMQMap,false, true,admin);
+        Queue queues = initBinding(abstractMQMap,queueName,false, true,admin);
         // 启动监听器
         this.startContainer(abstractConsumer, queue,admin,rabbitConnectionFactory);
-        logger.info("MessageListenerConfig队列:{}绑定{}死信队列",queues,queue.getName());
+        logger.info("MessageListenerConfig队列:{}绑定{}死信队列",queue.getName(),queues.getName());
     }
 
     /**
@@ -162,8 +179,8 @@ public class RabbitMQListenerConfig {
         return retryPolicy;
     }
 
-    private Queue initBinding(Map<String, AbstractMQService> abstractMQMap,boolean isInitDlxMap, boolean isAddDlxPrefix,RabbitAdmin admin) {
-        return abstractMQMap.get(rabbitMq.exchangeTypes() + BaseMQService.SERVICE_NAME).initBinding(rabbitMq, admin, isInitDlxMap, isAddDlxPrefix);
+    private Queue initBinding(Map<String, AbstractMQService> abstractMQMap,String queue,boolean isInitDlxMap, boolean isAddDlxPrefix,RabbitAdmin admin) {
+        return abstractMQMap.get(rabbitMq.exchangeTypes() + BaseMQService.SERVICE_NAME).initBinding(rabbitMq,queue, admin, isInitDlxMap, isAddDlxPrefix);
     }
 
 }

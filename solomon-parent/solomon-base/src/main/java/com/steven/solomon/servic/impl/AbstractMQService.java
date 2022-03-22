@@ -14,8 +14,8 @@ public abstract class AbstractMQService implements BaseMQService {
 
 
   @Override
-  public Queue initBinding(RabbitMq rabbitMq, RabbitAdmin admin, boolean isInitDlxMap, boolean isAddDlxPrefix) {
-    InitRabbitBinding initRabbitBinding = new InitRabbitBinding(rabbitMq, isInitDlxMap, isAddDlxPrefix);
+  public Queue initBinding(RabbitMq rabbitMq,String queueName, RabbitAdmin admin, boolean isInitDlxMap, boolean isAddDlxPrefix) {
+    InitRabbitBinding initRabbitBinding = new InitRabbitBinding(rabbitMq,queueName, isInitDlxMap, isAddDlxPrefix);
     // 初始化队列
     Queue queue = new Queue(initRabbitBinding.getQueue(), rabbitMq.isPersistence(), false, false,initRabbitBinding.getArgs());
     // 绑定队列

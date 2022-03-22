@@ -1,14 +1,19 @@
 package com.steven.solomon.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * rabbitmq标注注解
+ * @author huangweihua
+ */
 @Target(value = { ElementType.FIELD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Component
@@ -20,7 +25,7 @@ public @interface RabbitMq {
 	/**
 	 * 队列
 	 */
-	String queues();
+	String[] queues();
 
 	/**
 	 * 交换器

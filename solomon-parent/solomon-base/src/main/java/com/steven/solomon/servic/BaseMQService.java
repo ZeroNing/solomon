@@ -12,10 +12,11 @@ public interface BaseMQService {
 	 * 初始化 队列 交换机 绑定
 	 * 
 	 * @param rabbitMq       rabbitMq注解
+	 * @param queueName 	 队列名
 	 * @param admin
 	 * @param isInitDlxMap   是否初始化死信队列参数
 	 * @param isAddDlxPrefix 是否增加死信队列前缀
 	 * @return
 	 */
-	Queue initBinding(RabbitMq rabbitMq, RabbitAdmin admin, boolean isInitDlxMap, boolean isAddDlxPrefix);
+	Queue initBinding(RabbitMq rabbitMq, String queueName, RabbitAdmin admin, boolean isInitDlxMap, boolean isAddDlxPrefix);
 }
