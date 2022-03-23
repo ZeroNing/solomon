@@ -40,7 +40,7 @@ public class RabbitMQListenerConfig {
      * 初始化MQ监听器
      */
     public void init(RabbitAdmin admin, CachingConnectionFactory rabbitConnectionFactory) {
-        // 查询AbstractConsumer父类下的子类转换为List集合 初始化消费队列
+        //根据RabbitMq注解找出使用这个注解的类并初始化消费队列
         this.init(new ArrayList<>(SpringUtil.getBeansWithAnnotation(RabbitMq.class).values()),admin,rabbitConnectionFactory);
     }
 
@@ -55,8 +55,10 @@ public class RabbitMQListenerConfig {
             logger.info("MessageListenerConfig:没有rabbitMq消费者");
             return;
         }
-        String notEnabledQueue = ValidateUtils.isNotEmpty(SpringUtil.getBean(RabbitMQProfile.class)) ? SpringUtil.getBean(RabbitMQProfile.class).getNotEnabledQueue() : null;
-        List<String> notEnableQueueList = ValidateUtils.isEmpty(notEnabledQueue) ? null : Arrays.asList(notEnabledQueue.split(","));
+        RabbitMQProfile rabbitProfile = SpringUtil.getBean(RabbitMQProfile.class);
+        List<String> notEnableQueueList = ValidateUtils.isEmpty(rabbitProfile) ? null :
+                                          ValidateUtils.isEmpty(rabbitProfile.getNotEnabledQueue()) ? null :
+                                          Arrays.asList(rabbitProfile.getNotEnabledQueue().split(","));
 
         Map<String, AbstractMQService> abstractMQMap = SpringUtil.getBeansOfType(AbstractMQService.class);
         // 遍历消费者队列进行初始化绑定以及监听
@@ -70,7 +72,7 @@ public class RabbitMQListenerConfig {
                  * 判断配置文件中是否存在去除启动的rabbitmq队列
                  */
                 if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(queue)){
-                    logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列", rabbitMq.queues());
+                    logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列",notEnableQueueList, rabbitMq.queues());
                     isSkip = true;
                 }
             }

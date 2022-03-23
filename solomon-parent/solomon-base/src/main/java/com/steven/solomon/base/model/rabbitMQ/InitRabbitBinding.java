@@ -20,12 +20,12 @@ public class InitRabbitBinding implements Serializable {
 
   public InitRabbitBinding(RabbitMq rabbitMq,String queueName, boolean isInitDlxMap, boolean isAddDlxPrefix) {
     // 队列名
-    queue = this.getName(queueName, isAddDlxPrefix);
+    this.queue = this.getName(queueName, isAddDlxPrefix);
     // 交换机名
-    exchange = this.getName(rabbitMq.exchange(), isAddDlxPrefix);
+    this.exchange = this.getName(rabbitMq.exchange(), isAddDlxPrefix);
     // 路由
-    routingKey = this.getName(rabbitMq.routingKey(), isAddDlxPrefix);
-    args       = this.initArgs(rabbitMq, isInitDlxMap);
+    this.routingKey = this.getName(rabbitMq.routingKey(), isAddDlxPrefix);
+    this.args       = this.initArgs(rabbitMq, isInitDlxMap);
   }
 
   public String getQueue() {
@@ -61,10 +61,7 @@ public class InitRabbitBinding implements Serializable {
   }
 
   private String getName(String name, boolean isAddDlxPrefix) {
-    if (ValidateUtils.isEmpty(name)) {
-      return name;
-    }
-    return isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name;
+    return ValidateUtils.getOrDefault(name,isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name);
   }
 
   /**
