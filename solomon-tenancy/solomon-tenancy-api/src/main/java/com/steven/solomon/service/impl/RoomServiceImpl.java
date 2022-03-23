@@ -29,7 +29,7 @@ import javax.annotation.Resource;
 @Transactional(rollbackFor = Exception.class, readOnly = true)
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
 
-  @Resource(name="areaServiceImpl")
+  @Resource(name = "areaServiceImpl")
   private AreaService areaService;
 
   @Override
@@ -38,9 +38,12 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     Room room = new Room();
     room.create("1");
 
-    ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()),TenancyErrorCode.PROVINCE_NON_EXISTENT,param.getProvinceId().toString());
-    ValidateUtils.isEmpty(areaService.findById(param.getCityId()),TenancyErrorCode.CITY_NON_EXISTENT,param.getCityId().toString());
-    ValidateUtils.isEmpty(areaService.findById(param.getAreaId()),TenancyErrorCode.AREA_NON_EXISTENT,param.getAreaId().toString());
+    ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
+        param.getProvinceId().toString());
+    ValidateUtils.isEmpty(areaService.findById(param.getCityId()), TenancyErrorCode.CITY_NON_EXISTENT,
+        param.getCityId().toString());
+    ValidateUtils.isEmpty(areaService.findById(param.getAreaId()), TenancyErrorCode.AREA_NON_EXISTENT,
+        param.getAreaId().toString());
 
     room.setProvinceId(param.getProvinceId());
     room.setCityId(param.getCityId());
@@ -57,36 +60,32 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   @Override
   @Transactional(readOnly = false)
   public void update(RoomUpdateParam param) throws BaseException {
-    Room room = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()),TenancyErrorCode.ROOM_IS_NULL);
+    Room room = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.ROOM_IS_NULL);
     room.update("1");
-    ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()),TenancyErrorCode.PROVINCE_NON_EXISTENT,param.getProvinceId().toString());
-    ValidateUtils.isEmpty(areaService.findById(param.getCityId()),TenancyErrorCode.CITY_NON_EXISTENT,param.getCityId().toString());
-    ValidateUtils.isEmpty(areaService.findById(param.getAreaId()),TenancyErrorCode.AREA_NON_EXISTENT,param.getAreaId().toString());
-
+    ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
+        param.getProvinceId().toString());
+    ValidateUtils.isEmpty(areaService.findById(param.getCityId()), TenancyErrorCode.CITY_NON_EXISTENT,
+        param.getCityId().toString());
+    ValidateUtils.isEmpty(areaService.findById(param.getAreaId()), TenancyErrorCode.AREA_NON_EXISTENT,
+        param.getAreaId().toString());
 
     LambdaUpdateWrapper<Room> updateQueryWrapper = new LambdaUpdateWrapper<Room>();
-    updateQueryWrapper.eq(Room::getId,param.getId()).set(Room::getProvinceId,param.getProvinceId())
-        .set(Room::getUpdateDate,room.getUpdateDate()).set(Room::getUpdateId,room.getUpdateId())
-        .set(Room::getCityId,param.getCityId()).set(Room::getAreaId,param.getAreaId())
-        .set(Room::getAddress,RSAUtils.encrypt(param.getAddress())).set(Room::getPhone,param.getPhone())
-        .set(Room::getOwner,param.getOwner()).set(Room::getTotalFloors,param.getTotalFloors());
+    updateQueryWrapper.eq(Room::getId, param.getId()).set(Room::getProvinceId, param.getProvinceId())
+        .set(Room::getUpdateDate, room.getUpdateDate()).set(Room::getUpdateId, room.getUpdateId())
+        .set(Room::getCityId, param.getCityId()).set(Room::getAreaId, param.getAreaId())
+        .set(Room::getAddress, RSAUtils.encrypt(param.getAddress())).set(Room::getPhone, param.getPhone())
+        .set(Room::getOwner, param.getOwner()).set(Room::getTotalFloors, param.getTotalFloors());
     baseMapper.updateById(room);
   }
 
   @Override
-  public IPage<Room> page(RoomPageParam param){
+  public IPage<Room> page(RoomPageParam param) {
     LambdaQueryWrapper<Room> queryWrapper = new LambdaQueryWrapper<>();
-    if(ValidateUtils.isNotEmpty(param.getProvinceId())){
-      queryWrapper.eq(Room :: getProvinceId,param.getProvinceId());
-    }
-    if(ValidateUtils.isNotEmpty(param.getCityId())){
-      queryWrapper.eq(Room :: getCityId,param.getCityId());
-    }
+    queryWrapper.eq(false, Room::getProvinceId, param.getProvinceId());
+    queryWrapper.eq(false, Room::getCityId, param.getCityId());
 
-    if(ValidateUtils.isNotEmpty(param.getAreaId())){
-      queryWrapper.eq(Room :: getAreaId,param.getAreaId());
-    }
-    IPage<Room> page = baseMapper.selectPage(new Page<Room>(param.getPageNo(),param.getPageSize()),queryWrapper);
+    queryWrapper.eq(false, Room::getAreaId, param.getAreaId());
+    IPage<Room> page = baseMapper.selectPage(new Page<Room>(param.getPageNo(), param.getPageSize()), queryWrapper);
     for (Room room : page.getRecords()) {
       room.setAddress(RSAUtils.decrypt(room.getAddress()));
     }
@@ -96,7 +95,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   @Override
   public Room get(RoomGetParam param) {
     Room room = baseMapper.selectById(param.getId());
-    if(ValidateUtils.isNotEmpty(room)){
+    if (ValidateUtils.isNotEmpty(room)) {
       room.setAddress(RSAUtils.decrypt(room.getAddress()));
     }
     return room;

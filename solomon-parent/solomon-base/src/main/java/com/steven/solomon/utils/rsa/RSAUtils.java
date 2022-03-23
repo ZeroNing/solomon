@@ -4,6 +4,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import com.steven.solomon.utils.verification.ValidateUtils;
 
 public class RSAUtils {
 
@@ -18,6 +19,9 @@ public class RSAUtils {
    * @return
    */
   public static String encrypt(String text) {
+    if(ValidateUtils.isEmpty(text)){
+      return text;
+    }
     RSA rsa = new RSA(privateKey, null);
     return rsa.encryptBase64(text, KeyType.PrivateKey);
   }
@@ -29,6 +33,9 @@ public class RSAUtils {
    * @return
    */
   public static String decrypt(String text) {
+    if(ValidateUtils.isEmpty(text)){
+      return text;
+    }
     RSA rsa = new RSA(null, publicKey);
     return StrUtil.str(rsa.decrypt(text, KeyType.PublicKey), CharsetUtil.CHARSET_UTF_8);
   }
