@@ -61,7 +61,10 @@ public class InitRabbitBinding implements Serializable {
   }
 
   private String getName(String name, boolean isAddDlxPrefix) {
-    return ValidateUtils.getOrDefault(name,isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name);
+    if (ValidateUtils.isEmpty(name)) {
+      return name;
+    }
+    return isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name;
   }
 
   /**

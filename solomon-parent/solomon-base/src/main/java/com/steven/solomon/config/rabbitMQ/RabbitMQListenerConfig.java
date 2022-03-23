@@ -56,9 +56,8 @@ public class RabbitMQListenerConfig {
             return;
         }
         RabbitMQProfile rabbitProfile = SpringUtil.getBean(RabbitMQProfile.class);
-        List<String> notEnableQueueList = ValidateUtils.isEmpty(rabbitProfile) ? null :
-                                          ValidateUtils.isEmpty(rabbitProfile.getNotEnabledQueue()) ? null :
-                                          Arrays.asList(rabbitProfile.getNotEnabledQueue().split(","));
+        List<String> notEnableQueueList = ValidateUtils.isEmpty(rabbitProfile) || ValidateUtils.isEmpty(rabbitProfile.getNotEnabledQueue()) ?
+                                          null : Arrays.asList(rabbitProfile.getNotEnabledQueue().split(","));
 
         Map<String, AbstractMQService> abstractMQMap = SpringUtil.getBeansOfType(AbstractMQService.class);
         // 遍历消费者队列进行初始化绑定以及监听
