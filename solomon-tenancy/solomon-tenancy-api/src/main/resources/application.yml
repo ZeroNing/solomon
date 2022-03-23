@@ -1,0 +1,35 @@
+#i18n:
+#  language: zh
+#  messages:
+#    baseNames: i18n/messages
+#server:
+#  port: 8001
+#spring:
+#  application:
+#    name: tenancy-api
+#    id: 5F03E2DC5ECB6E6560B0EA9C61093695
+#  redis:
+#    host: 106.52.186.166
+#    port: 6379
+#    password: 31863199a
+#  rabbitmq:
+#    host: 106.52.186.166
+#    port: 5672
+#    username: steven
+#    password: 31863199a
+#dubbo:
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  provider:
+#    version: 1.0.0
+#    timeout: 10000
+#  consumer:
+#    version: 1.0.0
+#    check: false
+#mybatis-plus:
+#  global-config:
+#    db-config:
+#      update-strategy: ignored
+#      insert-strategy: ignored
+#  mapper-locations: classpath*:mapper/*/*.xml
