@@ -417,4 +417,23 @@ public class DateTimeUtils {
 		LocalDate localDate = date2LocalDate(date);
 		return localDate2Date(add(localDate,number,chronoUnit));
 	}
+
+	/**
+	 * 判断传入的时间是否在当前时间之前
+	 * @param dateTime
+	 * @return
+	 */
+	public static boolean isBefore(LocalDateTime dateTime){
+		return dateTime.isBefore(LocalDateTime.now());
+	}
+
+	/**
+	 * 判断传入的时间是否在当前时间之后
+	 * @param dateTime
+	 * @return
+	 */
+	public static boolean isAfter(LocalDateTime dateTime){
+		return dateTime.isAfter(LocalDateTime.now());
+	}
+
 }
