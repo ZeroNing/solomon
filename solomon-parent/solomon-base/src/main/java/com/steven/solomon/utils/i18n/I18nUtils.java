@@ -85,6 +85,10 @@ public class I18nUtils {
   }
 
   private static String getMessage(String code,Locale locale, String... args) {
-    return resourceBundleMessageSource.getMessage(code, args, locale);
+    try {
+      return resourceBundleMessageSource.getMessage(code, args, locale);
+    }catch (Exception e) {
+      return null;
+    }
   }
 }

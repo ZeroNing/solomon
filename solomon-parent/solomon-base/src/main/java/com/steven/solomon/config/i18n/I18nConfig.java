@@ -40,7 +40,7 @@ public class I18nConfig {
     beanNames = beanNames + "," + resources.getBaseBundleName();
     List<String> baseNameList = Arrays.asList(beanNames.split(","));
 
-    bundleMessageSource.setBasenames(baseNameList.toString());
+    bundleMessageSource.setBasenames(baseNameList.toArray(new String[0]));
     bundleMessageSource.setDefaultLocale(ValidateUtils.isEmpty(DEFAULT_LOCALE) ? Locale.CHINESE : DEFAULT_LOCALE);
     bundleMessageSource.setDefaultEncoding("UTF-8");
     logger.info("BaseI18nConfig初始化I18N国际化文件成功,国际化默认语言为:{},国际化文件路径为:{}",DEFAULT_LOCALE.toString(), baseNameList.toString());
