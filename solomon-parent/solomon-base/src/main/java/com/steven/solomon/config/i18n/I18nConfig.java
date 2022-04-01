@@ -8,9 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import org.apache.poi.util.LocaleUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.WebProperties.LocaleResolver;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
@@ -21,30 +24,37 @@ public class I18nConfig {
 
   @Value("${i18n.language}")
   public Locale DEFAULT_LOCALE;
-  @Value("${i18n.messages.baseNames}")
-  private String BASE_NAMES;
+  @Value("${i18n.all-locale}")
+  private String ALL_LOCALE;
 
   /**
    * 初始化I18N国际化文件
    */
   @Bean("resourceBundleMessageSource")
   public ResourceBundleMessageSource init() {
-    ResourceBundle resources = ResourceBundle.getBundle("classpath*:i18n/messages", new I18nControl());
+    List<String> allLocale = Arrays.asList(ALL_LOCALE.split(","));
+    ResourceBundle resourceBundle = initResources(allLocale,0,null);
+
     ResourceBundleMessageSource bundleMessageSource = new ResourceBundleMessageSource();
     bundleMessageSource.setDefaultEncoding(BaseCode.UTF8);
-    if(ValidateUtils.isEmpty(BASE_NAMES)){
-      logger.info("初始化I18N国际化文件缺少I18N文件路径，忽略初始化国际化配置");
-      return bundleMessageSource;
-    }
-    String beanNames = BASE_NAMES;
-    beanNames = beanNames + "," + resources.getBaseBundleName();
-    List<String> baseNameList = Arrays.asList(beanNames.split(","));
 
-    bundleMessageSource.setBasenames(baseNameList.toArray(new String[0]));
+    bundleMessageSource.setBasenames(resourceBundle.getBaseBundleName());
     bundleMessageSource.setDefaultLocale(ValidateUtils.isEmpty(DEFAULT_LOCALE) ? Locale.CHINESE : DEFAULT_LOCALE);
     bundleMessageSource.setDefaultEncoding("UTF-8");
-    logger.info("BaseI18nConfig初始化I18N国际化文件成功,国际化默认语言为:{},国际化文件路径为:{}",DEFAULT_LOCALE.toString(), baseNameList.toString());
+    logger.info("BaseI18nConfig初始化I18N国际化文件成功,国际化默认语言为:{},国际化文件路径为:{}",DEFAULT_LOCALE.toString(), resourceBundle.getBaseBundleName());
     return bundleMessageSource;
+  }
+
+  private ResourceBundle initResources(List<String> locales,int index,ResourceBundle resourceBundle){
+    if(index >= locales.size()){
+      return resourceBundle;
+    }
+    String language = locales.get(index);
+    if(ValidateUtils.isEmpty(language)){
+      return resourceBundle;
+    }
+    resourceBundle = ResourceBundle.getBundle("classpath*:i18n/messages", new Locale(language), new I18nControl());
+    return initResources(locales,index+1,resourceBundle);
   }
 
 }
