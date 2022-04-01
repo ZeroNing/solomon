@@ -1,4 +1,4 @@
-package com.steven.solomon.config.rabbitMQ;
+package com.steven.solomon.rabbitMQ;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

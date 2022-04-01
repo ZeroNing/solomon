@@ -1,13 +1,13 @@
-package com.steven.solomon.config.rabbitMQ;
+package com.steven.solomon.rabbitMQ.config;
 
 import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.annotation.RabbitMqRetry;
 import com.steven.solomon.base.code.BaseCode;
-import com.steven.solomon.config.init.RabbitMQInitConfig;
-import com.steven.solomon.profile.RabbitMQProfile;
-import com.steven.solomon.servic.AbstractConsumer;
-import com.steven.solomon.servic.BaseMQService;
-import com.steven.solomon.servic.impl.AbstractMQService;
+import com.steven.solomon.rabbitMQ.init.RabbitMQInitConfig;
+import com.steven.solomon.rabbitMQ.profile.RabbitMQProfile;
+import com.steven.solomon.rabbitMQ.service.AbstractConsumer;
+import com.steven.solomon.rabbitMQ.service.BaseMQService;
+import com.steven.solomon.rabbitMQ.service.impl.AbstractMQService;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.spring.SpringUtil;
 import com.steven.solomon.utils.verification.ValidateUtils;

@@ -1,4 +1,4 @@
-package com.steven.solomon.servic;
+package com.steven.solomon.rabbitMQ.service;
 
 import com.steven.solomon.annotation.RabbitMq;
 import org.springframework.amqp.core.Queue;

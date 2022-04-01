@@ -1,4 +1,4 @@
-package com.steven.solomon.profile;
+package com.steven.solomon.rabbitMQ.profile;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

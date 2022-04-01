@@ -21,4 +21,6 @@ public interface BaseCode {
   String BASE_EXCEPTION_CODE = "ERROR_CODE_";
 
   String BASE_ENUM_CODE = "ENUM_CODE_";
+
+  String HEADER_PREFIX = "Bearer ";
 }

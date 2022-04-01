@@ -1,5 +1,6 @@
-package com.steven.solomon.config.rabbitMQ;
+package com.steven.solomon.rabbitMQ.config;
 
+import com.steven.solomon.rabbitMQ.RabbitCallBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;

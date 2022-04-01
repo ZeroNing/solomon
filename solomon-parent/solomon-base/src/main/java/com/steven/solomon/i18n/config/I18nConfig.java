@@ -1,18 +1,19 @@
-package com.steven.solomon.config.i18n;
+package com.steven.solomon.i18n.config;
 
 import com.steven.solomon.base.code.BaseCode;
 import com.steven.solomon.i18n.I18nControl;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Component
 public class I18nConfig {

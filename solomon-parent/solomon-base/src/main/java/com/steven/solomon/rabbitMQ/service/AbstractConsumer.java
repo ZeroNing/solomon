@@ -1,4 +1,4 @@
-package com.steven.solomon.servic;
+package com.steven.solomon.rabbitMQ.service;
 
 import com.rabbitmq.client.Channel;
 import com.steven.solomon.annotation.RabbitMqRetry;
