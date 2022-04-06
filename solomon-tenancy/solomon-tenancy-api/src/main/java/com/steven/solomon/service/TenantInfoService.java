@@ -7,6 +7,7 @@ import com.steven.solomon.param.TenantInfoGetParam;
 import com.steven.solomon.param.TenantInfoPageParam;
 import com.steven.solomon.param.TenantInfoSaveParam;
 import com.steven.solomon.param.TenantInfoUpdateParam;
+import com.steven.solomon.vo.TenantInfoVO;
 
 public interface TenantInfoService {
 
@@ -14,7 +15,7 @@ public interface TenantInfoService {
 
     void update(TenantInfoUpdateParam param) throws BaseException;
 
-    IPage<TenantInfo> page(TenantInfoPageParam params);
+    IPage<TenantInfoVO> page(TenantInfoPageParam params);
 
     TenantInfo get(TenantInfoGetParam param);
 }

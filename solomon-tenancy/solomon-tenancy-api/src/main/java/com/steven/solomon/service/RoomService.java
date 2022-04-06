@@ -8,6 +8,7 @@ import com.steven.solomon.param.RoomGetParam;
 import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomSaveParam;
 import com.steven.solomon.param.RoomUpdateParam;
+import com.steven.solomon.vo.RoomVO;
 
 public interface RoomService {
 
@@ -15,7 +16,7 @@ public interface RoomService {
 
   void update(RoomUpdateParam param) throws BaseException;
 
-  IPage<Room> page(RoomPageParam params);
+  IPage<RoomVO> page(RoomPageParam params);
 
   Room get(RoomGetParam param);
 }

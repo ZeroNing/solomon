@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steven.solomon.mapper.RoomMapper">
+
+  <sql id="entity">
+      a.id AS 'id',
+      a.create_id AS 'createId',
+      a.create_date AS 'createDate',
+      a.update_id AS 'updateId',
+      a.update_date AS 'updateDate',
+      a.remark AS 'remark',
+      a.del_flag AS 'delFlag',
+      a.province_id AS 'provinceId',
+      a.city_id AS 'cityId',
+      a.area_id AS 'areaId',
+      a.address AS 'address',
+      a.owner AS 'owner',
+      a.phone AS 'phone',
+      a.total_floors AS 'total_floors'
+  </sql>
+
+  <select id="page" resultType="com.steven.solomon.vo.RoomVO">
+      select
+        <include refid="entity"/>
+      from
+        room a
+      ${ew.customSqlSegment}
+  </select>
+</mapper>

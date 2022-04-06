@@ -1,12 +1,15 @@
 package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
+import com.steven.solomon.entity.Area;
+import com.steven.solomon.entity.Room;
 import com.steven.solomon.entity.TenantInfo;
 import com.steven.solomon.mapper.TenantInfoMapper;
 import com.steven.solomon.param.TenantInfoGetParam;
@@ -15,8 +18,14 @@ import com.steven.solomon.param.TenantInfoSaveParam;
 import com.steven.solomon.param.TenantInfoUpdateParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.TenantInfoService;
+import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.vo.RoomVO;
+import com.steven.solomon.vo.TenantInfoVO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,18 +88,42 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
   }
 
   @Override
-  public IPage<TenantInfo> page(TenantInfoPageParam param) {
-    LambdaQueryWrapper<TenantInfo> queryWrapper = new LambdaQueryWrapper<>();
-    queryWrapper.eq(false, TenantInfo::getProvinceId, param.getProvinceId());
-    queryWrapper.eq(false, TenantInfo::getCityId, param.getCityId());
+  public IPage<TenantInfoVO> page(TenantInfoPageParam param) {
+    QueryWrapper<TenantInfo> queryWrapper = new QueryWrapper<>();
+    queryWrapper.eq(false, "a.province_id", param.getProvinceId());
+    queryWrapper.eq(false, "a.city_id", param.getCityId());
+    queryWrapper.eq(false, "a.area_id", param.getAreaId());
 
-    queryWrapper.eq(false, TenantInfo::getAreaId, param.getAreaId());
-    IPage<TenantInfo> page = baseMapper
-        .selectPage(new Page<TenantInfo>(param.getPageNo(), param.getPageSize()), queryWrapper);
-    for (TenantInfo entity : page.getRecords()) {
+    IPage<TenantInfoVO> page    = baseMapper.page(new Page<TenantInfo>(param.getPageNo(), param.getPageSize()), queryWrapper);
+    if(ValidateUtils.isEmpty(page)){
+      return page;
+    }
+    List<TenantInfoVO> records = page.getRecords();
+    List<Long>   areaIds = new ArrayList<>();
+    areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getProvinceId()),TenantInfo::getProvinceId));
+    areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getCityId()),TenantInfo::getCityId));
+    areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getAreaId()),TenantInfo::getAreaId));
+    areaIds.remove(null);
+    Map<Long, Area> areaMap = LambdaUtils.toMap(areaService.findByIds(areaIds),Area :: getId);
+
+    for (TenantInfoVO entity : records) {
       entity.setAddress(RSAUtils.decrypt(entity.getAddress()));
       entity.setIdentityCard(RSAUtils.decrypt(entity.getIdentityCard()));
+
+      Area area = areaMap.get(entity.getProvinceId());
+      if(ValidateUtils.isNotEmpty(area)){
+        entity.setProvinceName(area.getName());
+      }
+      area = areaMap.get(entity.getCityId());
+      if(ValidateUtils.isNotEmpty(area)){
+        entity.setCityName(area.getName());
+      }
+      area = areaMap.get(entity.getAreaId());
+      if(ValidateUtils.isNotEmpty(area)){
+        entity.setAreaName(area.getName());
+      }
     }
+    page.setRecords(records);
     return page;
   }
 
