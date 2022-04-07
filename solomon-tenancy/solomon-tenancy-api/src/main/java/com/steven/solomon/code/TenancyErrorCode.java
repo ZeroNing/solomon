@@ -85,4 +85,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房间配置类型不允许出现重复
    */
   String HOUSE_CONFIG_TYPE_NOT_REPEAT = "HOUSE_CONFIG_TYPE_NOT_REPEAT";
+
+  /**
+   * 房间类型不存在
+   */
+  String ROOM_TYPE_IS_NULL="ROOM_TYPE_IS_NULL";
 }

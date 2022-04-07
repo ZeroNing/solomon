@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
-@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements HouseService {
 
   @Resource
@@ -50,7 +49,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   private RoomService roomService;
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
   public String save(HouseSaveParam param) throws BaseException, JsonProcessingException {
     House house = new House();
     house.create("1");
@@ -78,7 +77,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   }
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void update(HouseUpdateParam param) throws BaseException, JsonProcessingException {
     House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
 
@@ -149,6 +148,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void init(HouseInitParam param) throws BaseException, IOException {
     House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
 

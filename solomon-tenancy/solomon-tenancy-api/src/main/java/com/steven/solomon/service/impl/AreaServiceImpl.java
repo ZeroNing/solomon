@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
-@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class AreaServiceImpl extends ServiceImpl<AreaMapper,Area> implements AreaService {
 
   @Override

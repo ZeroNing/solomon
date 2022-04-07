@@ -8,6 +8,7 @@ import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.enums.HouseConfigTypeEnum;
+import com.steven.solomon.enums.RoomTypeEnum;
 import com.steven.solomon.mapper.HouseConfigMapper;
 import com.steven.solomon.param.HouseConfigSaveParam;
 import com.steven.solomon.service.HouseConfigService;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
@@ -27,37 +29,45 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
-@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, HouseConfig> implements HouseConfigService {
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void save(List<HouseConfigSaveParam> houseConfigSaveParams, House house) throws BaseException, JsonProcessingException {
-    if(ValidateUtils.isNotEmpty(houseConfigSaveParams)){
+    if(ValidateUtils.isEmpty(houseConfigSaveParams)){
       return;
     }
-    if(LambdaUtils.toSet(houseConfigSaveParams,HouseConfigSaveParam::getType).size() != houseConfigSaveParams.size()){
-      throw new BaseException(TenancyErrorCode.HOUSE_CONFIG_TYPE_NOT_REPEAT);
-    }
+    Map<String,List<HouseConfigSaveParam>> saveMap = LambdaUtils.groupBy(houseConfigSaveParams,HouseConfigSaveParam::getType);
     Map<String,HouseConfig> map = findMapByHouseId(house.getId());
 
     List<HouseConfig> saveConfigList = new ArrayList<>();
     Set<String>       delConfigs     = new HashSet<>();
     HouseConfig       houseConfig    = null;
-    for(HouseConfigSaveParam houseConfigSaveParam : houseConfigSaveParams){
-      HouseConfigTypeEnum typeEnum = ValidateUtils.isEmpty(EnumUtils.codeOf(HouseConfigTypeEnum.class,
-          houseConfigSaveParam.getType()),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
+
+    for(Entry<String, List<HouseConfigSaveParam>> entry : saveMap.entrySet()){
+      for(HouseConfigSaveParam param : entry.getValue()){
+        ValidateUtils.isEmpty(EnumUtils.codeOf(HouseConfigTypeEnum.class,
+            param.getType()),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
+
+        ValidateUtils.isEmpty(EnumUtils.codeOf(RoomTypeEnum.class,
+            param.getRoomType()),TenancyErrorCode.ROOM_TYPE_IS_NULL);
+      }
+
       houseConfig    = new HouseConfig();
+      houseConfig.create("1");
       houseConfig.setHouseId(house.getId());
-      houseConfig.setType(typeEnum.toString());
-      houseConfig.setJson(JackJsonUtils.formatJsonByFilter(houseConfigSaveParam));
+      houseConfig.setType(entry.getKey());
+      houseConfig.setJson(JackJsonUtils.formatJsonByFilter(entry.getValue()));
       saveConfigList.add(houseConfig);
-      HouseConfig config = map.get(houseConfigSaveParam.getType());
+      HouseConfig config = map.get(entry.getKey());
       if(ValidateUtils.isNotEmpty(config)){
         delConfigs.add(config.getId());
       }
     }
-    this.baseMapper.deleteBatchIds(delConfigs);
+
+    if(ValidateUtils.isNotEmpty(delConfigs)){
+      this.baseMapper.deleteBatchIds(delConfigs);
+    }
     this.saveBatch(saveConfigList);
 
   }

@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
-@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
 
   @Override
@@ -45,6 +44,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
       int roomEndNum = ValidateUtils.isNotEmpty(houseConfigFloorRoom) ? houseConfigFloorRoom.getNum() : roomNum;
       for (int roomStartNum = 1; roomStartNum <= roomEndNum; roomStartNum++) {
         room = new Room();
+        room.create("1");
         room.setType(ValidateUtils.isNotEmpty(houseConfigFloorRoom) ? houseConfigFloorRoom.getRoomType() : null);
         room.setRoomNum(num+"0" + roomStartNum);
         room.setHouseId(houseId);

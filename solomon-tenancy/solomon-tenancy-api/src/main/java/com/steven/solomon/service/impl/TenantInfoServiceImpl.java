@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
-@Transactional(rollbackFor = Exception.class, readOnly = true)
 public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantInfo> implements TenantInfoService {
 
   @Resource
