@@ -1,22 +1,22 @@
 package com.steven.solomon.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
 import com.steven.solomon.entity.Room;
-import com.steven.solomon.entity.TenantInfo;
 import com.steven.solomon.mapper.RoomMapper;
 import com.steven.solomon.param.RoomGetParam;
 import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomSaveParam;
 import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.service.AreaService;
+import com.steven.solomon.service.RoomConfigService;
 import com.steven.solomon.service.RoomService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
@@ -25,23 +25,25 @@ import com.steven.solomon.vo.RoomVO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 @Service
 @DubboService
 @Transactional(rollbackFor = Exception.class, readOnly = true)
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
 
-  @Resource(name = "areaServiceImpl")
+  @Resource
   private AreaService areaService;
+
+  @Resource
+  private RoomConfigService roomConfigService;
 
   @Override
   @Transactional(readOnly = false)
-  public String save(RoomSaveParam param) throws BaseException {
+  public String save(RoomSaveParam param) throws BaseException, JsonProcessingException {
     Room room = new Room();
     room.create("1");
 
@@ -61,12 +63,14 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     room.setTotalFloors(param.getTotalFloors());
     baseMapper.insert(room);
 
+    roomConfigService.save(param.getRoomConfigSaveParams(),room);
+
     return room.getId();
   }
 
   @Override
   @Transactional(readOnly = false)
-  public void update(RoomUpdateParam param) throws BaseException {
+  public void update(RoomUpdateParam param) throws BaseException, JsonProcessingException {
     Room room = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.ROOM_IS_NULL);
     room.update("1");
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
@@ -82,6 +86,9 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
         .set(Room::getCityId, param.getCityId()).set(Room::getAreaId, param.getAreaId())
         .set(Room::getAddress, RSAUtils.encrypt(param.getAddress())).set(Room::getPhone, param.getPhone())
         .set(Room::getOwner, param.getOwner()).set(Room::getTotalFloors, param.getTotalFloors());
+
+    roomConfigService.save(param.getRoomConfigSaveParams(),room);
+
     baseMapper.updateById(room);
   }
 

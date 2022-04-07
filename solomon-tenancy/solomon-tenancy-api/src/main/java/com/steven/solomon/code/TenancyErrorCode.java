@@ -64,4 +64,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 租户信息不存在
    */
   String TENANT_IS_NULL = "TENANT_IS_NULL";
+
+  /**
+   * 房间配置类型不存在
+   */
+  String ROOM_CONFIG_TYPE_IS_NULL="ROOM_CONFIG_TYPE_IS_NULL";
 }

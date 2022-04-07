@@ -2,6 +2,7 @@ package com.steven.solomon.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
 import java.io.Serializable;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +48,10 @@ public class RoomSaveParam implements Serializable {
    */
   @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
   private Integer totalFloors;
+  /**
+   * 房间数量配置
+   */
+  private List<RoomConfigSaveParam> roomConfigSaveParams;
 
   public Long getProvinceId() {
     return provinceId;
@@ -102,5 +107,13 @@ public class RoomSaveParam implements Serializable {
 
   public void setTotalFloors(Integer totalFloors) {
     this.totalFloors = totalFloors;
+  }
+
+  public List<RoomConfigSaveParam> getRoomConfigSaveParams() {
+    return roomConfigSaveParams;
+  }
+
+  public void setRoomConfigSaveParams(List<RoomConfigSaveParam> roomConfigSaveParams) {
+    this.roomConfigSaveParams = roomConfigSaveParams;
   }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.model.BaseEntity;
 import com.steven.solomon.enums.RoomConfigTypeEnum;
+import java.util.UUID;
 
 @TableName("room_config")
 public class RoomConfig extends BaseEntity<String> {
@@ -23,6 +24,12 @@ public class RoomConfig extends BaseEntity<String> {
    * 拓展json
    */
   private String json;
+
+  public RoomConfig(){
+    super();
+    setId(UUID.randomUUID().toString());
+    super.create();
+  }
 
   public String getRoomId() {
     return roomId;
