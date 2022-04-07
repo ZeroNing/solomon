@@ -101,22 +101,17 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getProvinceId()),Room::getProvinceId));
     areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getCityId()),Room::getCityId));
     areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getAreaId()),Room::getAreaId));
-    areaIds.remove(null);
-    Map<Long,Area> areaMap = LambdaUtils.toMap(areaService.findByIds(areaIds),Area :: getId);
+
+    Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
+
     for (RoomVO room : records) {
       room.setAddress(RSAUtils.decrypt(room.getAddress()));
       Area area = areaMap.get(room.getProvinceId());
-      if(ValidateUtils.isNotEmpty(area)){
-        room.setProvinceName(area.getName());
-      }
+      room.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
       area = areaMap.get(room.getCityId());
-      if(ValidateUtils.isNotEmpty(area)){
-        room.setCityName(area.getName());
-      }
+      room.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
       area = areaMap.get(room.getAreaId());
-      if(ValidateUtils.isNotEmpty(area)){
-        room.setAreaName(area.getName());
-      }
+      room.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
     }
     page.setRecords(records);
     return page;

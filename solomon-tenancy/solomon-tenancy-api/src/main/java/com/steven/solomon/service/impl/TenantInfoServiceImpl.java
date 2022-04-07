@@ -103,25 +103,19 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
     areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getProvinceId()),TenantInfo::getProvinceId));
     areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getCityId()),TenantInfo::getCityId));
     areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getAreaId()),TenantInfo::getAreaId));
-    areaIds.remove(null);
-    Map<Long, Area> areaMap = LambdaUtils.toMap(areaService.findByIds(areaIds),Area :: getId);
+
+    Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
 
     for (TenantInfoVO entity : records) {
       entity.setAddress(RSAUtils.decrypt(entity.getAddress()));
       entity.setIdentityCard(RSAUtils.decrypt(entity.getIdentityCard()));
 
       Area area = areaMap.get(entity.getProvinceId());
-      if(ValidateUtils.isNotEmpty(area)){
-        entity.setProvinceName(area.getName());
-      }
+      entity.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
       area = areaMap.get(entity.getCityId());
-      if(ValidateUtils.isNotEmpty(area)){
-        entity.setCityName(area.getName());
-      }
+      entity.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
       area = areaMap.get(entity.getAreaId());
-      if(ValidateUtils.isNotEmpty(area)){
-        entity.setAreaName(area.getName());
-      }
+      entity.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
     }
     page.setRecords(records);
     return page;
