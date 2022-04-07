@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
@@ -13,11 +14,7 @@ import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.enums.HouseConfigTypeEnum;
 import com.steven.solomon.mapper.HouseMapper;
-import com.steven.solomon.param.HouseGetParam;
-import com.steven.solomon.param.HouseInitParam;
-import com.steven.solomon.param.HousePageParam;
-import com.steven.solomon.param.HouseSaveParam;
-import com.steven.solomon.param.HouseUpdateParam;
+import com.steven.solomon.param.*;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.service.HouseService;
@@ -26,14 +23,15 @@ import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import com.steven.solomon.vo.HouseVO;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
@@ -112,7 +110,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     queryWrapper.eq(false, "a.province_id", param.getProvinceId());
     queryWrapper.eq(false, "a.city_id", param.getCityId());
     queryWrapper.eq(false, "a.area_id", param.getAreaId());
-
+    queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
     IPage<HouseVO> page = baseMapper.page(new Page<House>(param.getPageNo(), param.getPageSize()), queryWrapper);
     if(ValidateUtils.isEmpty(page)){
       return page;

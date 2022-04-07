@@ -1,6 +1,10 @@
 package com.steven.solomon.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.House;
@@ -8,11 +12,13 @@ import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.entity.HouseConfigFloorRoom;
 import com.steven.solomon.entity.Room;
 import com.steven.solomon.mapper.RoomMapper;
+import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.service.RoomService;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.vo.RoomVO;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +70,13 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     Room room = ValidateUtils.isEmpty(this.getById(params.getId()), TenancyErrorCode.ROOM_IS_NULL);
     room.update("1");
     this.updateById(room);
+  }
+
+  @Override
+  public IPage<RoomVO> page(RoomPageParam params) {
+    QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
+    queryWrapper.eq("a.house_id",params.getId());
+    queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
+    return this.baseMapper.page(new Page<House>(params.getPageNo(), params.getPageSize()),queryWrapper);
   }
 }

@@ -53,4 +53,9 @@ public class HouseController extends BaseController {
     roomService.update(params);
     return super.responseSuccessJson();
   }
+
+  @PostMapping("/room/page")
+  public String roomPage(@Valid @RequestBody RoomPageParam params) throws IOException {
+    return super.responseSuccessJson(roomService.page(params));
+  }
 }

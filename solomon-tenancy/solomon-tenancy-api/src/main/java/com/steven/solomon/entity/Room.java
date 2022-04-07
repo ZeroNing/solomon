@@ -1,7 +1,10 @@
 package com.steven.solomon.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.model.BaseEntity;
+import com.steven.solomon.enums.RoomTypeEnum;
+
 import java.util.UUID;
 
 @TableName("room")
@@ -10,6 +13,7 @@ public class Room extends BaseEntity<String> {
   /**
    * 房间类型 例如:一房一厅、单间、商铺等等····
    */
+  @JsonEnum(enumClass = RoomTypeEnum.class)
   private String type;
 
   /**

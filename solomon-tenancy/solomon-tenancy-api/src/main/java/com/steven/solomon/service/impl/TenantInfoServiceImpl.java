@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
@@ -20,13 +21,14 @@ import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import com.steven.solomon.vo.TenantInfoVO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @DubboService
@@ -88,7 +90,7 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
     queryWrapper.eq(false, "a.province_id", param.getProvinceId());
     queryWrapper.eq(false, "a.city_id", param.getCityId());
     queryWrapper.eq(false, "a.area_id", param.getAreaId());
-
+    queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
     IPage<TenantInfoVO> page    = baseMapper.page(new Page<TenantInfo>(param.getPageNo(), param.getPageSize()), queryWrapper);
     if(ValidateUtils.isEmpty(page)){
       return page;
