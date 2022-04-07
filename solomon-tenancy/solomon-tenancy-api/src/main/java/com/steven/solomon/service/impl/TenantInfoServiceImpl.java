@@ -23,11 +23,10 @@ import com.steven.solomon.vo.TenantInfoVO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 @Service
 @DubboService
