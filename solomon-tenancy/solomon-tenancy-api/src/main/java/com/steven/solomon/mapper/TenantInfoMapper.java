@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.steven.solomon.entity.TenantInfo;
-import com.steven.solomon.vo.RoomVO;
 import com.steven.solomon.vo.TenantInfoVO;
 import org.apache.ibatis.annotations.Param;
 

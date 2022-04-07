@@ -1,30 +1,35 @@
-package com.steven.solomon.entity;
+package com.steven.solomon.param;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.steven.solomon.base.model.BaseEntity;
+import com.steven.solomon.code.TenancyErrorCode;
+import java.io.Serializable;
+import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-import java.util.UUID;
+public class HouseSaveParam implements Serializable {
 
-@TableName("room")
-public class Room extends BaseEntity<String> {
   /**
    * 省份id
    */
+  @NotNull(message = TenancyErrorCode.PROVINCE_ID_NOT_NULL)
   private Long provinceId;
 
   /**
    * 市id
    */
+  @NotNull(message = TenancyErrorCode.CITY_ID_NOT_NULL)
   private Long cityId;
 
   /**
    * 区id
    */
+  @NotNull(message = TenancyErrorCode.AREA_ID_NOT_NULL)
   private Long areaId;
 
   /**
    * 地址
    */
+  @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   private String address;
 
   /**
@@ -40,13 +45,12 @@ public class Room extends BaseEntity<String> {
   /**
    * 总层数
    */
-  private Integer totalFloors;
-
-  public Room(){
-    super();
-    setId(UUID.randomUUID().toString());
-    super.create();
-  }
+  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  private Integer                    totalFloors;
+  /**
+   * 房间数量配置
+   */
+  private List<HouseConfigSaveParam> houseConfigSaveParams;
 
   public Long getProvinceId() {
     return provinceId;
@@ -102,5 +106,13 @@ public class Room extends BaseEntity<String> {
 
   public void setTotalFloors(Integer totalFloors) {
     this.totalFloors = totalFloors;
+  }
+
+  public List<HouseConfigSaveParam> getHouseConfigSaveParams() {
+    return houseConfigSaveParams;
+  }
+
+  public void setHouseConfigSaveParams(List<HouseConfigSaveParam> houseConfigSaveParams) {
+    this.houseConfigSaveParams = houseConfigSaveParams;
   }
 }

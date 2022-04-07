@@ -1,8 +1,8 @@
 package com.steven.solomon.vo;
 
-import com.steven.solomon.entity.Room;
+import com.steven.solomon.entity.House;
 
-public class RoomVO extends Room {
+public class HouseVO extends House {
 
   /**
    * 省份名称

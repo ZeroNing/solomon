@@ -4,7 +4,7 @@ import com.steven.solomon.base.model.BasePageParam;
 import com.steven.solomon.code.TenancyErrorCode;
 import javax.validation.constraints.NotNull;
 
-public class RoomPageParam extends BasePageParam {
+public class HousePageParam extends BasePageParam {
 
   /**
    * 省份id

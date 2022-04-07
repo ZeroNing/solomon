@@ -6,7 +6,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class RoomUpdateParam implements Serializable {
+public class HouseUpdateParam implements Serializable {
 
   /**
    * 主键id
@@ -57,7 +57,7 @@ public class RoomUpdateParam implements Serializable {
   /**
    * 房间数量配置
    */
-  private List<RoomConfigSaveParam> roomConfigSaveParams;
+  private List<HouseConfigSaveParam> houseConfigSaveParams;
 
   public String getId() {
     return id;
@@ -123,11 +123,11 @@ public class RoomUpdateParam implements Serializable {
     this.totalFloors = totalFloors;
   }
 
-  public List<RoomConfigSaveParam> getRoomConfigSaveParams() {
-    return roomConfigSaveParams;
+  public List<HouseConfigSaveParam> getHouseConfigSaveParams() {
+    return houseConfigSaveParams;
   }
 
-  public void setRoomConfigSaveParams(List<RoomConfigSaveParam> roomConfigSaveParams) {
-    this.roomConfigSaveParams = roomConfigSaveParams;
+  public void setHouseConfigSaveParams(List<HouseConfigSaveParam> houseConfigSaveParams) {
+    this.houseConfigSaveParams = houseConfigSaveParams;
   }
 }

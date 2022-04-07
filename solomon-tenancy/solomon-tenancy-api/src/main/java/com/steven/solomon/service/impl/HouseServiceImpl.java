@@ -9,19 +9,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
-import com.steven.solomon.entity.Room;
-import com.steven.solomon.mapper.RoomMapper;
-import com.steven.solomon.param.RoomGetParam;
-import com.steven.solomon.param.RoomPageParam;
-import com.steven.solomon.param.RoomSaveParam;
-import com.steven.solomon.param.RoomUpdateParam;
+import com.steven.solomon.entity.House;
+import com.steven.solomon.mapper.HouseMapper;
+import com.steven.solomon.param.HouseGetParam;
+import com.steven.solomon.param.HousePageParam;
+import com.steven.solomon.param.HouseSaveParam;
+import com.steven.solomon.param.HouseUpdateParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.service.RoomConfigService;
-import com.steven.solomon.service.RoomService;
+import com.steven.solomon.service.HouseService;
+import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import com.steven.solomon.vo.RoomVO;
+import com.steven.solomon.vo.HouseVO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @DubboService
 @Transactional(rollbackFor = Exception.class, readOnly = true)
-public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
+public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements HouseService {
 
   @Resource
   private AreaService areaService;
 
   @Resource
-  private RoomConfigService roomConfigService;
+  private HouseConfigService houseConfigService;
 
   @Override
   @Transactional(readOnly = false)
-  public String save(RoomSaveParam param) throws BaseException, JsonProcessingException {
-    Room room = new Room();
-    room.create("1");
+  public String save(HouseSaveParam param) throws BaseException, JsonProcessingException {
+    House house = new House();
+    house.create("1");
 
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
         param.getProvinceId().toString());
@@ -54,25 +54,25 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     ValidateUtils.isEmpty(areaService.findById(param.getAreaId()), TenancyErrorCode.AREA_NON_EXISTENT,
         param.getAreaId().toString());
 
-    room.setProvinceId(param.getProvinceId());
-    room.setCityId(param.getCityId());
-    room.setAreaId(param.getAreaId());
-    room.setAddress(RSAUtils.encrypt(param.getAddress()));
-    room.setPhone(param.getPhone());
-    room.setOwner(param.getOwner());
-    room.setTotalFloors(param.getTotalFloors());
-    baseMapper.insert(room);
+    house.setProvinceId(param.getProvinceId());
+    house.setCityId(param.getCityId());
+    house.setAreaId(param.getAreaId());
+    house.setAddress(RSAUtils.encrypt(param.getAddress()));
+    house.setPhone(param.getPhone());
+    house.setOwner(param.getOwner());
+    house.setTotalFloors(param.getTotalFloors());
+    baseMapper.insert(house);
 
-    roomConfigService.save(param.getRoomConfigSaveParams(),room);
+    houseConfigService.save(param.getHouseConfigSaveParams(), house);
 
-    return room.getId();
+    return house.getId();
   }
 
   @Override
   @Transactional(readOnly = false)
-  public void update(RoomUpdateParam param) throws BaseException, JsonProcessingException {
-    Room room = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.ROOM_IS_NULL);
-    room.update("1");
+  public void update(HouseUpdateParam param) throws BaseException, JsonProcessingException {
+    House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.ROOM_IS_NULL);
+    house.update("1");
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
         param.getProvinceId().toString());
     ValidateUtils.isEmpty(areaService.findById(param.getCityId()), TenancyErrorCode.CITY_NON_EXISTENT,
@@ -80,38 +80,38 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     ValidateUtils.isEmpty(areaService.findById(param.getAreaId()), TenancyErrorCode.AREA_NON_EXISTENT,
         param.getAreaId().toString());
 
-    LambdaUpdateWrapper<Room> updateQueryWrapper = new LambdaUpdateWrapper<Room>();
-    updateQueryWrapper.eq(Room::getId, param.getId()).set(Room::getProvinceId, param.getProvinceId())
-        .set(Room::getUpdateDate, room.getUpdateDate()).set(Room::getUpdateId, room.getUpdateId())
-        .set(Room::getCityId, param.getCityId()).set(Room::getAreaId, param.getAreaId())
-        .set(Room::getAddress, RSAUtils.encrypt(param.getAddress())).set(Room::getPhone, param.getPhone())
-        .set(Room::getOwner, param.getOwner()).set(Room::getTotalFloors, param.getTotalFloors());
+    LambdaUpdateWrapper<House> updateQueryWrapper = new LambdaUpdateWrapper<House>();
+    updateQueryWrapper.eq(House::getId, param.getId()).set(House::getProvinceId, param.getProvinceId())
+        .set(House::getUpdateDate, house.getUpdateDate()).set(House::getUpdateId, house.getUpdateId())
+        .set(House::getCityId, param.getCityId()).set(House::getAreaId, param.getAreaId())
+        .set(House::getAddress, RSAUtils.encrypt(param.getAddress())).set(House::getPhone, param.getPhone())
+        .set(House::getOwner, param.getOwner()).set(House::getTotalFloors, param.getTotalFloors());
 
-    roomConfigService.save(param.getRoomConfigSaveParams(),room);
+    houseConfigService.save(param.getHouseConfigSaveParams(), house);
 
-    baseMapper.updateById(room);
+    baseMapper.updateById(house);
   }
 
   @Override
-  public IPage<RoomVO> page(RoomPageParam param) {
-    QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
+  public IPage<HouseVO> page(HousePageParam param) {
+    QueryWrapper<House> queryWrapper = new QueryWrapper<>();
     queryWrapper.eq(false, "a.province_id", param.getProvinceId());
     queryWrapper.eq(false, "a.city_id", param.getCityId());
     queryWrapper.eq(false, "a.area_id", param.getAreaId());
 
-    IPage<RoomVO> page = baseMapper.page(new Page<Room>(param.getPageNo(), param.getPageSize()), queryWrapper);
+    IPage<HouseVO> page = baseMapper.page(new Page<House>(param.getPageNo(), param.getPageSize()), queryWrapper);
     if(ValidateUtils.isEmpty(page)){
       return page;
     }
-    List<RoomVO> records = page.getRecords();
-    List<Long> areaIds = new ArrayList<>();
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getProvinceId()),Room::getProvinceId));
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getCityId()),Room::getCityId));
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getAreaId()),Room::getAreaId));
+    List<HouseVO> records = page.getRecords();
+    List<Long>    areaIds = new ArrayList<>();
+    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getProvinceId()), House::getProvinceId));
+    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getCityId()), House::getCityId));
+    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getAreaId()), House::getAreaId));
 
     Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
 
-    for (RoomVO room : records) {
+    for (HouseVO room : records) {
       room.setAddress(RSAUtils.decrypt(room.getAddress()));
       Area area = areaMap.get(room.getProvinceId());
       room.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
@@ -125,11 +125,11 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   }
 
   @Override
-  public Room get(RoomGetParam param) {
-    Room room = baseMapper.selectById(param.getId());
-    if (ValidateUtils.isNotEmpty(room)) {
-      room.setAddress(RSAUtils.decrypt(room.getAddress()));
+  public House get(HouseGetParam param) {
+    House house = baseMapper.selectById(param.getId());
+    if (ValidateUtils.isNotEmpty(house)) {
+      house.setAddress(RSAUtils.decrypt(house.getAddress()));
     }
-    return room;
+    return house;
   }
 }

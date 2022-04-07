@@ -3,11 +3,11 @@ package com.steven.solomon.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.model.BaseEntity;
-import com.steven.solomon.enums.RoomConfigTypeEnum;
+import com.steven.solomon.enums.HouseConfigTypeEnum;
 import java.util.UUID;
 
-@TableName("room_config")
-public class RoomConfig extends BaseEntity<String> {
+@TableName("house_config")
+public class HouseConfig extends BaseEntity<String> {
 
   /**
    * 房屋id
@@ -17,7 +17,7 @@ public class RoomConfig extends BaseEntity<String> {
   /**
    * 房屋拓展类型
    */
-  @JsonEnum(enumClass = RoomConfigTypeEnum.class)
+  @JsonEnum(enumClass = HouseConfigTypeEnum.class)
   private String type;
 
   /**
@@ -25,7 +25,7 @@ public class RoomConfig extends BaseEntity<String> {
    */
   private String json;
 
-  public RoomConfig(){
+  public HouseConfig(){
     super();
     setId(UUID.randomUUID().toString());
     super.create();

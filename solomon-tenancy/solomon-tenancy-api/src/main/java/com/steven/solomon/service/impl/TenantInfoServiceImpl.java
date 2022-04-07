@@ -1,6 +1,5 @@
 package com.steven.solomon.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
-import com.steven.solomon.entity.Room;
 import com.steven.solomon.entity.TenantInfo;
 import com.steven.solomon.mapper.TenantInfoMapper;
 import com.steven.solomon.param.TenantInfoGetParam;
@@ -21,7 +19,6 @@ import com.steven.solomon.service.TenantInfoService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import com.steven.solomon.vo.RoomVO;
 import com.steven.solomon.vo.TenantInfoVO;
 import java.util.ArrayList;
 import java.util.List;

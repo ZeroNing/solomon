@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.steven.solomon.entity.Room;
-import com.steven.solomon.vo.RoomVO;
+import com.steven.solomon.entity.House;
+import com.steven.solomon.vo.HouseVO;
 import org.apache.ibatis.annotations.Param;
 
-public interface RoomMapper extends BaseMapper<Room> {
+public interface HouseMapper extends BaseMapper<House> {
 
-  IPage<RoomVO> page(@Param("page") Page page, @Param("ew") QueryWrapper queryWrapper);
+  IPage<HouseVO> page(@Param("page") Page page, @Param("ew") QueryWrapper queryWrapper);
 }
