@@ -46,6 +46,12 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 总层数不允许为空
    */
   String TOTAL_FLOORS_NOT_NULL ="TOTAL_FLOORS_NOT_NULL";
+
+  /**
+   * 房间总数不允许为空
+   */
+  String ROOM_NUM_NOT_NULL ="ROOM_NUM_NOT_NULL";
+
   /**
    * 房间记录不存在
    */
@@ -69,4 +75,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房间配置类型不存在
    */
   String HOUSE_CONFIG_TYPE_IS_NULL="HOUSE_CONFIG_TYPE_IS_NULL";
+
+  /**
+   * 房屋记录已经初始化成功,不允许修改
+   */
+  String HOUSE_IS_INIT_SUCCESS = "HOUSE_IS_INIT_SUCCESS";
 }

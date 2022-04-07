@@ -61,6 +61,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     house.setPhone(param.getPhone());
     house.setOwner(param.getOwner());
     house.setTotalFloors(param.getTotalFloors());
+    house.setNum(param.getNum());
     baseMapper.insert(house);
 
     houseConfigService.save(param.getHouseConfigSaveParams(), house);
@@ -72,6 +73,11 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Transactional(readOnly = false)
   public void update(HouseUpdateParam param) throws BaseException, JsonProcessingException {
     House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
+
+    if(house.getInitStatus()){
+      throw new BaseException(TenancyErrorCode.HOUSE_IS_INIT_SUCCESS);
+    }
+
     house.update("1");
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
         param.getProvinceId().toString());
@@ -85,7 +91,8 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         .set(House::getUpdateDate, house.getUpdateDate()).set(House::getUpdateId, house.getUpdateId())
         .set(House::getCityId, param.getCityId()).set(House::getAreaId, param.getAreaId())
         .set(House::getAddress, RSAUtils.encrypt(param.getAddress())).set(House::getPhone, param.getPhone())
-        .set(House::getOwner, param.getOwner()).set(House::getTotalFloors, param.getTotalFloors());
+        .set(House::getOwner, param.getOwner()).set(House::getTotalFloors, param.getTotalFloors())
+        .set(House :: getNum,param.getNum());
 
     houseConfigService.save(param.getHouseConfigSaveParams(), house);
 

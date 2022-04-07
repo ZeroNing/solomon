@@ -59,6 +59,12 @@ public class HouseUpdateParam implements Serializable {
    */
   private List<HouseConfigSaveParam> houseConfigSaveParams;
 
+  /**
+   * 房间数量
+   */
+  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  private Integer                    num;
+
   public String getId() {
     return id;
   }
@@ -129,5 +135,13 @@ public class HouseUpdateParam implements Serializable {
 
   public void setHouseConfigSaveParams(List<HouseConfigSaveParam> houseConfigSaveParams) {
     this.houseConfigSaveParams = houseConfigSaveParams;
+  }
+
+  public Integer getNum() {
+    return num;
+  }
+
+  public void setNum(Integer num) {
+    this.num = num;
   }
 }

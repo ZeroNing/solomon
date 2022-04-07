@@ -42,6 +42,16 @@ public class House extends BaseEntity<String> {
    */
   private Integer totalFloors;
 
+  /**
+   * 房间数
+   */
+  private Integer num;
+
+  /**
+   * 初始化状态
+   */
+  private Boolean initStatus;
+
   public House(){
     super();
     setId(UUID.randomUUID().toString());
@@ -102,5 +112,21 @@ public class House extends BaseEntity<String> {
 
   public void setTotalFloors(Integer totalFloors) {
     this.totalFloors = totalFloors;
+  }
+
+  public Integer getNum() {
+    return num;
+  }
+
+  public void setNum(Integer num) {
+    this.num = num;
+  }
+
+  public Boolean getInitStatus() {
+    return initStatus;
+  }
+
+  public void setInitStatus(Boolean initStatus) {
+    this.initStatus = initStatus;
   }
 }

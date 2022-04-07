@@ -17,7 +17,9 @@
       a.address AS 'address',
       a.owner AS 'owner',
       a.phone AS 'phone',
-      a.total_floors AS 'total_floors'
+      a.total_floors AS 'total_floors',
+      a.num AS 'num',
+      a.init_status AS 'initStatus'
   </sql>
 
   <select id="page" resultType="com.steven.solomon.vo.HouseVO">

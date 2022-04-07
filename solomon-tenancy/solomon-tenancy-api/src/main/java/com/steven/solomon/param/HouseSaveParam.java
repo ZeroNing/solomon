@@ -45,8 +45,14 @@ public class HouseSaveParam implements Serializable {
   /**
    * 总层数
    */
-  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  @NotNull(message = TenancyErrorCode.ROOM_NUM_NOT_NULL)
   private Integer                    totalFloors;
+
+  /**
+   * 房间数量
+   */
+  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  private Integer                    num;
   /**
    * 房间数量配置
    */
@@ -114,5 +120,13 @@ public class HouseSaveParam implements Serializable {
 
   public void setHouseConfigSaveParams(List<HouseConfigSaveParam> houseConfigSaveParams) {
     this.houseConfigSaveParams = houseConfigSaveParams;
+  }
+
+  public Integer getNum() {
+    return num;
+  }
+
+  public void setNum(Integer num) {
+    this.num = num;
   }
 }
