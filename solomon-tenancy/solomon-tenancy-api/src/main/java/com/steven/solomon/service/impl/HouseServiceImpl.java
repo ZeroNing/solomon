@@ -71,7 +71,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Override
   @Transactional(readOnly = false)
   public void update(HouseUpdateParam param) throws BaseException, JsonProcessingException {
-    House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.ROOM_IS_NULL);
+    House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
     house.update("1");
     ValidateUtils.isEmpty(areaService.findById(param.getProvinceId()), TenancyErrorCode.PROVINCE_NON_EXISTENT,
         param.getProvinceId().toString());
@@ -105,20 +105,20 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     }
     List<HouseVO> records = page.getRecords();
     List<Long>    areaIds = new ArrayList<>();
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getProvinceId()), House::getProvinceId));
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getCityId()), House::getCityId));
-    areaIds.addAll(LambdaUtils.toList(records,room -> ValidateUtils.isNotEmpty(room.getAreaId()), House::getAreaId));
+    areaIds.addAll(LambdaUtils.toList(records,HOUSE -> ValidateUtils.isNotEmpty(HOUSE.getProvinceId()), House::getProvinceId));
+    areaIds.addAll(LambdaUtils.toList(records,HOUSE -> ValidateUtils.isNotEmpty(HOUSE.getCityId()), House::getCityId));
+    areaIds.addAll(LambdaUtils.toList(records,HOUSE -> ValidateUtils.isNotEmpty(HOUSE.getAreaId()), House::getAreaId));
 
     Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
 
-    for (HouseVO room : records) {
-      room.setAddress(RSAUtils.decrypt(room.getAddress()));
-      Area area = areaMap.get(room.getProvinceId());
-      room.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
-      area = areaMap.get(room.getCityId());
-      room.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
-      area = areaMap.get(room.getAreaId());
-      room.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+    for (HouseVO HOUSE : records) {
+      HOUSE.setAddress(RSAUtils.decrypt(HOUSE.getAddress()));
+      Area area = areaMap.get(HOUSE.getProvinceId());
+      HOUSE.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(HOUSE.getCityId());
+      HOUSE.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(HOUSE.getAreaId());
+      HOUSE.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
     }
     page.setRecords(records);
     return page;

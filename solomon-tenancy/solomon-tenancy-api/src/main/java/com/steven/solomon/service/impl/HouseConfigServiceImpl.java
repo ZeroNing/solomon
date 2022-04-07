@@ -36,15 +36,15 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
     if(ValidateUtils.isNotEmpty(houseConfigSaveParams)){
       return;
     }
-    Map<String,List<HouseConfig>> map = findMapByRoomId(house.getId());
+    Map<String,List<HouseConfig>> map = findMapByHouseId(house.getId());
 
     List<HouseConfig> saveConfigList = new ArrayList<>();
     Set<String>       delConfigs     = new HashSet<>();
     HouseConfig       houseConfig    = new HouseConfig();
     for(HouseConfigSaveParam houseConfigSaveParam : houseConfigSaveParams){
       HouseConfigTypeEnum typeEnum = ValidateUtils.isEmpty(EnumUtils.codeOf(HouseConfigTypeEnum.class,
-          houseConfigSaveParam.getType()),TenancyErrorCode.ROOM_CONFIG_TYPE_IS_NULL);
-      houseConfig.setRoomId(house.getId());
+          houseConfigSaveParam.getType()),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
+      houseConfig.setHouseId(house.getId());
       houseConfig.setType(typeEnum.toString());
       houseConfig.setJson(JackJsonUtils.formatJsonByFilter(houseConfigSaveParam));
       saveConfigList.add(houseConfig);
@@ -59,15 +59,15 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
   }
 
   @Override
-  public List<HouseConfig> findByRoomId(String roomId) {
+  public List<HouseConfig> findByHouseId(String houseId) {
     LambdaQueryWrapper<HouseConfig> queryWrapper = new LambdaQueryWrapper<>();
-    queryWrapper.eq(true, HouseConfig::getRoomId,roomId);
+    queryWrapper.eq(true, HouseConfig::getHouseId, houseId);
     return super.baseMapper.selectList(queryWrapper);
   }
 
   @Override
-  public Map<String, List<HouseConfig>> findMapByRoomId(String roomId) {
-    List<HouseConfig> list = findByRoomId(roomId);
+  public Map<String, List<HouseConfig>> findMapByHouseId(String houseId) {
+    List<HouseConfig> list = findByHouseId(houseId);
     return ValidateUtils.isEmpty(list) ? new HashMap<>(1) : LambdaUtils.groupBy(list, HouseConfig::getType);
   }
 

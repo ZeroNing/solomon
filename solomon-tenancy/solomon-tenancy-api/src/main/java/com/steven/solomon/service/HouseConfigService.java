@@ -12,7 +12,7 @@ public interface HouseConfigService {
 
   void save(List<HouseConfigSaveParam> houseConfigSaveParams, House house) throws BaseException, JsonProcessingException;
 
-  List<HouseConfig> findByRoomId(String roomId);
+  List<HouseConfig> findByHouseId(String houseId);
 
-  Map<String,List<HouseConfig>> findMapByRoomId(String roomId);
+  Map<String,List<HouseConfig>> findMapByHouseId(String houseId);
 }

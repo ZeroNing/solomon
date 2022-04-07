@@ -12,7 +12,7 @@ public class HouseConfig extends BaseEntity<String> {
   /**
    * 房屋id
    */
-  private String roomId;
+  private String houseId;
 
   /**
    * 房屋拓展类型
@@ -31,12 +31,12 @@ public class HouseConfig extends BaseEntity<String> {
     super.create();
   }
 
-  public String getRoomId() {
-    return roomId;
+  public String getHouseId() {
+    return houseId;
   }
 
-  public void setRoomId(String roomId) {
-    this.roomId = roomId;
+  public void setHouseId(String houseId) {
+    this.houseId = houseId;
   }
 
   public String getType() {

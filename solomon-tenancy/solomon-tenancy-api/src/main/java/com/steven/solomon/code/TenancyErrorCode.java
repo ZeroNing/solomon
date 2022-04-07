@@ -49,7 +49,7 @@ public interface TenancyErrorCode extends BaseExceptionCode {
   /**
    * 房间记录不存在
    */
-  String ROOM_IS_NULL          = "ROOM_IS_NULL";
+  String HOUSE_IS_NULL          = "HOUSE_IS_NULL";
   /**
    * 身份证不允许为空
    */
@@ -68,5 +68,5 @@ public interface TenancyErrorCode extends BaseExceptionCode {
   /**
    * 房间配置类型不存在
    */
-  String ROOM_CONFIG_TYPE_IS_NULL="ROOM_CONFIG_TYPE_IS_NULL";
+  String HOUSE_CONFIG_TYPE_IS_NULL="HOUSE_CONFIG_TYPE_IS_NULL";
 }
