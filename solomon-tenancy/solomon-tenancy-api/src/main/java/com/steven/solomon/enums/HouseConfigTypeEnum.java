@@ -6,7 +6,7 @@ public enum HouseConfigTypeEnum implements BaseEnum {
   /**
    * 楼层房间数配置
    */
-  FLOOR_ROOM("楼层房间数配置");
+  FLOOR_ROOM("FLOOR_ROOM");
 
   private final String label;
 
@@ -16,11 +16,11 @@ public enum HouseConfigTypeEnum implements BaseEnum {
 
   @Override
   public String key() {
-    return null;
+    return this.label;
   }
 
   @Override
   public String label() {
-    return null;
+    return this.name();
   }
 }
