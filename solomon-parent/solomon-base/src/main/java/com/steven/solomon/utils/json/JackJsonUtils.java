@@ -1,10 +1,14 @@
 package com.steven.solomon.utils.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.steven.solomon.utils.spring.SpringUtil;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JackJsonUtils {
 
@@ -20,8 +24,11 @@ public class JackJsonUtils {
   /**
    * 转换数组对象
    */
-  public static <T> T conversionClassList(String json, TypeReference<T> jsonTypeReference) throws IOException {
-    return mapper.readValue(json, jsonTypeReference);
+  public static <T> List<T> conversionClassList(String json, Class<T> clazz) throws IOException {
+    //忽略多余属性
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
+    return mapper.readValue(json, listType);
   }
 
   /**

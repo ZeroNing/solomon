@@ -2,27 +2,24 @@ package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.excetion.BaseException;
-import com.steven.solomon.param.HouseGetParam;
-import com.steven.solomon.param.HouseInitParam;
-import com.steven.solomon.param.HousePageParam;
-import com.steven.solomon.param.HouseSaveParam;
-import com.steven.solomon.param.HouseUpdateParam;
+import com.steven.solomon.param.*;
 import com.steven.solomon.service.HouseService;
-import java.io.IOException;
+import com.steven.solomon.service.RoomService;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/house")
 public class HouseController extends BaseController {
 
-  @Resource(name = "houseServiceImpl")
+  @Resource
   private HouseService houseService;
+
+  @Resource
+  private RoomService roomService;
 
   @PostMapping("/save")
   public String save (@Valid @RequestBody HouseSaveParam params) throws IOException, BaseException {
@@ -48,6 +45,12 @@ public class HouseController extends BaseController {
   @PostMapping("/init")
   public String init(@Valid @RequestBody HouseInitParam params) throws IOException, BaseException {
     houseService.init(params);
+    return super.responseSuccessJson();
+  }
+
+  @PutMapping("/room/update")
+  public String update(@Valid @RequestBody RoomUpdateParam params) throws IOException, BaseException {
+    roomService.update(params);
     return super.responseSuccessJson();
   }
 }

@@ -1,23 +1,27 @@
 package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.entity.HouseConfigFloorRoom;
 import com.steven.solomon.entity.Room;
 import com.steven.solomon.mapper.RoomMapper;
+import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.service.RoomService;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
+import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @DubboService
@@ -52,5 +56,13 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
       }
     }
     this.saveBatch(saveList);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
+  public void update(RoomUpdateParam params) throws BaseException {
+    Room room = ValidateUtils.isEmpty(this.getById(params.getId()), TenancyErrorCode.ROOM_IS_NULL);
+    room.update("1");
+    this.updateById(room);
   }
 }

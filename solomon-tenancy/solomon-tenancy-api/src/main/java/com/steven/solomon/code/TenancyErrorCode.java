@@ -90,4 +90,14 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房间类型不存在
    */
   String ROOM_TYPE_IS_NULL="ROOM_TYPE_IS_NULL";
+
+  /**
+   * 房间类型不允许为空
+   */
+  String ROOM_TYPE_IS_NOT_NULL = "ROOM_TYPE_IS_NOT_NULL";
+
+  /**
+   * 房间记录不存在
+   */
+  String ROOM_IS_NULL="ROOM_IS_NULL";
 }
