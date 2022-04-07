@@ -1,5 +1,6 @@
 package com.steven.solomon.utils.lambda;
 
+import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -18,89 +19,92 @@ public class LambdaUtils {
   /**
    * 转list
    *
-   * @param List      数据集合
+   * @param list      数据集合
    * @param predicate 条件筛选数据
    * @param func      需要的字段
    */
-  public static <T, S> List<T> toList(Collection<S> List, Predicate<S> predicate, Function<S, T> func) {
-    return List.stream().filter(predicate).map(func).collect(Collectors.toList());
+  public static <T, S> List<T> toList(Collection<S> list, Predicate<S> predicate, Function<S, T> func) {
+    if(ValidateUtils.isEmpty(list)){
+      return null;
+    }
+    return list.stream().filter(predicate).map(func).collect(Collectors.toList());
   }
 
   /**
    * 转list
    *
-   * @param List 数据集合
+   * @param list 数据集合
    * @param func 需要的字段
    */
-  public static <T, S> List<T> toList(Collection<S> List, Function<S, T> func) {
-    return List.stream().map(func).collect(Collectors.toList());
+  public static <T, S> List<T> toList(Collection<S> list, Function<S, T> func) {
+    return list.stream().map(func).collect(Collectors.toList());
   }
 
   /**
    * 转set
    *
-   * @param List      数据集合
+   * @param list      数据集合
    * @param predicate 条件筛选数据
    * @param func      需要的字段
    */
-  public static <T, S> Set<T> toSet(Collection<S> List, Predicate<S> predicate, Function<S, T> func) {
-    return List.stream().filter(predicate).map(func).collect(Collectors.toSet());
+  public static <T, S> Set<T> toSet(Collection<S> list, Predicate<S> predicate, Function<S, T> func) {
+    return list.stream().filter(predicate).map(func).collect(Collectors.toSet());
   }
 
   /**
    * 转set
    *
-   * @param List 数据集合
+   * @param list 数据集合
    * @param func 需要的字段
    */
-  public static <T, S> Set<T> toSet(Collection<S> List, Function<S, T> func) {
-    return List.stream().map(func).collect(Collectors.toSet());
+  public static <T, S> Set<T> toSet(Collection<S> list, Function<S, T> func) {
+    return list.stream().map(func).collect(Collectors.toSet());
   }
 
   /**
    * 转map
    *
-   * @param List    数据集合
+   * @param list    数据集合
    * @param keyFunc 需要的字段
    */
-  public static <K, T> Map<K, T> toMap(Collection<T> List, Function<T, K> keyFunc) {
-    return List.stream().collect(Collectors.toMap(keyFunc, Function.identity(), (key1, key2) -> key2));
+  public static <K, T> Map<K, T> toMap(Collection<T> list, Function<T, K> keyFunc) {
+    return list.stream().collect(Collectors.toMap(keyFunc, Function.identity(), (key1, key2) -> key2));
   }
 
   /**
    * 转map
    *
-   * @param List      数据集合
+   * @param list      数据集合
    * @param predicate 条件筛选数据
    * @param keyFunc   需要的字段
    */
-  public static <K, T> Map<K, T> toMap(Collection<T> List, Predicate<T> predicate, Function<T, K> keyFunc) {
-    return List.stream().filter(predicate)
+  public static <K, T> Map<K, T> toMap(Collection<T> list, Predicate<T> predicate, Function<T, K> keyFunc) {
+    return list.stream().filter(predicate)
         .collect(Collectors.toMap(keyFunc, Function.identity(), (key1, key2) -> key2));
   }
 
   /**
    * 转map
    *
-   * @param List      数据集合
+   * @param list      数据集合
    * @param predicate 条件筛选数据
    * @param keyFunc   需要的字段
    * @param valFunc   需要的字段
    */
-  public static <K, V, T> Map<K, V> toMap(Collection<T> List, Predicate<T> predicate, Function<T, K> keyFunc,
+  public static <K, V, T> Map<K, V> toMap(Collection<T> list, Predicate<T> predicate, Function<T, K> keyFunc,
       Function<T, V> valFunc) {
-    return List.stream().filter(predicate).collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
+    return list.stream().filter(predicate).collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
   }
 
   /**
    * 转map
    *
-   * @param List    数据集合
+   * @param list    数据集合
    * @param keyFunc 需要的字段
    * @param valFunc 需要的字段
    */
-  public static <K, V, T> Map<K, V> toMap(Collection<T> List, Function<T, K> keyFunc, Function<T, V> valFunc) {
-    return List.stream().collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
+  public static <K, V, T> Map<K, V> toMap(Collection<T> list, Function<T, K> keyFunc, Function<T, V> valFunc) {
+    return list.stream().collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
   }
 
   /**
