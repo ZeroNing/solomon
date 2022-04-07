@@ -157,8 +157,9 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     }
     house.update("1");
     house.setInitStatus(true);
-    HouseConfig houseConfig = houseConfigService.findMapByHouseId(house.getId()).get(HouseConfigTypeEnum.FLOOR_ROOM);
+    HouseConfig houseConfig = houseConfigService.findMapByHouseId(house.getId()).get(HouseConfigTypeEnum.FLOOR_ROOM.toString());
 
     roomService.save(houseConfig,house);
+    this.update(house,null);
   }
 }
