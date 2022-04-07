@@ -77,6 +77,6 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
     queryWrapper.eq("a.house_id",params.getId());
     queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
-    return this.baseMapper.page(new Page<House>(params.getPageNo(), params.getPageSize()),queryWrapper);
+    return this.baseMapper.page(new Page<House>(params.getPageNo(), params.getPageSize(),false),queryWrapper);
   }
 }
