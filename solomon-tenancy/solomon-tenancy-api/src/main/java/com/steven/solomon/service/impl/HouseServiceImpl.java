@@ -10,18 +10,23 @@ import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.Area;
 import com.steven.solomon.entity.House;
+import com.steven.solomon.entity.HouseConfig;
+import com.steven.solomon.enums.HouseConfigTypeEnum;
 import com.steven.solomon.mapper.HouseMapper;
 import com.steven.solomon.param.HouseGetParam;
+import com.steven.solomon.param.HouseInitParam;
 import com.steven.solomon.param.HousePageParam;
 import com.steven.solomon.param.HouseSaveParam;
 import com.steven.solomon.param.HouseUpdateParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.HouseService;
 import com.steven.solomon.service.HouseConfigService;
+import com.steven.solomon.service.RoomService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import com.steven.solomon.vo.HouseVO;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +45,9 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
 
   @Resource
   private HouseConfigService houseConfigService;
+
+  @Resource
+  private RoomService roomService;
 
   @Override
   @Transactional(readOnly = false)
@@ -138,5 +146,19 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
       house.setAddress(RSAUtils.decrypt(house.getAddress()));
     }
     return house;
+  }
+
+  @Override
+  public void init(HouseInitParam param) throws BaseException, IOException {
+    House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
+
+    if(house.getInitStatus()){
+      throw new BaseException(TenancyErrorCode.HOUSE_IS_INIT_SUCCESS);
+    }
+    house.update("1");
+    house.setInitStatus(true);
+    HouseConfig houseConfig = houseConfigService.findMapByHouseId(house.getId()).get(HouseConfigTypeEnum.FLOOR_ROOM);
+
+    roomService.save(houseConfig,house);
   }
 }

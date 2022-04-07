@@ -14,5 +14,5 @@ public interface HouseConfigService {
 
   List<HouseConfig> findByHouseId(String houseId);
 
-  Map<String,List<HouseConfig>> findMapByHouseId(String houseId);
+  Map<String,HouseConfig> findMapByHouseId(String houseId);
 }

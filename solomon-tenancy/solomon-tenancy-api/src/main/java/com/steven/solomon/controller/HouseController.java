@@ -3,6 +3,7 @@ package com.steven.solomon.controller;
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.param.HouseGetParam;
+import com.steven.solomon.param.HouseInitParam;
 import com.steven.solomon.param.HousePageParam;
 import com.steven.solomon.param.HouseSaveParam;
 import com.steven.solomon.param.HouseUpdateParam;
@@ -42,5 +43,11 @@ public class HouseController extends BaseController {
   @PostMapping("/get")
   public String get(@Valid @RequestBody HouseGetParam params) throws IOException,BaseException {
     return super.responseSuccessJson(houseService.get(params));
+  }
+
+  @PostMapping("/init")
+  public String init(@Valid @RequestBody HouseInitParam params) throws IOException, BaseException {
+    houseService.init(params);
+    return super.responseSuccessJson();
   }
 }

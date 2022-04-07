@@ -1,34 +1,22 @@
-package com.steven.solomon.param;
+package com.steven.solomon.entity;
 
-import com.steven.solomon.enums.HouseConfigTypeEnum;
 import java.io.Serializable;
 
-public class HouseConfigSaveParam implements Serializable {
+public class HouseConfigFloorRoom implements Serializable {
 
   /**
-   * 房屋配置类型
+   * 楼层
    */
-  private String type;
+  private Integer floor;
+  /**
+   * 房间数
+   */
+  private Integer num;
+
   /**
    * 房间类型
    */
   private String roomType;
-  /**
-   * 楼层
-   */
-  private Integer              floor;
-  /**
-   * 房间数
-   */
-  private Integer            num;
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 
   public Integer getFloor() {
     return floor;

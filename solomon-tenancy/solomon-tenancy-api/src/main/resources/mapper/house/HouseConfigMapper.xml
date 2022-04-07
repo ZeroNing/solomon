@@ -11,7 +11,7 @@
       a.update_date AS 'updateDate',
       a.remark AS 'remark',
       a.del_flag AS 'delFlag',
-      a.room_id AS 'roomId',
+      a.house_id AS 'houseId',
       a.type AS 'type',
       a.json AS 'json'
     </sql>

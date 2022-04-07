@@ -36,21 +36,25 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
     if(ValidateUtils.isNotEmpty(houseConfigSaveParams)){
       return;
     }
-    Map<String,List<HouseConfig>> map = findMapByHouseId(house.getId());
+    if(LambdaUtils.toSet(houseConfigSaveParams,HouseConfigSaveParam::getType).size() != houseConfigSaveParams.size()){
+      throw new BaseException(TenancyErrorCode.HOUSE_CONFIG_TYPE_NOT_REPEAT);
+    }
+    Map<String,HouseConfig> map = findMapByHouseId(house.getId());
 
     List<HouseConfig> saveConfigList = new ArrayList<>();
     Set<String>       delConfigs     = new HashSet<>();
-    HouseConfig       houseConfig    = new HouseConfig();
+    HouseConfig       houseConfig    = null;
     for(HouseConfigSaveParam houseConfigSaveParam : houseConfigSaveParams){
       HouseConfigTypeEnum typeEnum = ValidateUtils.isEmpty(EnumUtils.codeOf(HouseConfigTypeEnum.class,
           houseConfigSaveParam.getType()),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
+      houseConfig    = new HouseConfig();
       houseConfig.setHouseId(house.getId());
       houseConfig.setType(typeEnum.toString());
       houseConfig.setJson(JackJsonUtils.formatJsonByFilter(houseConfigSaveParam));
       saveConfigList.add(houseConfig);
-      List<HouseConfig> list = map.get(houseConfigSaveParam.getType());
-      if(ValidateUtils.isNotEmpty(list)){
-        delConfigs.addAll(LambdaUtils.toList(list, HouseConfig:: getId));
+      HouseConfig config = map.get(houseConfigSaveParam.getType());
+      if(ValidateUtils.isNotEmpty(config)){
+        delConfigs.add(config.getId());
       }
     }
     this.baseMapper.deleteBatchIds(delConfigs);
@@ -66,10 +70,9 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
   }
 
   @Override
-  public Map<String, List<HouseConfig>> findMapByHouseId(String houseId) {
+  public Map<String, HouseConfig> findMapByHouseId(String houseId) {
     List<HouseConfig> list = findByHouseId(houseId);
-    return ValidateUtils.isEmpty(list) ? new HashMap<>(1) : LambdaUtils.groupBy(list, HouseConfig::getType);
+    return ValidateUtils.isEmpty(list) ? new HashMap<>(1) : LambdaUtils.toMap(list, HouseConfig::getType);
   }
-
 
 }

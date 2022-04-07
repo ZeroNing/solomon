@@ -80,4 +80,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房屋记录已经初始化成功,不允许修改
    */
   String HOUSE_IS_INIT_SUCCESS = "HOUSE_IS_INIT_SUCCESS";
+
+  /**
+   * 房间配置类型不允许出现重复
+   */
+  String HOUSE_CONFIG_TYPE_NOT_REPEAT = "HOUSE_CONFIG_TYPE_NOT_REPEAT";
 }
