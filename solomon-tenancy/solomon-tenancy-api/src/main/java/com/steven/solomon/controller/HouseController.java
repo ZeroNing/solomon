@@ -53,6 +53,11 @@ public class HouseController extends BaseController {
     return super.responseSuccessJson();
   }
 
+  @GetMapping("/config/list")
+  public String configList() throws IOException {
+    return super.responseSuccessJson(houseConfigService.findTypeEnumList());
+  }
+
   @PostMapping("/config/save")
   public String saveConfig(@Valid @RequestBody HouseConfigSaveParam param) throws IOException, BaseException {
     houseConfigService.save(param);

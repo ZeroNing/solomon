@@ -6,7 +6,19 @@ public enum HouseConfigTypeEnum implements BaseEnum {
   /**
    * 楼层房间数配置
    */
-  FLOOR_ROOM("FLOOR_ROOM");
+  FLOOR_ROOM("FLOOR_ROOM"),
+  /**
+   * 水费
+   */
+  WATER_RATE("WATER_RATE"),
+  /**
+   * 电费
+   */
+  ELECTRICITY_FEES("ELECTRICITY_FEES"),
+  /**
+   * 网费
+   */
+  NETWORK_FEE("NETWORK_FEE");
 
   private final String label;
 

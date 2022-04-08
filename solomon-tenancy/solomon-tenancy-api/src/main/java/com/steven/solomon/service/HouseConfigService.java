@@ -27,4 +27,6 @@ public interface HouseConfigService {
   HouseConfig get(String id);
 
   List<HouseConfig> findByTypeAndHouseId(HouseConfigTypeEnum type,String houseId);
+
+  List<Map<String,Object>> findTypeEnumList();
 }

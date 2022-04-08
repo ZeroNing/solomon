@@ -19,6 +19,7 @@ import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -175,6 +176,19 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
     queryWrapper.eq(true,HouseConfig::getHouseId,houseId);
     queryWrapper.eq(true,HouseConfig::getType,type.toString());
     return this.baseMapper.selectList(queryWrapper);
+  }
+
+  @Override
+  public List<Map<String,Object>> findTypeEnumList() {
+    HouseConfigTypeEnum[] values = HouseConfigTypeEnum.values();
+    List<Map<String,Object>> list = new ArrayList<>();
+    for(HouseConfigTypeEnum value : values){
+      Map<String,Object> map = new HashMap<>(2);
+      map.put("type",value.label());
+      map.put("desc",value.Desc());
+      list.add(map);
+    }
+    return list;
   }
 
 }
