@@ -9,10 +9,16 @@ import com.steven.solomon.utils.spring.SpringUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import org.apache.poi.ss.formula.functions.T;
 
 public class JackJsonUtils {
 
   private static final ObjectMapper mapper = SpringUtil.getBean(ObjectMapper.class);
+
+  public static <T> T convertValue(Object obj,Class<T> clazz){
+    return mapper.convertValue(obj, clazz);
+  }
 
   /**
    * 转换对象

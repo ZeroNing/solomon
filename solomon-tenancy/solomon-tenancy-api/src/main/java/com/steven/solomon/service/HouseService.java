@@ -14,9 +14,9 @@ import java.io.IOException;
 
 public interface HouseService {
 
-  String save(HouseSaveParam param) throws BaseException, JsonProcessingException;
+  String save(HouseSaveParam param) throws BaseException, IOException;
 
-  void update(HouseUpdateParam param) throws BaseException, JsonProcessingException;
+  void update(HouseUpdateParam param) throws BaseException, IOException;
 
   IPage<HouseVO> page(HousePageParam params);
 

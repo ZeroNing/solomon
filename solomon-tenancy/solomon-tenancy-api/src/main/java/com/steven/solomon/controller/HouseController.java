@@ -58,4 +58,9 @@ public class HouseController extends BaseController {
   public String roomPage(@Valid @RequestBody RoomPageParam params) throws IOException {
     return super.responseSuccessJson(roomService.page(params));
   }
+
+  @PostMapping("/room/lease")
+  public String lease() throws IOException {
+    return super.responseSuccessJson();
+  }
 }

@@ -8,14 +8,13 @@ import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.enums.HouseConfigTypeEnum;
-import com.steven.solomon.enums.RoomTypeEnum;
 import com.steven.solomon.mapper.HouseConfigMapper;
 import com.steven.solomon.param.HouseConfigSaveParam;
 import com.steven.solomon.service.HouseConfigService;
-import com.steven.solomon.utils.enums.EnumUtils;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,35 +32,39 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
-  public void save(List<HouseConfigSaveParam> houseConfigSaveParams, House house) throws BaseException, JsonProcessingException {
+  public void save(List<HouseConfigSaveParam> houseConfigSaveParams, House house) throws BaseException, IOException {
     if(ValidateUtils.isEmpty(houseConfigSaveParams)){
       return;
     }
-    Map<String,List<HouseConfigSaveParam>> saveMap = LambdaUtils.groupBy(houseConfigSaveParams,HouseConfigSaveParam::getType);
-    Map<String,HouseConfig> map = findMapByHouseId(house.getId());
+    Map<HouseConfigTypeEnum,List<HouseConfigSaveParam>> saveMap = LambdaUtils.groupBy(houseConfigSaveParams,HouseConfigSaveParam::getType);
+    Map<String,List<HouseConfig>> map = LambdaUtils.groupBy(findByHouseId(house.getId()),HouseConfig :: getType);
 
     List<HouseConfig> saveConfigList = new ArrayList<>();
     Set<String>       delConfigs     = new HashSet<>();
     HouseConfig       houseConfig    = null;
 
-    for(Entry<String, List<HouseConfigSaveParam>> entry : saveMap.entrySet()){
+    for(Entry<HouseConfigTypeEnum, List<HouseConfigSaveParam>> entry : saveMap.entrySet()){
+      List<Map<String,Object>> jsonList = new ArrayList<>();
       for(HouseConfigSaveParam param : entry.getValue()){
-        ValidateUtils.isEmpty(EnumUtils.codeOf(HouseConfigTypeEnum.class,
-            param.getType()),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
-
-        ValidateUtils.isEmpty(EnumUtils.codeOf(RoomTypeEnum.class,
-            param.getRoomType()),TenancyErrorCode.ROOM_TYPE_IS_NULL);
+        ValidateUtils.isEmpty(param.getType(),TenancyErrorCode.HOUSE_CONFIG_TYPE_IS_NULL);
+        List<Object> objects = new ArrayList<>();
+        Object obj = param.getDate();
+        Map<String,Object> objectMap = JackJsonUtils.convertValue(obj,Map.class);
+        objectMap.putAll(JackJsonUtils.convertValue(param,Map.class));
+        objects.add(JackJsonUtils.conversionClass(JackJsonUtils.formatJsonByFilter(map),Object.class));
+        objectMap.remove("date");
+        jsonList.add(objectMap);
       }
 
       houseConfig    = new HouseConfig();
       houseConfig.create("1");
       houseConfig.setHouseId(house.getId());
-      houseConfig.setType(entry.getKey());
-      houseConfig.setJson(JackJsonUtils.formatJsonByFilter(entry.getValue()));
+      houseConfig.setType(entry.getKey().toString());
+      houseConfig.setJson(JackJsonUtils.formatJsonByFilter(jsonList));
       saveConfigList.add(houseConfig);
-      HouseConfig config = map.get(entry.getKey());
+      List<HouseConfig> config = map.get(entry.getKey().toString());
       if(ValidateUtils.isNotEmpty(config)){
-        delConfigs.add(config.getId());
+        delConfigs.addAll(LambdaUtils.toList(config,HouseConfig::getId));
       }
     }
 

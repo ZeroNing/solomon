@@ -48,7 +48,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
-  public String save(HouseSaveParam param) throws BaseException, JsonProcessingException {
+  public String save(HouseSaveParam param) throws BaseException, IOException {
     House house = new House();
     house.create("1");
 
@@ -76,7 +76,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
-  public void update(HouseUpdateParam param) throws BaseException, JsonProcessingException {
+  public void update(HouseUpdateParam param) throws BaseException, IOException {
     House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
 
     if(house.getInitStatus()){
