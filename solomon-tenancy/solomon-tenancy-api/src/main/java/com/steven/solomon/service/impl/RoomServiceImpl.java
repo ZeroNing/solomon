@@ -1,5 +1,6 @@
 package com.steven.solomon.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,12 +37,17 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void save(HouseConfig houseConfig, House house) throws IOException {
+    //获取房屋id
+    String houseId = house.getId();
+    List<Room> roomList = this.findByHouseId(houseId);
+    if(ValidateUtils.isNotEmpty(roomList)){
+      this.baseMapper.deleteBatchIds(LambdaUtils.toList(roomList,Room :: getId));
+    }
+
     //获取总楼层数
     Integer totalFloors = house.getTotalFloors();
     //获取每层房间数量
     Integer roomNum     = house.getNum();
-    //获取房屋id
-    String houseId = house.getId();
 
     Map<Integer, HouseConfigFloorRoom> map = ValidateUtils.isNotEmpty(houseConfig) ? LambdaUtils
         .toMap(JackJsonUtils.conversionClassList(houseConfig.getJson(), HouseConfigFloorRoom.class),
@@ -78,5 +84,12 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     queryWrapper.eq("a.house_id",params.getId());
     queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
     return this.baseMapper.page(new Page<House>(params.getPageNo(), params.getPageSize()),queryWrapper);
+  }
+
+  @Override
+  public List<Room> findByHouseId(String houseId) {
+    LambdaQueryWrapper<Room> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(true,Room::getHouseId,houseId);
+    return this.baseMapper.selectList(queryWrapper);
   }
 }

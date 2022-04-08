@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
+import com.steven.solomon.entity.Room;
 import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.vo.RoomVO;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface RoomService {
 
@@ -17,4 +19,6 @@ public interface RoomService {
   void update(RoomUpdateParam params) throws BaseException;
 
   IPage<RoomVO> page(RoomPageParam params);
+
+  List<Room> findByHouseId(String houseId);
 }
