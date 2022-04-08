@@ -3,8 +3,10 @@ package com.steven.solomon.controller;
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.param.*;
+import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.service.HouseService;
 import com.steven.solomon.service.RoomService;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +22,9 @@ public class HouseController extends BaseController {
 
   @Resource
   private RoomService roomService;
+
+  @Resource
+  private HouseConfigService houseConfigService;
 
   @PostMapping("/save")
   public String save (@Valid @RequestBody HouseSaveParam params) throws IOException, BaseException {
@@ -45,6 +50,11 @@ public class HouseController extends BaseController {
   @PostMapping("/init")
   public String init(@Valid @RequestBody HouseInitParam params) throws IOException, BaseException {
     houseService.init(params);
+    return super.responseSuccessJson();
+  }
+
+  @PostMapping("/config/save")
+  public String saveConfig(@Valid @RequestBody HouseConfigSaveParam param) throws IOException {
     return super.responseSuccessJson();
   }
 

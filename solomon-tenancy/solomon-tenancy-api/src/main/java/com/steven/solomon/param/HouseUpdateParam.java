@@ -57,7 +57,7 @@ public class HouseUpdateParam implements Serializable {
   /**
    * 房间数量配置
    */
-  private List<HouseConfigSaveParam> houseConfigSaveParams;
+  private List<HouseConfigSaveOrUpdateParam> houseConfigSaveOrUpdateParams;
 
   /**
    * 房间数量
@@ -129,12 +129,12 @@ public class HouseUpdateParam implements Serializable {
     this.totalFloors = totalFloors;
   }
 
-  public List<HouseConfigSaveParam> getHouseConfigSaveParams() {
-    return houseConfigSaveParams;
+  public List<HouseConfigSaveOrUpdateParam> getHouseConfigSaveOrUpdateParams() {
+    return houseConfigSaveOrUpdateParams;
   }
 
-  public void setHouseConfigSaveParams(List<HouseConfigSaveParam> houseConfigSaveParams) {
-    this.houseConfigSaveParams = houseConfigSaveParams;
+  public void setHouseConfigSaveOrUpdateParams(List<HouseConfigSaveOrUpdateParam> houseConfigSaveOrUpdateParams) {
+    this.houseConfigSaveOrUpdateParams = houseConfigSaveOrUpdateParams;
   }
 
   public Integer getNum() {

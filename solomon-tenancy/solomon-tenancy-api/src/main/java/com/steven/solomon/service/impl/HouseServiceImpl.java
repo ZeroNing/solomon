@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
@@ -69,7 +68,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     house.setNum(param.getNum());
     baseMapper.insert(house);
 
-    houseConfigService.save(param.getHouseConfigSaveParams(), house);
+    houseConfigService.save(param.getHouseConfigSaveOrUpdateParams(), house);
 
     return house.getId();
   }
@@ -77,7 +76,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void update(HouseUpdateParam param) throws BaseException, IOException {
-    House house = ValidateUtils.isEmpty(baseMapper.selectById(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
+    House house = ValidateUtils.isEmpty(this.get(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
 
     if(house.getInitStatus()){
       throw new BaseException(TenancyErrorCode.HOUSE_IS_INIT_SUCCESS);
@@ -99,7 +98,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         .set(House::getOwner, param.getOwner()).set(House::getTotalFloors, param.getTotalFloors())
         .set(House :: getNum,param.getNum());
 
-    houseConfigService.save(param.getHouseConfigSaveParams(), house);
+    houseConfigService.save(param.getHouseConfigSaveOrUpdateParams(), house);
 
     baseMapper.updateById(house);
   }
@@ -143,6 +142,13 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
       house.setAddress(RSAUtils.decrypt(house.getAddress()));
     }
     return house;
+  }
+
+  @Override
+  public House get(String id) {
+    HouseGetParam param = new HouseGetParam();
+    param.setId(id);
+    return this.get(param);
   }
 
   @Override

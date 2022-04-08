@@ -100,4 +100,14 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房间记录不存在
    */
   String ROOM_IS_NULL="ROOM_IS_NULL";
+
+  /**
+   * 房间配置不允许为空
+   */
+  String ROOM_TYPE_CONFIG_IS_NOT_NULL="ROOM_TYPE_CONFIG_IS_NOT_NULL";
+
+  /**
+   * 楼层房间数配置不允许新建或更新
+   */
+  String FLOOR_ROOM_NOT_SAVE_OR_UPDATE = "FLOOR_ROOM_NOT_SAVE_OR_UPDATE";
 }

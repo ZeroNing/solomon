@@ -22,5 +22,7 @@ public interface HouseService {
 
   House get(HouseGetParam param);
 
+  House get(String id);
+
   void init(HouseInitParam param) throws BaseException, IOException;
 }
