@@ -146,6 +146,10 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
   public void update(HouseConfigUpdateParam param) throws BaseException, JsonProcessingException {
     HouseConfig config = ValidateUtils.isEmpty(this.get(param.getId()),TenancyErrorCode.ROOM_CONFIG_IS_NULL);
 
+    if(config.getType().equals(HouseConfigTypeEnum.FLOOR_ROOM.toString())){
+      throw new BaseException(TenancyErrorCode.FLOOR_ROOM_NOT_SAVE_OR_UPDATE);
+    }
+
     List<HouseConfig> list = this.findByTypeAndHouseId(param.getType(),param.getId());
     if(ValidateUtils.isNotEmpty(list)){
       List<String> deleteIds = LambdaUtils.toList(list,houseConfig -> !houseConfig.getId().equals(param.getId()),HouseConfig::getId);
@@ -154,9 +158,6 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
       }
     }
 
-    if(config.getType().equals(HouseConfigTypeEnum.FLOOR_ROOM.toString())){
-      throw new BaseException(TenancyErrorCode.FLOOR_ROOM_NOT_SAVE_OR_UPDATE);
-    }
     config.update("1");
     config.setType(param.getType().toString());
     config.setJson(JackJsonUtils.formatJsonByFilter(param.getDate()));
