@@ -54,9 +54,17 @@ public class HouseController extends BaseController {
   }
 
   @PostMapping("/config/save")
-  public String saveConfig(@Valid @RequestBody HouseConfigSaveParam param) throws IOException {
+  public String saveConfig(@Valid @RequestBody HouseConfigSaveParam param) throws IOException, BaseException {
+    houseConfigService.save(param);
     return super.responseSuccessJson();
   }
+
+  @PostMapping("/config/update")
+  public String updateConfig(@Valid @RequestBody HouseConfigUpdateParam param) throws IOException, BaseException {
+    houseConfigService.update(param);
+    return super.responseSuccessJson();
+  }
+
 
   @PutMapping("/room/update")
   public String update(@Valid @RequestBody RoomUpdateParam params) throws IOException, BaseException {

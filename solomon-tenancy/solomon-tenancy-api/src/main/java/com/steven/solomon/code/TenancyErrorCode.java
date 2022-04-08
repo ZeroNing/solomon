@@ -110,4 +110,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 楼层房间数配置不允许新建或更新
    */
   String FLOOR_ROOM_NOT_SAVE_OR_UPDATE = "FLOOR_ROOM_NOT_SAVE_OR_UPDATE";
+
+  /**
+   * 房屋配置信息不存在
+   */
+  String ROOM_CONFIG_IS_NULL="ROOM_CONFIG_IS_NULL";
 }

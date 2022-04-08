@@ -11,6 +11,7 @@ import com.steven.solomon.enums.HouseConfigTypeEnum;
 import com.steven.solomon.mapper.HouseConfigMapper;
 import com.steven.solomon.param.HouseConfigSaveOrUpdateParam;
 import com.steven.solomon.param.HouseConfigSaveParam;
+import com.steven.solomon.param.HouseConfigUpdateParam;
 import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.service.HouseService;
 import com.steven.solomon.utils.json.JackJsonUtils;
@@ -18,6 +19,7 @@ import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -137,6 +139,41 @@ public class HouseConfigServiceImpl extends ServiceImpl<HouseConfigMapper, House
     }
 
     this.saveBatch(saveConfigList);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
+  public void update(HouseConfigUpdateParam param) throws BaseException, JsonProcessingException {
+    HouseConfig config = ValidateUtils.isEmpty(this.get(param.getId()),TenancyErrorCode.ROOM_CONFIG_IS_NULL);
+
+    List<HouseConfig> list = this.findByTypeAndHouseId(param.getType(),param.getId());
+    if(ValidateUtils.isNotEmpty(list)){
+      List<String> deleteIds = LambdaUtils.toList(list,houseConfig -> !houseConfig.getId().equals(param.getId()),HouseConfig::getId);
+      if(ValidateUtils.isNotEmpty(deleteIds)){
+        this.removeBatchByIds(deleteIds);
+      }
+    }
+
+    if(config.getType().equals(HouseConfigTypeEnum.FLOOR_ROOM.toString())){
+      throw new BaseException(TenancyErrorCode.FLOOR_ROOM_NOT_SAVE_OR_UPDATE);
+    }
+    config.update("1");
+    config.setType(param.getType().toString());
+    config.setJson(JackJsonUtils.formatJsonByFilter(param.getDate()));
+    this.update(config,null);
+  }
+
+  @Override
+  public HouseConfig get(String id) {
+    return this.getById(id);
+  }
+
+  @Override
+  public List<HouseConfig> findByTypeAndHouseId(HouseConfigTypeEnum type, String houseId) {
+    LambdaQueryWrapper<HouseConfig> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(true,HouseConfig::getHouseId,houseId);
+    queryWrapper.eq(true,HouseConfig::getType,type.toString());
+    return this.baseMapper.selectList(queryWrapper);
   }
 
 }
