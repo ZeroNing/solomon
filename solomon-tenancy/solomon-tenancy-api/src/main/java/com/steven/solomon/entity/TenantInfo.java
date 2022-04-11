@@ -3,44 +3,54 @@ package com.steven.solomon.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.base.model.BaseEntity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;
 
 @TableName("tenant_info")
+@ApiModel("租户信息实体类")
 public class TenantInfo extends BaseEntity<String> {
 
     /**
      * 租客名称
      */
+    @ApiModelProperty(value="租客名称")
     private String name;
 
     /**
      * 身份证号码
      */
+    @ApiModelProperty(value="身份证号码")
     private String identityCard;
 
     /**
      * 手机号码
      */
+    @ApiModelProperty(value="手机号码")
     private String phone;
 
     /**
      * 省份id
      */
+    @ApiModelProperty(value="省份id")
     private Long provinceId;
 
     /**
      * 市级id
      */
+    @ApiModelProperty(value="市级id")
     private Long cityId;
 
     /**
      * 区级id
      */
+    @ApiModelProperty(value="区域id")
     private Long areaId;
 
     /**
      * 身份证地址
      */
+    @ApiModelProperty(value="身份证地址")
     private String address;
 
     public TenantInfo(){

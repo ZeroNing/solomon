@@ -1,70 +1,85 @@
 package com.steven.solomon.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @TableName("area")
+@ApiModel("地图实体类")
 public class Area implements Serializable {
 
   /**
    * id
    */
+  @ApiModelProperty(value="主键id")
   private Long id;
 
   /**
    * 层级
    */
+  @ApiModelProperty(value="层级")
   private int levelCode;
 
   /**
    * 父级行政代码
    */
+  @ApiModelProperty(value="父级行政代码")
   private String parentCode;
 
   /**
    * 行政代码
    */
+  @ApiModelProperty(value="行政代码")
   private String areaCode;
 
   /**
    * 邮政编码
    */
+  @ApiModelProperty(value="邮政编码")
   private String zipCode;
 
   /**
    * 区号
    */
+  @ApiModelProperty(value="区号")
   private String cityCode;
 
   /**
    * 名称
    */
+  @ApiModelProperty(value="名称")
   private String name;
 
   /**
    * 简称
    */
+  @ApiModelProperty(value="简称")
   private String shortName;
 
   /**
    * 组合名
    */
+  @ApiModelProperty(value="组合名")
   private String mergerName;
 
   /**
    * 拼音
    */
+  @ApiModelProperty(value="拼音")
   private String pinyin;
 
   /**
    * 经度
    */
+  @ApiModelProperty(value="经度")
   private BigDecimal lng;
 
   /**
    * 纬度
    */
+  @ApiModelProperty(value="纬度")
   private BigDecimal lat;
 
   public Area() {
