@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.entity.Area;
 import com.steven.solomon.mapper.AreaMapper;
+import com.steven.solomon.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
@@ -17,6 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @DubboService
 public class AreaServiceImpl extends ServiceImpl<AreaMapper,Area> implements AreaService {
+
+  @Override
+  public List<Area> findByAreaCode(AreaListParam param) {
+    LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(Area::getParentCode,param.getAreaCode());
+
+    return super.baseMapper.selectList(queryWrapper);
+  }
 
   @Override
   public Area findById(Long id) {

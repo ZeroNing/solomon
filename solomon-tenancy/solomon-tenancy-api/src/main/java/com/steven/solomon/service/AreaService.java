@@ -1,10 +1,13 @@
 package com.steven.solomon.service;
 
 import com.steven.solomon.entity.Area;
+import com.steven.solomon.param.AreaListParam;
 import java.util.List;
 import java.util.Map;
 
 public interface AreaService {
+
+  List<Area> findByAreaCode(AreaListParam param);
 
   Area findById(Long id);
 
