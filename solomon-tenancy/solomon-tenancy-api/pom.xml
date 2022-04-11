@@ -11,17 +11,33 @@
 
   <artifactId>solomon-tenancy-api</artifactId>
 
+  <properties>
+    <swagger.version>2.9.2</swagger.version>
+    <mybatis-plus.version>3.5.1</mybatis-plus.version>
+  </properties>
+
   <dependencies>
+
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.5.1</version>
+      <version>${mybatis-plus.version}</version>
     </dependency>
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-extension</artifactId>
-      <version>3.5.1</version>
+      <version>${mybatis-plus.version}</version>
     </dependency>
     <dependency>
       <groupId>com.alibaba</groupId>
