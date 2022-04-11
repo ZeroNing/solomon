@@ -1,22 +1,28 @@
 package com.steven.solomon.param;
 
 import com.steven.solomon.base.model.BasePageParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel("租户信息分页请求参数")
 public class TenantInfoPageParam extends BasePageParam {
 
   /**
    * 省份id
    */
+  @ApiModelProperty(value = "省份id")
   private Long provinceId;
 
   /**
    * 市id
    */
+  @ApiModelProperty(value = "市级id")
   private Long cityId;
 
   /**
    * 区id
    */
+  @ApiModelProperty(value = "区域id")
   private Long areaId;
 
   public Long getProvinceId() {

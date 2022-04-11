@@ -1,61 +1,72 @@
 package com.steven.solomon.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+@ApiModel("房屋保存请求参数")
 public class HouseSaveParam implements Serializable {
 
   /**
    * 省份id
    */
   @NotNull(message = TenancyErrorCode.PROVINCE_ID_NOT_NULL)
+  @ApiModelProperty(value = "省份id")
   private Long provinceId;
 
   /**
    * 市id
    */
   @NotNull(message = TenancyErrorCode.CITY_ID_NOT_NULL)
+  @ApiModelProperty(value = "市级id",required = true)
   private Long cityId;
 
   /**
    * 区id
    */
   @NotNull(message = TenancyErrorCode.AREA_ID_NOT_NULL)
+  @ApiModelProperty(value = "区id",required = true)
   private Long areaId;
 
   /**
    * 地址
    */
+  @ApiModelProperty(value = "地址",required = true)
   @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   private String address;
 
   /**
    * 所属权人
    */
+  @ApiModelProperty(value = "所属权人")
   private String owner;
 
   /**
    * 手机号码
    */
+  @ApiModelProperty(value = "手机号码")
   private String phone;
 
   /**
    * 总层数
    */
   @NotNull(message = TenancyErrorCode.ROOM_NUM_NOT_NULL)
+  @ApiModelProperty(value = "总层数",required = true)
   private Integer                    totalFloors;
 
   /**
    * 房间数量
    */
   @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  @ApiModelProperty(value = "房间数量",required = true)
   private Integer                            num;
   /**
    * 房间数量配置
    */
+  @ApiModelProperty(value = "房间数量配置")
   private List<HouseConfigSaveOrUpdateParam> houseConfigSaveOrUpdateParams;
 
   public Long getProvinceId() {
