@@ -63,7 +63,7 @@ public @interface RabbitMq {
 	String exchangeTypes() default ExchangeTypes.DIRECT;
 
 	/**
-	 * 延迟默认0秒
+	 * 消息最大存活时间
 	 */
 	long delay() default 0L;
 
