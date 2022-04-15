@@ -19,11 +19,11 @@ public @interface Lock {
   String lockKey() default "";
 
   /**
-   * 过期时间
+   * 过期时间（秒）
    *
    * @return
    */
-  long expire() default 30L;
+  int expire() default 30;
 
   /**
    * 报错异常编码
