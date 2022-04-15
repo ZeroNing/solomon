@@ -1,6 +1,9 @@
 package com.steven.solomon.utils.redis;
 
 import com.steven.solomon.utils.verification.ValidateUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -51,12 +54,14 @@ public class RedisService implements ICaheService {
   }
 
   @Override
-  public void del(String... key) {
+  public void del(String group,String... key) {
     if (ValidateUtils.isNotEmpty(key) && key.length > 0) {
       if (key.length == 1) {
-        redisTemplate.delete(key[0]);
+        redisTemplate.delete(assembleKey(group, key[0]));
       } else {
-        redisTemplate.delete(Arrays.asList(key));
+        List<String> keys = new ArrayList<>();
+        Arrays.asList(key).stream().forEach(a -> keys.add(assembleKey(group,a)));
+        redisTemplate.delete(keys);
       }
     }
   }

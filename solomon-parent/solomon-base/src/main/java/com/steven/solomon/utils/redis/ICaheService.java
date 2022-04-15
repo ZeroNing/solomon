@@ -30,7 +30,7 @@ public interface ICaheService {
    * 删除缓存
    * @param key 可以传一个值 或多个
    */
-  void del(String... key);
+  void del(String group,String... key);
 
   /**
    * 普通缓存获取

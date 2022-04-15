@@ -34,7 +34,6 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
     MessageProperties messageProperties = message.getMessageProperties();
     long              deliveryTag       = messageProperties.getDeliveryTag();
     String correlationId     = messageProperties.getHeader("spring_returned_message_correlation");
-    String key  = "rabbitMQ-correlationId-lock:" + correlationId;
     try {
       // 消费者内容
       String json= new String(message.getBody(), StandardCharsets.UTF_8);
@@ -50,18 +49,17 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       //将消费失败的记录保存到数据库或者不处理也可以
       this.saveFailMessage(message, e);
       //保存重试失败次数达到retryNumber上线后拒绝此消息入队列并删除redis
-      saveFailNumber(messageProperties, channel, deliveryTag,correlationId);
+      saveFailNumber(messageProperties, channel, deliveryTag,correlationId,e);
      } finally {
-      iCaheService.del(key);
+      iCaheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
     }
   }
 
   /**
    * 记录失败次数并决定是否拒绝此消息
    */
-  public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId) throws Exception {
-    String key  = "rabbitMQ-correlationId-lock:" + correlationId;
-    Integer lock = (Integer) iCaheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,key);
+  public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId,Exception e) throws Exception {
+    Integer lock = (Integer) iCaheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
     Integer actualLock = ValidateUtils.isEmpty(lock) ? 1 : lock + 1;
     logger.info("rabbitMQ 失败记录:消费者correlationId为:{},deliveryTag为:{},失败次数为:{}", correlationId, deliveryTag,actualLock);
     int retryNumber = getRetryNumber();
@@ -70,13 +68,13 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
         logger.info("rabbitMQ 失败记录:因记录不需要重试因此直接拒绝此消息,消费者correlationId为:{},消费者设置重试次数为:{}", correlationId, retryNumber);
       } else {
         logger.info("rabbitMQ 失败记录:已满足重试次数,删除redis消息并且拒绝此消息,消费者correlationId为:{},重试次数为:{}", correlationId, actualLock);
-        iCaheService.del(key);
+        iCaheService.del(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
       }
       channel.basicNack(messageProperties.getDeliveryTag(), false, false);
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
-      iCaheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,key, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
-      channel.basicReject(deliveryTag, true);
+      iCaheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
+      throw e;
     }
   }
 

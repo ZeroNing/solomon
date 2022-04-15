@@ -9,4 +9,8 @@ public interface BaseICacheCode {
      * 分布式锁接口redis分组
      */
     String REDIS_LOCK = "redis:lock";
+    /**
+     * rabbitMq队列锁
+     */
+    String RABBIT_LOCK = "rabbitMQ-correlationId-lock";
 }
