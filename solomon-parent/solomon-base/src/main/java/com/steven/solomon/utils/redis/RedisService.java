@@ -1,9 +1,12 @@
 package com.steven.solomon.utils.redis;
 
+import com.steven.solomon.base.code.error.BaseExceptionCode;
+import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,7 @@ public class RedisService implements ICaheService {
   // =============================common============================
 
   @Override
-  public boolean expire(String group,String key, long time) {
+  public boolean expire(String group,String key, Integer time) {
     try {
       if (time > 0) {
         redisTemplate.expire(assembleKey(group, key), time, TimeUnit.SECONDS);
@@ -75,33 +78,31 @@ public class RedisService implements ICaheService {
   }
 
   @Override
-  public boolean set(String group,String key, Object value) {
+  public <T> T set(String group,String key, T value) throws BaseException {
     try {
       redisTemplate.boundValueOps(assembleKey(group, key)).set(value);
-      return true;
+      return value;
     } catch (Exception e) {
-      e.printStackTrace();
-      return false;
+      throw new BaseException(BaseExceptionCode.BASE_EXCEPTION_CODE);
     }
   }
 
   @Override
-  public boolean set(String group,String key, Object value, long time) {
+  public <T> T set(String group,String key, T value, Integer time) throws BaseException {
     try {
       if (time > 0) {
         redisTemplate.boundValueOps(assembleKey(group, key)).set(value, time, TimeUnit.SECONDS);
       } else {
         set(group,key, value);
       }
-      return true;
+      return value;
     } catch (Exception e) {
-      e.printStackTrace();
-      return false;
+      throw new BaseException(BaseExceptionCode.BASE_EXCEPTION_CODE);
     }
   }
 
   @Override
-  public boolean lockSet(String group,String key, Object value, long time) {
+  public boolean lockSet(String group,String key, Object value, Integer time) {
     Boolean success = redisTemplate.opsForValue().setIfAbsent(assembleKey(group, key), value);
     redisTemplate.expire(key, time, TimeUnit.SECONDS);
     return ValidateUtils.isNotEmpty(success) ? success : false;

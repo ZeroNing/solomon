@@ -1,5 +1,8 @@
 package com.steven.solomon.utils.redis;
 
+import com.steven.solomon.base.excetion.BaseException;
+import org.apache.poi.ss.formula.functions.T;
+
 public interface ICaheService {
   /**
    * 指定缓存失效时间
@@ -8,7 +11,7 @@ public interface ICaheService {
    * @param time 时间(秒)
    * @return
    */
-  boolean expire(String group,String key, long time);
+  boolean expire(String group,String key, Integer time);
 
   /**
    * 根据key 获取过期时间
@@ -47,7 +50,7 @@ public interface ICaheService {
    * @param value 值
    * @return true成功 false失败
    */
-  boolean set(String group,String key, Object value);
+  <T>T set(String group,String key, T value) throws BaseException;
 
   /**
    * 普通缓存放入并设置时间
@@ -57,7 +60,7 @@ public interface ICaheService {
    * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
    * @return true成功 false 失败
    */
-  boolean set(String group,String key, Object value, long time);
+  <T>T set(String group,String key, T value, Integer time) throws BaseException;
 
   /**
    * 设置setnx的锁
@@ -67,7 +70,7 @@ public interface ICaheService {
    * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
    * @return true没有锁，但加锁成功 false 已存在锁，加锁失败失败
    */
-  boolean lockSet(String group,String key, Object value, long time);
+  boolean lockSet(String group,String key, Object value, Integer time);
 
   /**
    * 删除锁
@@ -75,4 +78,5 @@ public interface ICaheService {
    * @param key 键
    */
   void deleteLock(String group,String key);
+
 }
