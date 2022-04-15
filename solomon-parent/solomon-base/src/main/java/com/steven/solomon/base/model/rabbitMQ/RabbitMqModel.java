@@ -33,6 +33,7 @@ public class RabbitMqModel<T> extends BaseMq {
   public RabbitMqModel(String exchange, T body) {
     super();
     this.body = body;
+    this.exchange = exchange;
   }
 
   public RabbitMqModel(String exchange, String routingKey, T body) {

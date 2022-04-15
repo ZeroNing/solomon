@@ -51,8 +51,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       this.saveFailMessage(message, e);
       //保存重试失败次数达到retryNumber上线后拒绝此消息入队列并删除redis
       saveFailNumber(messageProperties, channel, deliveryTag,correlationId);
-      throw e;
-    } finally {
+     } finally {
       iCaheService.del(key);
     }
   }
@@ -77,6 +76,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
       iCaheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,key, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
+      channel.basicReject(deliveryTag, true);
     }
   }
 

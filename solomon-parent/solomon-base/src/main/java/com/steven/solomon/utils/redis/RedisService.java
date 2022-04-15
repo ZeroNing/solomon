@@ -84,7 +84,7 @@ public class RedisService implements ICaheService {
   public boolean set(String group,String key, Object value, long time) {
     try {
       if (time > 0) {
-        redisTemplate.boundValueOps(key).set(value, time, TimeUnit.SECONDS);
+        redisTemplate.boundValueOps(assembleKey(group, key)).set(value, time, TimeUnit.SECONDS);
       } else {
         set(group,key, value);
       }
