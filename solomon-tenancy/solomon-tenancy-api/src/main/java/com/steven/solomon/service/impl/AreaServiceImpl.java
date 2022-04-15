@@ -7,11 +7,14 @@ import com.steven.solomon.mapper.AreaMapper;
 import com.steven.solomon.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.utils.lambda.LambdaUtils;
+import com.steven.solomon.utils.redis.ICaheService;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 @DubboService
 public class AreaServiceImpl extends ServiceImpl<AreaMapper,Area> implements AreaService {
 
+  @Resource
+  private ICaheService iCaheService;
+
   @Override
+  @Cacheable(cacheNames ="area", key="#param.getAreaCode()")
   public List<Area> findByAreaCode(AreaListParam param) {
     LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(Area::getParentCode,param.getAreaCode());
-
     return super.baseMapper.selectList(queryWrapper);
   }
 
