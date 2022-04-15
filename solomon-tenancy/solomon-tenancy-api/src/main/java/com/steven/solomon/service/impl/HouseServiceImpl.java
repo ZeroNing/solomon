@@ -122,14 +122,14 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
 
     Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
 
-    for (HouseVO HOUSE : records) {
-      HOUSE.setAddress(RSAUtils.decrypt(HOUSE.getAddress()));
-      Area area = areaMap.get(HOUSE.getProvinceId());
-      HOUSE.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
-      area = areaMap.get(HOUSE.getCityId());
-      HOUSE.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
-      area = areaMap.get(HOUSE.getAreaId());
-      HOUSE.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+    for (HouseVO houseVO : records) {
+      houseVO.setAddress(RSAUtils.decrypt(houseVO.getAddress()));
+      Area area = areaMap.get(houseVO.getProvinceId());
+      houseVO.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(houseVO.getCityId());
+      houseVO.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(houseVO.getAreaId());
+      houseVO.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
     }
     page.setRecords(records);
     return page;
