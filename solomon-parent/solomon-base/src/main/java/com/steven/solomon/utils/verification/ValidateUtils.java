@@ -37,18 +37,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值相等报错
    */
   public static void equals(String contrast, String var, String errorCode) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(equals(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值相等报错
    */
   public static void equals(String contrast, String var, String errorCode, String... args) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(equals(contrast, var),new BaseException(errorCode, args));
   }
 
   /**
@@ -62,18 +58,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值不相等报错
    */
   public static void notEquals(String contrast, String var, String errorCode) throws BaseException {
-    if (notEquals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(notEquals(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值不相等报错
    */
   public static void notEquals(String contrast, String var, String errorCode, String... args) throws BaseException {
-    if (notEquals(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(notEquals(contrast, var),new BaseException(errorCode, args));
   }
 
   public static boolean equalsIgnoreCase(String contrast, String var) {
@@ -91,9 +83,7 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值相等报错（忽略大小写）
    */
   public static void equalsIgnoreCase(String contrast, String var, String errorCode) throws BaseException {
-    if (equalsIgnoreCase(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(equalsIgnoreCase(contrast, var),new BaseException(errorCode));
   }
 
   /**
@@ -101,9 +91,7 @@ public class ValidateUtils extends EmptyUtils {
    */
   public static void equalsIgnoreCase(String contrast, String var, String errorCode, String... args)
       throws BaseException {
-    if (equalsIgnoreCase(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(equalsIgnoreCase(contrast, var),new BaseException(errorCode, args));
   }
 
   public static boolean notEqualsIgnoreCase(String contrast, String var) {
@@ -114,19 +102,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值不相等报错（忽略大小写）
    */
   public static void notEqualsIgnoreCase(String contrast, String var, String errorCode) throws BaseException {
-    if (notEqualsIgnoreCase(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(notEqualsIgnoreCase(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值不相等报错（忽略大小写）
    */
-  public static void notEqualsIgnoreCase(String contrast, String var, String errorCode, String... args)
-      throws BaseException {
-    if (notEqualsIgnoreCase(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+  public static void notEqualsIgnoreCase(String contrast, String var, String errorCode, String... args) throws BaseException {
+    check(notEqualsIgnoreCase(contrast, var),new BaseException(errorCode, args));
   }
 
   public static boolean equals(Number contrast, Number var) {
@@ -142,18 +125,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值相等报错
    */
   public static void equals(Number contrast, Number var, String errorCode) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(equals(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值相等报错
    */
   public static void equals(Number contrast, Number var, String errorCode, String... args) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(equals(contrast, var),new BaseException(errorCode, args));
   }
 
   public static boolean notEquals(Number contrast, Number var) {
@@ -164,9 +143,7 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值不相等报错
    */
   public static void notEquals(Number contrast, Number var, String errorCode) throws BaseException {
-    if (notEquals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(equals(contrast, var),new BaseException(errorCode));
   }
 
   /**
@@ -191,18 +168,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值相等报错
    */
   public static void equals(Boolean contrast, Boolean var, String errorCode) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(equals(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值相等报错
    */
   public static void equals(Boolean contrast, Boolean var, String errorCode, String... args) throws BaseException {
-    if (equals(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(equals(contrast, var),new BaseException(errorCode, args));
   }
 
   public static boolean notEquals(Boolean contrast, Boolean var) {
@@ -213,18 +186,14 @@ public class ValidateUtils extends EmptyUtils {
    * 判断值不相等报错
    */
   public static void notEquals(Boolean contrast, Boolean var, String errorCode) throws BaseException {
-    if (notEquals(contrast, var)) {
-      throw new BaseException(errorCode);
-    }
+    check(notEquals(contrast, var),new BaseException(errorCode));
   }
 
   /**
    * 判断值不相等报错
    */
   public static void notEquals(Boolean contrast, Boolean var, String errorCode, String... args) throws BaseException {
-    if (notEquals(contrast, var)) {
-      throw new BaseException(errorCode, args);
-    }
+    check(notEquals(contrast, var),new BaseException(errorCode, args));
   }
 
   /**
@@ -248,6 +217,12 @@ public class ValidateUtils extends EmptyUtils {
    */
   public static boolean isNumber(String str) {
     return regular(IS_NUMBER_PATTERN,str);
+  }
+
+  private static void check(boolean flag,BaseException e) throws BaseException {
+    if(flag){
+      throw e;
+    }
   }
 
   public static boolean regular(Pattern pattern,Object object){
