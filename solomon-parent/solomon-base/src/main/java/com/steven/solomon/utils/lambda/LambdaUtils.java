@@ -1,8 +1,6 @@
 package com.steven.solomon.utils.lambda;
 
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.K;
 import com.steven.solomon.utils.verification.ValidateUtils;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
@@ -17,7 +15,6 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 public class LambdaUtils {
 
@@ -589,4 +586,12 @@ public class LambdaUtils {
     return list.stream().filter(predicate).mapToDouble(func).summaryStatistics();
   }
 
+  /**
+   * 去重
+   * @param list 数据集合
+   * @param func 需要的字段
+   */
+  public <T,S> List<S> distinct(List<T> list, Function<T, S> func){
+    return list.stream().map(func).distinct().collect(Collectors.toList());
+  }
 }
