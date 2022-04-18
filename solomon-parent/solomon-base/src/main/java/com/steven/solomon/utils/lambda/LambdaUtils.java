@@ -596,7 +596,7 @@ public class LambdaUtils {
   }
 
   /**
-   * 判断的条件里，任意一个元素成功，返回true
+   * 匹配 判断的条件里，任意一个元素成功，返回true
    *
    * @param list      数据集合
    * @param predicate 条件筛选数据
@@ -606,7 +606,7 @@ public class LambdaUtils {
   }
 
   /**
-   * 判断条件里的元素，所有的都是，返回true
+   * 匹配 判断条件里的元素，所有的都是，返回true
    *
    * @param list      数据集合
    * @param predicate 条件筛选数据
@@ -616,7 +616,7 @@ public class LambdaUtils {
   }
 
   /**
-   * noneMatch跟allMatch相反，判断条件里的元素，所有的都不是，返回true
+   * 匹配 noneMatch跟allMatch相反，判断条件里的元素，所有的都不是，返回true
    *
    * @param list      数据集合
    * @param predicate 条件筛选数据
