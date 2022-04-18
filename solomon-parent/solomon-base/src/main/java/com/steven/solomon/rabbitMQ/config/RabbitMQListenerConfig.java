@@ -61,23 +61,18 @@ public class RabbitMQListenerConfig {
 
         Map<String, AbstractMQService> abstractMQMap = SpringUtil.getBeansOfType(AbstractMQService.class);
         // 遍历消费者队列进行初始化绑定以及监听
-        for (Object abstractConsumer : clazzList) {
+        initMq : for (Object abstractConsumer : clazzList) {
             // 根据反射获取rabbitMQ注解信息
             rabbitMq = AnnotationUtils.findAnnotation(abstractConsumer.getClass(), RabbitMq.class);
             String[] queues = rabbitMq.queues();
-            boolean isSkip = false;
-            notEnable :for (String queue : queues) {
+            for (String queue : queues) {
                 /**
                  * 判断配置文件中是否存在去除启动的rabbitmq队列
                  */
                 if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(queue)){
                     logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列",notEnableQueueList, rabbitMq.queues());
-                    isSkip = true;
-                    break notEnable;
+                    continue initMq;
                 }
-            }
-            if (isSkip) {
-                continue;
             }
 
             for (String queueName : queues) {
