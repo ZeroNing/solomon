@@ -1,5 +1,6 @@
 package com.steven.solomon.utils.lambda;
 
+import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.Collection;
 import java.util.Comparator;
@@ -594,4 +595,35 @@ public class LambdaUtils {
   public <T,S> List<S> distinct(List<T> list, Function<T, S> func){
     return list.stream().map(func).distinct().collect(Collectors.toList());
   }
+
+  /**
+   * 判断的条件里，任意一个元素成功，返回true
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   */
+  public <T> boolean anyMatch(List<T> list,Predicate<T> predicate){
+    return list.stream().anyMatch(predicate);
+  }
+
+  /**
+   * 判断条件里的元素，所有的都是，返回true
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   */
+  public <T> boolean allMatch(List<T> list,Predicate<T> predicate){
+    return list.stream().allMatch(predicate);
+  }
+
+  /**
+   * noneMatch跟allMatch相反，判断条件里的元素，所有的都不是，返回true
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   */
+  public <T> boolean noneMatch(List<T> list,Predicate<T> predicate){
+    return list.stream().noneMatch(predicate);
+  }
+
 }
