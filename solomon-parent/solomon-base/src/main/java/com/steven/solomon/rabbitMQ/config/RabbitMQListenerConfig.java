@@ -70,7 +70,7 @@ public class RabbitMQListenerConfig {
                  * 判断配置文件中是否存在去除启动的rabbitmq队列
                  */
                 if(ValidateUtils.isNotEmpty(notEnableQueueList) && notEnableQueueList.contains(queue)){
-                    logger.info("MessageListenerConfig:{} 不启用的队列名包含 {} 队列",notEnableQueueList, rabbitMq.queues());
+                    logger.info("MessageListenerConfig:不启用队列为:{} 不启用的队列名包含 {} 队列",notEnableQueueList, rabbitMq.queues());
                     continue initMq;
                 }
             }
