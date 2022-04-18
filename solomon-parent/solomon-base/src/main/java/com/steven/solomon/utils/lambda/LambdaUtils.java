@@ -1,10 +1,14 @@
 package com.steven.solomon.utils.lambda;
 
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.K;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -13,6 +17,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 public class LambdaUtils {
 
@@ -24,7 +29,7 @@ public class LambdaUtils {
    * @param func      需要的字段
    */
   public static <T, S> List<T> toList(Collection<S> list, Predicate<S> predicate, Function<S, T> func) {
-    if(ValidateUtils.isEmpty(list)){
+    if (ValidateUtils.isEmpty(list)) {
       return null;
     }
     return list.stream().filter(predicate).map(func).collect(Collectors.toList());
@@ -305,6 +310,16 @@ public class LambdaUtils {
    * @param list 数据集合
    *             ram func 分组汇总相加的字段
    */
+  public static <S> S max(Collection<S> list, Comparator<? super S> comparator) {
+    return list.stream().max(comparator).get();
+  }
+
+  /**
+   * 找出最大值
+   *
+   * @param list 数据集合
+   *             ram func 分组汇总相加的字段
+   */
   public static <T> Integer max(Collection<T> list, ToIntFunction<T> func) {
     return list.stream().mapToInt(func).max().getAsInt();
   }
@@ -360,6 +375,16 @@ public class LambdaUtils {
    */
   public static <T> Double max(Collection<T> list, Predicate<T> predicate, ToDoubleFunction<T> func) {
     return list.stream().filter(predicate).mapToDouble(func).max().getAsDouble();
+  }
+
+  /**
+   * 找出最大值
+   *
+   * @param list 数据集合
+   *             ram func 分组汇总相加的字段
+   */
+  public static <S> S min(Collection<S> list, Comparator<? super S> comparator) {
+    return list.stream().min(comparator).get();
   }
 
   /**
@@ -496,6 +521,72 @@ public class LambdaUtils {
    */
   public static <T> List<T> sort(Collection<T> list, Comparator<? super T> comparator) {
     return list.stream().sorted(comparator).collect(Collectors.toList());
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list 数据集合
+   *             ram func 分组汇总相加的字段
+   */
+  public static <T> IntSummaryStatistics summaryStatistics(Collection<T> list, ToIntFunction<T> func) {
+    return list.stream().mapToInt(func).summaryStatistics();
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   * @param func      分组汇总相加的字段
+   */
+  public static <T> IntSummaryStatistics summaryStatistics(Collection<T> list, Predicate<T> predicate,
+      ToIntFunction<T> func) {
+    return list.stream().filter(predicate).mapToInt(func).summaryStatistics();
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> LongSummaryStatistics summaryStatistics(Collection<T> list, ToLongFunction<T> func) {
+    return list.stream().mapToLong(func).summaryStatistics();
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   * @param func      分组汇总相加的字段
+   */
+  public static <T> LongSummaryStatistics summaryStatistics(Collection<T> list, Predicate<T> predicate,
+      ToLongFunction<T> func) {
+    return list.stream().filter(predicate).mapToLong(func).summaryStatistics();
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list 数据集合
+   * @param func 分组汇总相加的字段
+   */
+  public static <T> DoubleSummaryStatistics summaryStatistics(Collection<T> list, ToDoubleFunction<T> func) {
+    return list.stream().mapToDouble(func).summaryStatistics();
+  }
+
+  /**
+   * 获取各种汇总数据
+   *
+   * @param list      数据集合
+   * @param predicate 条件筛选数据
+   * @param func      分组汇总相加的字段
+   */
+  public static <T> DoubleSummaryStatistics summaryStatistics(Collection<T> list, Predicate<T> predicate,
+      ToDoubleFunction<T> func) {
+    return list.stream().filter(predicate).mapToDouble(func).summaryStatistics();
   }
 
 }
