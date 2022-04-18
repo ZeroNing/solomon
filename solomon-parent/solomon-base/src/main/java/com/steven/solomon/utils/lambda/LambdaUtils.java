@@ -1,6 +1,5 @@
 package com.steven.solomon.utils.lambda;
 
-import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.Collection;
 import java.util.Comparator;
