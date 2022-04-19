@@ -40,4 +40,8 @@ public class HouseVO extends House {
   public void setAreaName(String areaName) {
     this.areaName = areaName;
   }
+
+  public String getProvinceCityAreaAddress(){
+    return getProvinceName()+getCityName()+getCityName()+getAddress();
+  }
 }

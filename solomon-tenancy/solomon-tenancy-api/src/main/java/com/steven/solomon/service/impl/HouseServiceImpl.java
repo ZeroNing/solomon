@@ -1,5 +1,6 @@
 package com.steven.solomon.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -22,6 +23,7 @@ import com.steven.solomon.utils.lambda.LambdaUtils;
 import com.steven.solomon.utils.rsa.RSAUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import com.steven.solomon.vo.HouseVO;
+import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +64,8 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     house.setCityId(param.getCityId());
     house.setAreaId(param.getAreaId());
     house.setAddress(RSAUtils.encrypt(param.getAddress()));
-    house.setPhone(param.getPhone());
-    house.setOwner(param.getOwner());
+    house.setPhone(RSAUtils.encrypt(param.getPhone()));
+    house.setOwner(RSAUtils.encrypt(param.getOwner()));
     house.setTotalFloors(param.getTotalFloors());
     house.setNum(param.getNum());
     baseMapper.insert(house);
@@ -76,7 +78,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
   public void update(HouseUpdateParam param) throws BaseException, IOException {
-    House house = ValidateUtils.isEmpty(this.get(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
+    HouseVO house = ValidateUtils.isEmpty(this.get(param.getId()), TenancyErrorCode.HOUSE_IS_NULL);
 
     if(house.getInitStatus()){
       throw new BaseException(TenancyErrorCode.HOUSE_IS_INIT_SUCCESS);
@@ -94,13 +96,13 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     updateQueryWrapper.eq(House::getId, param.getId()).set(House::getProvinceId, param.getProvinceId())
         .set(House::getUpdateDate, house.getUpdateDate()).set(House::getUpdateId, house.getUpdateId())
         .set(House::getCityId, param.getCityId()).set(House::getAreaId, param.getAreaId())
-        .set(House::getAddress, RSAUtils.encrypt(param.getAddress())).set(House::getPhone, param.getPhone())
-        .set(House::getOwner, param.getOwner()).set(House::getTotalFloors, param.getTotalFloors())
+        .set(House::getAddress, RSAUtils.encrypt(param.getAddress())).set(House::getPhone, RSAUtils.encrypt(param.getPhone()))
+        .set(House::getOwner, RSAUtils.encrypt(param.getOwner())).set(House::getTotalFloors, param.getTotalFloors())
         .set(House :: getNum,param.getNum());
 
     houseConfigService.save(param.getHouseConfigSaveOrUpdateParams(), house);
 
-    baseMapper.updateById(house);
+    baseMapper.update(null,updateQueryWrapper);
   }
 
   @Override
@@ -124,6 +126,11 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
 
     for (HouseVO houseVO : records) {
       houseVO.setAddress(RSAUtils.decrypt(houseVO.getAddress()));
+      String owner = RSAUtils.decrypt(houseVO.getOwner());
+      String phone = RSAUtils.decrypt(houseVO.getPhone());
+      houseVO.setPhone(phone.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+      houseVO.setOwner(StringUtils.rightPad(StringUtils.left(owner, 1), StringUtils.length(owner), "*"));
+
       Area area = areaMap.get(houseVO.getProvinceId());
       houseVO.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
       area = areaMap.get(houseVO.getCityId());
@@ -136,16 +143,37 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   }
 
   @Override
-  public House get(HouseGetParam param) {
-    House house = baseMapper.selectById(param.getId());
+  public HouseVO get(HouseGetParam param) {
+    LambdaQueryWrapper<House> queryWrapper = new LambdaQueryWrapper<House>();
+    queryWrapper.eq(House::getDelFlag,DelFlagEnum.NOT_DELETE.Value());
+    queryWrapper.eq(House::getId,param.getId());
+    HouseVO house = this.baseMapper.get(queryWrapper);
     if (ValidateUtils.isNotEmpty(house)) {
       house.setAddress(RSAUtils.decrypt(house.getAddress()));
+      String owner = RSAUtils.decrypt(house.getOwner());
+      String phone = RSAUtils.decrypt(house.getPhone());
+      house.setPhone(phone.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+      house.setOwner(StringUtils.rightPad(StringUtils.left(owner, 1), StringUtils.length(owner), "*"));
+
+      List<Long>    areaIds = new ArrayList<>();
+      areaIds.add(house.getAreaId());
+      areaIds.add(house.getCityId());
+      areaIds.add(house.getProvinceId());
+      areaIds.remove(null);
+
+      Map<Long,Area> areaMap = areaService.findMapByIds(areaIds);
+      Area area = areaMap.get(house.getProvinceId());
+      house.setProvinceName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(house.getCityId());
+      house.setCityName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
+      area = areaMap.get(house.getAreaId());
+      house.setAreaName(ValidateUtils.isNotEmpty(area) ? area.getName() : null);
     }
     return house;
   }
 
   @Override
-  public House get(String id) {
+  public HouseVO get(String id) {
     HouseGetParam param = new HouseGetParam();
     param.setId(id);
     return this.get(param);
@@ -166,4 +194,5 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     roomService.save(houseConfig,house);
     this.update(house,null);
   }
+
 }

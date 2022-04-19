@@ -20,9 +20,9 @@ public interface HouseService {
 
   IPage<HouseVO> page(HousePageParam params);
 
-  House get(HouseGetParam param);
+  HouseVO get(HouseGetParam param);
 
-  House get(String id);
+  HouseVO get(String id);
 
   void init(HouseInitParam param) throws BaseException, IOException;
 }
