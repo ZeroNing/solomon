@@ -20,8 +20,12 @@ public class ConvertUpMoney {
     return toChinese(str) + "整    ￥"+str+"/";
   }
 
+  public static String toChina(String str){
+    return toChinese(str) + "整";
+  }
+
   //转成中文的大写金额
-  public static String toChinese(String str) {
+  private static String toChinese(String str) {
     //判断输入的金额字符串是否符合要求
     if (ValidateUtils.isEmpty(str) || !str.matches("(-)?[\\d]*(.)?[\\d]*")) {
       System.out.println("抱歉，请输入数字！");

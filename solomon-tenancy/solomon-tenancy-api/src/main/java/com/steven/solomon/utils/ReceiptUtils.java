@@ -1,5 +1,6 @@
 package com.steven.solomon.utils;
 
+import com.steven.solomon.entity.DepositReceipt;
 import com.steven.solomon.entity.Receipt;
 import com.steven.solomon.utils.date.DateTimeUtils;
 import com.steven.solomon.utils.rmb.ConvertUpMoney;
@@ -18,9 +19,69 @@ import javax.imageio.ImageIO;
 
 public class ReceiptUtils {
 
+  public static void depositReceipt(DepositReceipt depositReceipt) throws IOException {
+    String id = "1";//随机字符，这里是用雪花算法生成的字符串id
+    int rowheight = 45;//行高
+    int startHeight = 50;//余留上方像素
+    int startWidth = 15;//余留左方像素
+    int imageHeight = 350;
+    int imageWidth =1100;
+
+    int typefaceX = startWidth+50;
+
+    //得到图片缓冲区
+    BufferedImage bi = new BufferedImage(imageWidth,imageHeight,BufferedImage.TYPE_INT_RGB);//INT精确度达到一定,RGB三原色，高度70,宽度150
+
+    //得到它的绘制环境(这张图片的笔)
+    //Graphics2D g2 = (Graphics2D) bi.getGraphics();
+
+    Graphics2D g2 =bi.createGraphics();
+    //设置颜色
+    g2.setColor(Color.WHITE);
+    g2.fillRect(0,0,imageWidth,imageHeight);//填充整张图片(其实就是设置背景颜色)
+
+    //画横线
+    g2.setColor(new Color(255,0,0));
+    for (int j = 0; j < 4; j++) {
+      g2.drawLine(startWidth, startHeight + (j + 1) * rowheight, imageWidth - 15,
+          startHeight + (j + 1) * rowheight);
+    }
+    // 画竖线
+    int rightLine;
+    for (int k = 0; k < 2; k++) {
+      rightLine = startWidth + k * (imageWidth - startWidth * 2 );
+      g2.drawLine(rightLine, startHeight + rowheight, rightLine,
+          startHeight + 4 * rowheight);
+    }
+
+    g2.setFont(new Font("黑体", Font.BOLD,25)); //设置字体:字体、字号、大小
+    g2.drawString("押金单收据      NO."+ DateTimeUtils.getLocalDateTimeString(DateTimeUtils.DATE_FORMATTER_YEAR), (imageWidth/2)-50, rowheight);
+    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 20));
+    g2.drawString("日期："+DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),(imageWidth - startWidth * 11) - 60, startHeight+rowheight-3);
+    g2.drawString("地址："+ depositReceipt.getAddress(), startWidth, startHeight+rowheight-3);
+
+    g2.drawString("合计人民币大写:",typefaceX-30, startHeight+rowheight*4-10);
+    g2.drawString("收款人:" + depositReceipt.getPayee(),startWidth*63, startHeight+rowheight*5-20);
+    g2.setColor(new Color(0,0,205));//设置背景颜色
+    g2.drawString(DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))+"收到"+depositReceipt.getTenantName()+"押金:"+depositReceipt.getDeposit().toString()+"/",typefaceX-30, startHeight+rowheight*2-10);
+    g2.drawString(ConvertUpMoney.toChina(depositReceipt.getDeposit().toString()),typefaceX+130, startHeight+rowheight*4-10);
+
+
+    //    //因为2D画图画字体会有锯齿，而graphics2D类有抗锯齿和画笔柔顺的开关，设置如下
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
+    g2.setStroke(s);
+    ImageIO.write(bi,"JPEG",new FileOutputStream("D:/"+id+".jpg"));//保存图片 JPEG表示保存格式
+    //释放内存，解决文件占用问题
+    bi.getGraphics().dispose();
+    bi=null;
+    System.gc();
+  }
+
   public static void receipt(Receipt receipt) throws IOException {
     String id = "1";//随机字符，这里是用雪花算法生成的字符串id
-    Double WidthHeightRatio = 2.64;
     int rowheight = 45;//行高
     int startHeight = 50;//余留上方像素
     int startWidth = 15;//余留左方像素
