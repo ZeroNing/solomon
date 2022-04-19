@@ -18,15 +18,21 @@ import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.entity.House;
 import com.steven.solomon.entity.HouseConfig;
 import com.steven.solomon.entity.HouseConfigFloorRoom;
+import com.steven.solomon.entity.Receipt;
 import com.steven.solomon.entity.Room;
 import com.steven.solomon.mapper.RoomMapper;
 import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.service.RoomService;
+import com.steven.solomon.utils.ReceiptUtils;
+import com.steven.solomon.utils.date.DateTimeUtils;
 import com.steven.solomon.utils.json.JackJsonUtils;
 import com.steven.solomon.utils.lambda.LambdaUtils;
+import com.steven.solomon.utils.rmb.ConvertUpMoney;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import com.steven.solomon.vo.RoomVO;
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,98 +107,12 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     return this.baseMapper.selectList(queryWrapper);
   }
 
-  public static void main(String[] args) throws IOException, WriterException {
-    String id = UUID.randomUUID().toString();//随机字符，这里是用雪花算法生成的字符串id
-    int rowheight = 45;//行高
-    int startHeight = 50;//余留上方像素
-    int startWidth = 15;//余留左方像素
-    int imageHeight = 360;
-    int imageWidth =950;
-    //得到图片缓冲区
-    BufferedImage bi = new BufferedImage(imageWidth,imageHeight,BufferedImage.TYPE_INT_RGB);//INT精确度达到一定,RGB三原色，高度70,宽度150
-
-    //得到它的绘制环境(这张图片的笔)
-    //Graphics2D g2 = (Graphics2D) bi.getGraphics();
-
-    Graphics2D g2 =bi.createGraphics();
-    //设置颜色
-    g2.setColor(Color.WHITE);
-    g2.fillRect(0,0,imageWidth,imageHeight);//填充整张图片(其实就是设置背景颜色)
-
-    //画横线
-    for (int j = 0; j < 5; j++) {
-      g2.setColor(Color.darkGray);
-      g2.drawLine(startWidth, startHeight + (j + 1) * rowheight, imageWidth - 15,
-              startHeight + (j + 1) * rowheight);
-    }
-    // 画竖线
-    int rightLine;
-    g2.setColor(Color.gray);
-    for (int k = 0; k < 2; k++) {
-      rightLine = startWidth + k * (imageWidth - startWidth * 2 );
-      g2.drawLine(rightLine, startHeight + rowheight, rightLine,
-              startHeight + 5 * rowheight);
-    }
-    g2.setColor(Color.BLACK);//设置背景颜色
-    //插入二维码
-    byte[] qrCode = getQRCodeImage(id,60,60);
-    InputStream buffIn = new ByteArrayInputStream(qrCode, 0, qrCode.length);
-    Image  bufferedImage =(Image) ImageIO.read(buffIn);
-    g2.drawImage(bufferedImage,startWidth,10,null); //向图片左上插入二维码
-    g2.setFont(new Font("黑体", Font.BOLD,20)); //设置字体:字体、字号、大小
-    g2.drawString("XX有限责任公司收款收据      NO.", startWidth*19, rowheight);
-
-    //以上画好了底图，开始插入票据信息
-
-    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 14));
-    //表头填充
-    g2.drawString("0408601", imageWidth-startWidth*8, rowheight);
-    g2.drawString("合同号：20210203xxxxxxxx", startWidth, startHeight+rowheight-3);
-    g2.drawString("日期：  2021年2月3日",imageWidth - startWidth * 13, startHeight+rowheight-3);
-    //调整字体
-    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 17));
-    //第一行填充
-    g2.drawString("今日收到 张三 交来 解放路53号安居苑3栋1单元2048号 住宅保证金",startWidth*2, startHeight+rowheight*2-10);
-    //第二行填充
-    g2.drawString("￥：  790",imageWidth - startWidth * 13, startHeight+rowheight*3-10);
-    //第三行填充
-    g2.drawString("备注：  测试生成电子票据",startWidth*2, startHeight+rowheight*4-10);
-    //第四行填充
-    g2.drawString("缴费方式： 刷卡（ ）  转账（ ）  支付宝（●）  微信（ ）  现金（ ） ",startWidth*2, startHeight+rowheight*5-10);
-    //底部填充
-    g2.drawString("开票单位（盖章有效）",startWidth*2, startHeight+rowheight*6-20);
-    g2.drawString("开票人：韩梅梅",startWidth*25, startHeight+rowheight*6-20);
-    g2.drawString("承租人（签名）",startWidth*50, startHeight+rowheight*6-20);
-    //调整字体
-    g2.setFont(new Font("宋体", Font.BOLD, 18));
-    g2.drawString("人民币（大写）：  漆佰玖拾圆整",startWidth*2, startHeight+rowheight*3-10);//第二行大写金额需要加粗，所以放在最后
-    //因为2D画图画字体会有锯齿，而graphics2D类有抗锯齿和画笔柔顺的开关，设置如下
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
-    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
-    g2.setStroke(s);
-
-    ImageIO.write(bi,"JPEG",new FileOutputStream("F:/codeCreateIMG/a"+id+".jpg"));//保存图片 JPEG表示保存格式
-    //释放内存，解决文件占用问题
-    bi.getGraphics().dispose();
-    bi=null;
-    System.gc();
+  public static void main(String[] args) throws IOException {
+    Receipt receipt = new Receipt();
+    receipt.setAddress("11111111");
+    receipt.setRent("1500.00");
+    receipt.setPayee("aaaa");
+    ReceiptUtils.receipt(receipt);
   }
 
-  //生成二维码
-  // 编码格式
-  private static final String CHARSET = "utf-8";
-  private static byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
-    Hashtable hints = new Hashtable();
-    hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-    hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
-    hints.put(EncodeHintType.MARGIN, 1);
-    QRCodeWriter qrCodeWriter = new QRCodeWriter();
-    BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hints);
-    ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-    MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-    byte[] pngData = pngOutputStream.toByteArray();
-    return pngData;
-  }
 }
