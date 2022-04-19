@@ -50,14 +50,14 @@ public class ReceiptUtils {
       g2.drawLine(rightLine, startHeight + rowheight, rightLine,
           startHeight + 8 * rowheight);
     }
-    g2.setFont(new Font("黑体", Font.BOLD,20)); //设置字体:字体、字号、大小
+    g2.setFont(new Font("黑体", Font.BOLD,25)); //设置字体:字体、字号、大小
     g2.drawString("水电房租收据      NO."+ DateTimeUtils.getLocalDateTimeString(DateTimeUtils.DATE_FORMATTER_YEAR), (imageWidth/2)-120, rowheight);
-    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 14));
+    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 20));
 
     g2.drawString("地址："+ receipt.getAddress(), startWidth, startHeight+rowheight-3);
     g2.drawString("日期："+DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),(imageWidth - startWidth * 11) - 10, startHeight+rowheight-3);
     //调整字体
-    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 17));
+    g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 23));
     //第一行
     int typefaceY = startHeight+rowheight*2-10;
     int typefaceX = startWidth+50;
@@ -87,11 +87,11 @@ public class ReceiptUtils {
     g2.drawString("备注",x*6+((x-typefaceX)/2)+15, typefaceY);
     //第二行
 
-    g2.drawString("水费(吨)",typefaceX, startHeight+rowheight*3-10);
-    g2.drawString("电费(度)",typefaceX, startHeight+rowheight*4-10);
-    g2.drawString("房租",typefaceX, startHeight+rowheight*5-10);
+    g2.drawString("水费(吨)",typefaceX-30, startHeight+rowheight*3-10);
+    g2.drawString("电费(度)",typefaceX-30, startHeight+rowheight*4-10);
+    g2.drawString("房租",typefaceX-10, startHeight+rowheight*5-10);
 
-    g2.drawString("卫生费",typefaceX, startHeight+rowheight*6-10);
+    g2.drawString("卫生费",typefaceX-20, startHeight+rowheight*6-10);
     g2.drawLine(x, startHeight + 5 * rowheight, x,startHeight + 7 * rowheight);
 
     g2.drawLine(x*2, startHeight + 5 * rowheight, x*2,startHeight + 7 * rowheight);
@@ -101,7 +101,7 @@ public class ReceiptUtils {
     g2.drawLine(x*4, startHeight + 5 * rowheight, x*4,startHeight + 6 * rowheight);
     g2.drawString("网费",x*4+50, startHeight+rowheight*6-10);
 
-    g2.drawString("管理费",typefaceX, startHeight+rowheight*7-10);
+    g2.drawString("管理费",typefaceX-20, startHeight+rowheight*7-10);
 
     g2.drawString("其他",x*2+50, startHeight+rowheight*7-10);
     g2.drawLine(x*3, startHeight + 6 * rowheight, x*3,startHeight + 7 * rowheight);
@@ -111,7 +111,7 @@ public class ReceiptUtils {
     g2.drawString("收款人:" + receipt.getPayee(),startWidth*60, startHeight+rowheight*9-20);
     g2.setColor(new Color(0,0,205));//设置背景颜色
 
-    g2.drawString(ConvertUpMoney.toChineseNum(receipt.getRent()),typefaceX+150, startHeight+rowheight*8-10);
+    g2.drawString(ConvertUpMoney.toChineseNum(receipt.getRent()),typefaceX+200, startHeight+rowheight*8-10);
     g2.drawString(receipt.getManagementFee().toString(),x+50, startHeight+rowheight*7-10);
     g2.drawLine(x*5, startHeight + 5 * rowheight, x*5,startHeight + 6 * rowheight);
     g2.drawString(receipt.getInternetFee().toString(),x*5+50, startHeight+rowheight*6-10);
