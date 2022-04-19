@@ -33,6 +33,7 @@ public class ControllerAspect {
       obj = pjp.proceed();
       saveLog(pjp, begin, null);
     } catch (Throwable e) {
+      saveLog(pjp, begin, e);
       throw e;
     }
     return obj;
@@ -43,7 +44,12 @@ public class ControllerAspect {
     String proceedingJoinPoint = pjp.getSignature().toString();
     long   nanosecond          = end - begin;
     long   millisecond         = (end - begin) / 1000000;
-    logger.info("调用controller方法:{},执行耗时:{}纳秒,耗时:{}毫秒", proceedingJoinPoint, nanosecond,
-        millisecond);
+    if (ValidateUtils.isEmpty(e)) {
+      logger.info("调用controller方法:{},执行耗时:{}纳秒,耗时:{}毫秒", proceedingJoinPoint, nanosecond,
+          millisecond);
+    } else {
+      logger.info("调用controller方法:{},执行耗时:{}纳秒,耗时:{}毫秒,出现异常:{}", proceedingJoinPoint, nanosecond,
+          millisecond,e.getMessage());
+    }
   }
 }
