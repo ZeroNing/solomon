@@ -29,4 +29,12 @@
         house a
       ${ew.customSqlSegment}
   </select>
+
+  <select id="get" resultType="com.steven.solomon.vo.HouseVO">
+    select
+    <include refid="entity"/>
+    from
+    house a
+    ${ew.customSqlSegment}
+  </select>
 </mapper>
