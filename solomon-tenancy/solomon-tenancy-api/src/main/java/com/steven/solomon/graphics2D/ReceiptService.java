@@ -144,7 +144,7 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
 
     g2.drawString(receipt.getInternetFee().toString(),x*5+50, startHeight+rowheight*6-10);
     g2.drawString(receipt.getManagementFee().toString(),x+50, startHeight+rowheight*7-10);
-    g2.drawString(ConvertUpMoney.toChineseNum(receipt.getRent()),typefaceX+200, startHeight+rowheight*8-10);
+    g2.drawString(ConvertUpMoney.toChina(receipt.getRent()),typefaceX+200, startHeight+rowheight*8-10);
 
     return g2;
   }
