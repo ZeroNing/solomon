@@ -8,12 +8,12 @@ public class DepositReceipt extends BaseReceipt {
   /**
    * 地址
    */
-  private String     address;
+  private String     address = "";
 
   /**
    * 租赁者名称
    */
-  private String tenantName;
+  private String tenantName = "";
 
   /**
    * 押金
@@ -23,7 +23,7 @@ public class DepositReceipt extends BaseReceipt {
   /**
    * 收款人
    */
-  private String payee;
+  private String payee = "";
 
   /**
    * 钥匙押金

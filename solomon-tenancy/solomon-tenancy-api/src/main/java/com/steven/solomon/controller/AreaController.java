@@ -42,19 +42,4 @@ public class AreaController extends BaseController {
     return super.responseSuccessJson(areaService.findByAreaCode(param));
   }
 
-  @GetMapping("/test")
-  public String test() throws Exception {
-    DepositReceipt depositReceipt = new DepositReceipt();
-    depositReceipt.setTenantName("11111");
-    depositReceipt.setAddress("111111");
-    depositReceipt.setPayee("11111111");
-    depositReceiptService.drawReceipt(depositReceipt);
-    Receipt receipt = new Receipt();
-    receipt.setAddress("1111111111");
-    receipt.setPayee("111111111111");
-    receipt.setRent("111111111");
-    receipt.setTenantName("1111111111");
-    receiptService.drawReceipt(receipt);
-    return super.responseSuccessJson();
-  }
 }

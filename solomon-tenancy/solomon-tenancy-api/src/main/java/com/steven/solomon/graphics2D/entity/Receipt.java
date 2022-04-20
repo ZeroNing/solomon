@@ -8,7 +8,7 @@ public class Receipt extends BaseReceipt {
   /**
    * 地址
    */
-  private String     address;
+  private String     address = "";
   /**
    * 上月电费读数
    */
@@ -36,7 +36,7 @@ public class Receipt extends BaseReceipt {
   /**
    * 房租
    */
-  private String     rent;
+  private String     rent = "";
   /**
    * 卫生费
    */
@@ -57,13 +57,13 @@ public class Receipt extends BaseReceipt {
   /**
    * 收款人
    */
-  private String payee;
+  private String payee = "";
 
   /**
    * 租赁人名称
    * @return
    */
-  private String tenantName;
+  private String tenantName = "";
 
   public String getAddress() {
     return address;
