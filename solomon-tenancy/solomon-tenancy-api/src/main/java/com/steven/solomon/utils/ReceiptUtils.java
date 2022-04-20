@@ -82,7 +82,7 @@ public class ReceiptUtils {
     Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
     g2.setStroke(s);
 //    ImageIO.write(bi,"JPEG",new FileOutputStream("D:/"+id+".jpg"));//保存图片 JPEG表示保存格式
-    minioUtils.putObject("depositReceipt",bi,UUID.randomUUID().toString(),DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("YYYYMM")));
+    minioUtils.putObject("depositReceipt",bi,UUID.randomUUID().toString()+".jpg",DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("YYYYMM")));
     //释放内存，解决文件占用问题
     bi.getGraphics().dispose();
     bi=null;
