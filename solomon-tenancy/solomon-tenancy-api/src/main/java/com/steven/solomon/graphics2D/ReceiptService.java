@@ -104,7 +104,7 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
     g2.drawString("",x*3+50, startHeight+rowheight*7-10);
 
     g2.drawString("合计人民币大写:",typefaceX, startHeight+rowheight*8-10);
-    g2.drawString("收款人:" + receipt.getPayee(),startWidth*56, startHeight+rowheight*9-20);
+    g2.drawString("收款人:" + receipt.getPayee(),startWidth*54, startHeight+rowheight*9-20);
     return g2;
   }
 

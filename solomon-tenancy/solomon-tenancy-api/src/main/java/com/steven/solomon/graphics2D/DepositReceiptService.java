@@ -56,7 +56,7 @@ public class DepositReceiptService extends AbsReceiptService<DepositReceipt>{
     g2.drawString("地址："+ receipt.getAddress(), startWidth, startHeight+rowheight-3);
 
     g2.drawString("合计人民币大写:",typefaceX-30, startHeight+rowheight*4-10);
-    g2.drawString("收款人:" + receipt.getPayee(),startWidth*59, startHeight+rowheight*5-20);
+    g2.drawString("收款人:" + receipt.getPayee(),startWidth*57, startHeight+rowheight*5-20);
     g2.setColor(new Color(0,0,205));//设置背景颜色
     g2.drawString(DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))+"收到"+receipt.getTenantName()+"押金:"+receipt.getDeposit().toString()+"/"+"                   钥匙押金:"+receipt.getKeyDeposit().toString()+"/",typefaceX-30, startHeight+rowheight*2-10);
     g2.drawString("水表底表读数为:"+receipt.getInitialWaterMeterReading().toString()+"                                 电费底表读数为:"+receipt.getInitialPowerMeterReading().toString(),typefaceX-30, startHeight+rowheight*3-10);
