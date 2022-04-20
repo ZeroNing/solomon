@@ -107,12 +107,4 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     return this.baseMapper.selectList(queryWrapper);
   }
 
-  public static void main(String[] args) throws IOException {
-    Receipt receipt = new Receipt();
-    receipt.setAddress("11111111");
-    receipt.setRent("1500.00");
-    receipt.setPayee("aaaa");
-    ReceiptUtils.receipt(receipt);
-  }
-
 }

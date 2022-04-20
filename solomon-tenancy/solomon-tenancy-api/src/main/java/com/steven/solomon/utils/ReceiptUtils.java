@@ -3,6 +3,7 @@ package com.steven.solomon.utils;
 import com.steven.solomon.entity.DepositReceipt;
 import com.steven.solomon.entity.Receipt;
 import com.steven.solomon.utils.date.DateTimeUtils;
+import com.steven.solomon.utils.minio.MinioUtils;
 import com.steven.solomon.utils.rmb.ConvertUpMoney;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -16,19 +17,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReceiptUtils {
 
-  public static void main(String[] args) throws IOException {
-    DepositReceipt depositReceipt = new DepositReceipt();
-    depositReceipt.setPayee("11111");
-    depositReceipt.setTenantName("11111");
-    depositReceipt.setAddress("1111111111111");
-    depositReceipt(depositReceipt);
-  }
+  @Resource
+  private MinioUtils minioUtils;
 
-  public static void depositReceipt(DepositReceipt depositReceipt) throws IOException {
+  public void depositReceipt(DepositReceipt depositReceipt) throws Exception {
     String id = "1";//随机字符，这里是用雪花算法生成的字符串id
     int rowheight = 45;//行高
     int startHeight = 50;//余留上方像素
@@ -40,7 +39,6 @@ public class ReceiptUtils {
 
     //得到图片缓冲区
     BufferedImage bi = new BufferedImage(imageWidth,imageHeight,BufferedImage.TYPE_INT_RGB);//INT精确度达到一定,RGB三原色，高度70,宽度150
-
     //得到它的绘制环境(这张图片的笔)
     //Graphics2D g2 = (Graphics2D) bi.getGraphics();
 
@@ -83,14 +81,15 @@ public class ReceiptUtils {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
     g2.setStroke(s);
-    ImageIO.write(bi,"JPEG",new FileOutputStream("D:/"+id+".jpg"));//保存图片 JPEG表示保存格式
+//    ImageIO.write(bi,"JPEG",new FileOutputStream("D:/"+id+".jpg"));//保存图片 JPEG表示保存格式
+    minioUtils.putObject("depositReceipt",bi,UUID.randomUUID().toString(),DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("YYYYMM")));
     //释放内存，解决文件占用问题
     bi.getGraphics().dispose();
     bi=null;
     System.gc();
   }
 
-  public static void receipt(Receipt receipt) throws IOException {
+  public void receipt(Receipt receipt) throws IOException {
     String id = UUID.randomUUID().toString();//随机字符，这里是用雪花算法生成的字符串id
     int rowheight = 45;//行高
     int startHeight = 50;//余留上方像素
