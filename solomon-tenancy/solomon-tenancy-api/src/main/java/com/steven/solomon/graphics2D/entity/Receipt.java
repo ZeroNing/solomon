@@ -1,9 +1,9 @@
-package com.steven.solomon.entity;
+package com.steven.solomon.graphics2D.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Receipt implements Serializable {
+public class Receipt extends BaseReceipt {
 
   /**
    * 地址

@@ -2,13 +2,16 @@ package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.excetion.BaseException;
-import com.steven.solomon.base.model.rabbitMQ.RabbitMqModel;
+import com.steven.solomon.graphics2D.DepositReceiptService;
+import com.steven.solomon.graphics2D.ReceiptService;
+import com.steven.solomon.graphics2D.entity.DepositReceipt;
+import com.steven.solomon.graphics2D.entity.Receipt;
 import com.steven.solomon.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.utils.date.DateTimeUtils;
-import com.steven.solomon.utils.rabbit.MqService;
 import com.steven.solomon.utils.redis.ICaheService;
 import io.swagger.annotations.Api;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +31,29 @@ public class AreaController extends BaseController {
   @Resource
   private ICaheService iCaheService;
 
+  @Resource
+  private DepositReceiptService depositReceiptService;
+
+  @Resource
+  private ReceiptService receiptService;
+
   @PostMapping("/list")
   public String list(@RequestBody AreaListParam param) throws IOException, BaseException {
     return super.responseSuccessJson(areaService.findByAreaCode(param));
+  }
+
+  @GetMapping("/test")
+  public String test() throws Exception {
+    DepositReceipt depositReceipt = new DepositReceipt();
+    depositReceipt.setTenantName("11111");
+    depositReceipt.setAddress("111111");
+    depositReceipt.setPayee("11111111");
+    depositReceiptService.drawReceipt(BufferedImage.TYPE_INT_RGB, Color.white,depositReceipt);
+    Receipt receipt = new Receipt();
+    receipt.setAddress("1111111111");
+    receipt.setPayee("111111111111");
+    receipt.setRent("111111111");
+    receiptService.drawReceipt(BufferedImage.TYPE_INT_RGB, Color.white,receipt);
+    return super.responseSuccessJson();
   }
 }
