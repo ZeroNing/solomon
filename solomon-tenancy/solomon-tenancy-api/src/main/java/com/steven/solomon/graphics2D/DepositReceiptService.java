@@ -1,17 +1,15 @@
 package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.graphics2D.entity.DepositReceipt;
-import com.steven.solomon.utils.FileTypeUtils;
 import com.steven.solomon.utils.date.DateTimeUtils;
 import com.steven.solomon.utils.rmb.ConvertUpMoney;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import org.springframework.stereotype.Service;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.time.format.DateTimeFormatter;
-import javax.imageio.ImageIO;
-import org.springframework.stereotype.Service;
 
 @Service
 public class DepositReceiptService extends AbsReceiptService<DepositReceipt>{
@@ -61,7 +59,7 @@ public class DepositReceiptService extends AbsReceiptService<DepositReceipt>{
     g2.drawString("收款人:" + receipt.getPayee(),startWidth*59, startHeight+rowheight*5-20);
     g2.setColor(new Color(0,0,205));//设置背景颜色
     g2.drawString(DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))+"收到"+receipt.getTenantName()+"押金:"+receipt.getDeposit().toString()+"/"+"                   钥匙押金:"+receipt.getKeyDeposit().toString()+"/",typefaceX-30, startHeight+rowheight*2-10);
-    g2.drawString("水表底表读数为:"+receipt.getInitialWaterMeterReading().toString()+"                                 电费底表读书为:"+receipt.getInitialPowerMeterReading().toString(),typefaceX-30, startHeight+rowheight*3-10);
+    g2.drawString("水表底表读数为:"+receipt.getInitialWaterMeterReading().toString()+"                                 电费底表读数为:"+receipt.getInitialPowerMeterReading().toString(),typefaceX-30, startHeight+rowheight*3-10);
     g2.drawString(ConvertUpMoney.toChina(receipt.getDeposit().add(receipt.getKeyDeposit()).toString()),typefaceX+130, startHeight+rowheight*4-10);
     return g2;
   }
