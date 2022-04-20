@@ -1,18 +1,16 @@
 package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.graphics2D.entity.Receipt;
-import com.steven.solomon.utils.FileTypeUtils;
 import com.steven.solomon.utils.date.DateTimeUtils;
 import com.steven.solomon.utils.rmb.ConvertUpMoney;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import org.springframework.stereotype.Service;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import javax.imageio.ImageIO;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReceiptService extends AbsReceiptService <Receipt>{
@@ -139,7 +137,7 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
     g2.drawString(powerRatePrice.toString(),x*4+((x-typefaceX)/2)+15, startHeight+rowheight*4-10);
     g2.drawString(waterRatePrice.multiply(new BigDecimal(practicalTonnage)).setScale(2,BigDecimal.ROUND_HALF_UP).toString(),x*5+((x-typefaceX)/2)+15, startHeight+rowheight*3-10);
     g2.drawString(powerRatePrice.multiply(new BigDecimal(practicalMonthDegree)).setScale(2,BigDecimal.ROUND_HALF_UP).toString(),x*5+((x-typefaceX)/2)+15, startHeight+rowheight*4-10);
-    g2.drawString(receipt.getRent(),typefaceX*5, startHeight+rowheight*5-10);
+    g2.drawString("¥ "+new BigDecimal(receipt.getRent()).setScale(2,BigDecimal.ROUND_HALF_UP).toString()+"/",typefaceX*5, startHeight+rowheight*5-10);
     g2.drawString(receipt.getSanitationFee().toString(),x+50, startHeight+rowheight*6-10);
     g2.drawString(receipt.getTVFee().toString(),x*3+50, startHeight+rowheight*6-10);
 
