@@ -15,9 +15,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import javax.imageio.ImageIO;
 
 public class ReceiptUtils {
+
+  public static void main(String[] args) throws IOException {
+    DepositReceipt depositReceipt = new DepositReceipt();
+    depositReceipt.setPayee("11111");
+    depositReceipt.setTenantName("11111");
+    depositReceipt.setAddress("1111111111111");
+    depositReceipt(depositReceipt);
+  }
 
   public static void depositReceipt(DepositReceipt depositReceipt) throws IOException {
     String id = "1";//随机字符，这里是用雪花算法生成的字符串id
@@ -63,11 +72,12 @@ public class ReceiptUtils {
     g2.drawString("合计人民币大写:",typefaceX-30, startHeight+rowheight*4-10);
     g2.drawString("收款人:" + depositReceipt.getPayee(),startWidth*63, startHeight+rowheight*5-20);
     g2.setColor(new Color(0,0,205));//设置背景颜色
-    g2.drawString(DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))+"收到"+depositReceipt.getTenantName()+"押金:"+depositReceipt.getDeposit().toString()+"/",typefaceX-30, startHeight+rowheight*2-10);
-    g2.drawString(ConvertUpMoney.toChina(depositReceipt.getDeposit().toString()),typefaceX+130, startHeight+rowheight*4-10);
+    g2.drawString(DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日"))+"收到"+depositReceipt.getTenantName()+"押金:"+depositReceipt.getDeposit().toString()+"/"+"                   钥匙押金:"+depositReceipt.getKeyDeposit().toString()+"/",typefaceX-30, startHeight+rowheight*2-10);
+    g2.drawString("水表底表读数为:"+depositReceipt.getInitialWaterMeterReading().toString()+"                                 电费底表读书为:"+depositReceipt.getInitialPowerMeterReading().toString(),typefaceX-30, startHeight+rowheight*3-10);
+    g2.drawString(ConvertUpMoney.toChina(depositReceipt.getDeposit().add(depositReceipt.getKeyDeposit()).toString()),typefaceX+130, startHeight+rowheight*4-10);
 
 
-    //    //因为2D画图画字体会有锯齿，而graphics2D类有抗锯齿和画笔柔顺的开关，设置如下
+    //因为2D画图画字体会有锯齿，而graphics2D类有抗锯齿和画笔柔顺的开关，设置如下
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -81,7 +91,7 @@ public class ReceiptUtils {
   }
 
   public static void receipt(Receipt receipt) throws IOException {
-    String id = "1";//随机字符，这里是用雪花算法生成的字符串id
+    String id = UUID.randomUUID().toString();//随机字符，这里是用雪花算法生成的字符串id
     int rowheight = 45;//行高
     int startHeight = 50;//余留上方像素
     int startWidth = 15;//余留左方像素
@@ -200,7 +210,8 @@ public class ReceiptUtils {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
     g2.setStroke(s);
-    ImageIO.write(bi,"JPEG",new FileOutputStream("D:/"+id+".jpg"));//保存图片 JPEG表示保存格式
+    ImageIO.setUseCache(false);
+    ImageIO.write(bi,"JPEG",new FileOutputStream("http://106.52.186.166:8001/usr/etc/solomon/tenancy/receipt/2022/04/"+id+".jpg"));//保存图片 JPEG表示保存格式
     //释放内存，解决文件占用问题
     bi.getGraphics().dispose();
     bi=null;

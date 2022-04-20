@@ -25,6 +25,20 @@ public class DepositReceipt implements Serializable {
    */
   private String payee;
 
+  /**
+   * 钥匙押金
+   * @return
+   */
+  private BigDecimal keyDeposit = BigDecimal.ZERO;
+  /**
+   * 初始水表读数
+   */
+  private Long initialWaterMeterReading = 0L;
+  /**
+   * 初始电费读数
+   */
+  private Long initialPowerMeterReading = 0L;
+
   public String getAddress() {
     return address;
   }
@@ -55,5 +69,29 @@ public class DepositReceipt implements Serializable {
 
   public void setPayee(String payee) {
     this.payee = payee;
+  }
+
+  public BigDecimal getKeyDeposit() {
+    return keyDeposit;
+  }
+
+  public void setKeyDeposit(BigDecimal keyDeposit) {
+    this.keyDeposit = keyDeposit;
+  }
+
+  public Long getInitialWaterMeterReading() {
+    return initialWaterMeterReading;
+  }
+
+  public void setInitialWaterMeterReading(Long initialWaterMeterReading) {
+    this.initialWaterMeterReading = initialWaterMeterReading;
+  }
+
+  public Long getInitialPowerMeterReading() {
+    return initialPowerMeterReading;
+  }
+
+  public void setInitialPowerMeterReading(Long initialPowerMeterReading) {
+    this.initialPowerMeterReading = initialPowerMeterReading;
   }
 }
