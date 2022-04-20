@@ -40,7 +40,7 @@ public abstract class AbsReceiptService <T extends BaseReceipt>{
       g2 = drawDescribe(g2,receipt);
       g2 = drawData(g2,receipt);
       setGraphics2DOptimize(g2);
-      upload(bufferedImage);
+      upload(bufferedImage,receipt);
     } finally {
       if(ValidateUtils.isNotEmpty(bufferedImage)){
         bufferedImage.getGraphics().dispose();
@@ -102,5 +102,5 @@ public abstract class AbsReceiptService <T extends BaseReceipt>{
   /**
    * 上传图片
    */
-  public abstract void upload(BufferedImage bufferedImage) throws Exception;
+  public abstract void upload(BufferedImage bufferedImage,T receipt) throws Exception;
 }

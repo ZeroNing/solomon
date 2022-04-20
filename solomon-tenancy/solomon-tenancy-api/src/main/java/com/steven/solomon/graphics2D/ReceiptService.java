@@ -8,8 +8,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import javax.imageio.ImageIO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,7 +55,7 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
     g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 20));
 
     g2.drawString("地址："+ receipt.getAddress(), startWidth, startHeight+rowheight-3);
-    g2.drawString("日期："+DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),(imageWidth - startWidth * 11) - 10, startHeight+rowheight-3);
+    g2.drawString("日期："+DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日")),(imageWidth - startWidth * 11) -60, startHeight+rowheight-3);
     //调整字体
     g2.setFont(new Font("宋体", Font.CENTER_BASELINE, 23));
     //第一行
@@ -104,7 +106,7 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
     g2.drawString("",x*3+50, startHeight+rowheight*7-10);
 
     g2.drawString("合计人民币大写:",typefaceX, startHeight+rowheight*8-10);
-    g2.drawString("收款人:" + receipt.getPayee(),startWidth*60, startHeight+rowheight*9-20);
+    g2.drawString("收款人:" + receipt.getPayee(),startWidth*56, startHeight+rowheight*9-20);
     return g2;
   }
 
@@ -150,8 +152,10 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
   }
 
   @Override
-  public void upload(BufferedImage bufferedImage) throws Exception {
-    minioUtils.putObject("receipt",bufferedImage, DateTimeUtils.getLocalDateTimeString(DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH时mm分ss秒SSS毫秒"))+".jpg",
-        FileTypeUtils.getFileType(bufferedImage));
+  public void upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
+//    minioUtils.putObject("receipt",bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg",
+//        FileTypeUtils.getFileType(bufferedImage));
+    ImageIO.write(bufferedImage,"JPEG",new FileOutputStream("D:/"+"2"+".jpg"));//保存图片 JPEG表示保存格式
+
   }
 }

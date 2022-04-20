@@ -59,6 +59,12 @@ public class Receipt extends BaseReceipt {
    */
   private String payee;
 
+  /**
+   * 租赁人名称
+   * @return
+   */
+  private String tenantName;
+
   public String getAddress() {
     return address;
   }
@@ -161,5 +167,13 @@ public class Receipt extends BaseReceipt {
 
   public void setPayee(String payee) {
     this.payee = payee;
+  }
+
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
   }
 }

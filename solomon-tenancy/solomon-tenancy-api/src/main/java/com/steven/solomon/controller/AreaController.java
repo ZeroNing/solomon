@@ -53,6 +53,7 @@ public class AreaController extends BaseController {
     receipt.setAddress("1111111111");
     receipt.setPayee("111111111111");
     receipt.setRent("111111111");
+    receipt.setTenantName("1111111111");
     receiptService.drawReceipt(receipt);
     return super.responseSuccessJson();
   }
