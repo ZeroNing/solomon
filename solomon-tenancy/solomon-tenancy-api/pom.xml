@@ -118,7 +118,32 @@
             </include>
             <include>
               <groupId>com.steven</groupId>
-              <artifactId>solomon-parent</artifactId>
+              <artifactId>solomon-utils</artifactId>
+            </include>
+
+            <include>
+              <groupId>com.steven</groupId>
+              <artifactId>solomon-mq</artifactId>
+            </include>
+
+            <include>
+              <groupId>com.steven</groupId>
+              <artifactId>solomon-file</artifactId>
+            </include>
+
+            <include>
+              <groupId>com.steven</groupId>
+              <artifactId>solomon-exception</artifactId>
+            </include>
+
+            <include>
+              <groupId>com.steven</groupId>
+              <artifactId>solomon-constant</artifactId>
+            </include>
+
+            <include>
+              <groupId>com.steven</groupId>
+              <artifactId>solomon-cache</artifactId>
             </include>
           </includes>
         </configuration>
@@ -142,6 +167,9 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
+              <excludeGroupIds>
+                ${project.groupId}
+              </excludeGroupIds>
               <outputDirectory>target/lib</outputDirectory>
             </configuration>
           </execution>
