@@ -1,12 +1,13 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
-import com.steven.solomon.enums.HouseConfigTypeEnum;
+import com.steven.solomon.pojo.enums.HouseConfigTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 @ApiModel("房屋配置更新请求参数")
 public class HouseConfigUpdateParam implements Serializable {
 

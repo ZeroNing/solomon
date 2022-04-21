@@ -1,63 +1,63 @@
-package com.steven.solomon.pojo;
+package com.steven.solomon.pojo.param;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.steven.solomon.base.model.BaseEntity;
-
+import com.steven.solomon.code.TenancyErrorCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.UUID;
+import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-@TableName("tenant_info")
-@ApiModel("租户信息实体类")
-public class TenantInfo extends BaseEntity<String> {
+@ApiModel("租户信息保存请求参数")
+public class TenantInfoSaveParam implements Serializable {
 
     /**
      * 租客名称
      */
-    @ApiModelProperty(value="租客名称")
+    @NotBlank(message = TenancyErrorCode.NAME_NOT_NULL)
+    @ApiModelProperty(value = "租户名称",required = true)
     private String name;
 
     /**
      * 身份证号码
      */
-    @ApiModelProperty(value="身份证号码")
+    @NotBlank(message = TenancyErrorCode.IDENTITY_CARD_NOT_NULL)
+    @ApiModelProperty(value = "身份证号码",required = true)
     private String identityCard;
 
     /**
      * 手机号码
      */
-    @ApiModelProperty(value="手机号码")
+    @NotBlank(message = TenancyErrorCode.PHONE_NOT_NULL)
+    @ApiModelProperty(value = "手机号码",required = true)
     private String phone;
 
     /**
      * 省份id
      */
-    @ApiModelProperty(value="省份id")
+    @ApiModelProperty(value = "省份id",required = true)
+    @NotNull(message = TenancyErrorCode.PROVINCE_ID_NOT_NULL)
     private Long provinceId;
 
     /**
-     * 市级id
+     * 市id
      */
-    @ApiModelProperty(value="市级id")
+    @ApiModelProperty(value = "市级id",required = true)
+    @NotNull(message = TenancyErrorCode.CITY_ID_NOT_NULL)
     private Long cityId;
 
     /**
-     * 区级id
+     * 区id
      */
-    @ApiModelProperty(value="区域id")
+    @ApiModelProperty(value = "区域id",required = true)
+    @NotNull(message = TenancyErrorCode.AREA_ID_NOT_NULL)
     private Long areaId;
 
     /**
-     * 身份证地址
+     * 地址
      */
-    @ApiModelProperty(value="身份证地址")
+    @ApiModelProperty(value = "地址",required = true)
+    @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
     private String address;
-
-    public TenantInfo(){
-        super();
-        setId(UUID.randomUUID().toString());
-        super.create();
-    }
 
     public String getName() {
         return name;

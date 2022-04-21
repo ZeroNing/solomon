@@ -1,7 +1,7 @@
 package com.steven.solomon.service;
 
-import com.steven.solomon.pojo.Area;
-import com.steven.solomon.param.AreaListParam;
+import com.steven.solomon.pojo.entity.Area;
+import com.steven.solomon.pojo.param.AreaListParam;
 import java.util.List;
 import java.util.Map;
 

@@ -2,12 +2,12 @@ package com.steven.solomon.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.param.HouseGetParam;
-import com.steven.solomon.param.HouseInitParam;
-import com.steven.solomon.param.HousePageParam;
-import com.steven.solomon.param.HouseSaveParam;
-import com.steven.solomon.param.HouseUpdateParam;
-import com.steven.solomon.vo.HouseVO;
+import com.steven.solomon.pojo.param.HouseGetParam;
+import com.steven.solomon.pojo.param.HouseInitParam;
+import com.steven.solomon.pojo.param.HousePageParam;
+import com.steven.solomon.pojo.param.HouseSaveParam;
+import com.steven.solomon.pojo.param.HouseUpdateParam;
+import com.steven.solomon.pojo.vo.HouseVO;
 import java.io.IOException;
 
 public interface HouseService {

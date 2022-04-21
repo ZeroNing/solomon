@@ -1,4 +1,4 @@
-package com.steven.solomon.enums;
+package com.steven.solomon.pojo.enums;
 
 import com.steven.solomon.base.enums.BaseEnum;
 

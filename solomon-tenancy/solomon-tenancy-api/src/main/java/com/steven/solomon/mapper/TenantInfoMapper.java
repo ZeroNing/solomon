@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.steven.solomon.pojo.TenantInfo;
-import com.steven.solomon.vo.TenantInfoVO;
+import com.steven.solomon.pojo.entity.TenantInfo;
+import com.steven.solomon.pojo.vo.TenantInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TenantInfoMapper extends BaseMapper<TenantInfo> {

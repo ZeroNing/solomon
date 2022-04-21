@@ -2,7 +2,15 @@ package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.param.*;
+import com.steven.solomon.pojo.param.HouseConfigSaveParam;
+import com.steven.solomon.pojo.param.HouseConfigUpdateParam;
+import com.steven.solomon.pojo.param.HouseGetParam;
+import com.steven.solomon.pojo.param.HouseInitParam;
+import com.steven.solomon.pojo.param.HousePageParam;
+import com.steven.solomon.pojo.param.HouseSaveParam;
+import com.steven.solomon.pojo.param.HouseUpdateParam;
+import com.steven.solomon.pojo.param.RoomPageParam;
+import com.steven.solomon.pojo.param.RoomUpdateParam;
 import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.service.HouseService;
 import com.steven.solomon.service.RoomService;

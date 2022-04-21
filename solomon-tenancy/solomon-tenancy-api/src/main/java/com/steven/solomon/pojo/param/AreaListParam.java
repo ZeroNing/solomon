@@ -1,4 +1,4 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.verification.ValidateUtils;
 import io.swagger.annotations.ApiModel;

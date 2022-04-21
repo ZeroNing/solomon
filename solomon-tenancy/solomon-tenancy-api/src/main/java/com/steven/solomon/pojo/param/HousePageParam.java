@@ -1,11 +1,11 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.base.model.BasePageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel("租户信息分页请求参数")
-public class TenantInfoPageParam extends BasePageParam {
+@ApiModel("房屋分页请求参数")
+public class HousePageParam extends BasePageParam {
 
   /**
    * 省份id

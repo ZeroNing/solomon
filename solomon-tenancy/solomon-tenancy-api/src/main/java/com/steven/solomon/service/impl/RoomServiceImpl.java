@@ -10,23 +10,24 @@ import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.json.JackJsonUtils;
 import com.steven.solomon.lambda.LambdaUtils;
-import com.steven.solomon.pojo.House;
-import com.steven.solomon.pojo.HouseConfig;
-import com.steven.solomon.pojo.HouseConfigFloorRoom;
-import com.steven.solomon.pojo.Room;
 import com.steven.solomon.mapper.RoomMapper;
-import com.steven.solomon.param.RoomPageParam;
-import com.steven.solomon.param.RoomUpdateParam;
+import com.steven.solomon.pojo.entity.House;
+import com.steven.solomon.pojo.entity.HouseConfig;
+import com.steven.solomon.pojo.entity.HouseConfigFloorRoom;
+import com.steven.solomon.pojo.entity.Room;
+import com.steven.solomon.pojo.param.RoomPageParam;
+import com.steven.solomon.pojo.param.RoomUpdateParam;
+import com.steven.solomon.pojo.vo.RoomVO;
 import com.steven.solomon.service.RoomService;
 import com.steven.solomon.verification.ValidateUtils;
-import com.steven.solomon.vo.RoomVO;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.*;
-import java.util.List;
-import java.util.*;
 
 @Service
 @DubboService

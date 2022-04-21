@@ -1,11 +1,11 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.base.model.BasePageParam;
 import com.steven.solomon.code.TenancyErrorCode;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
+
 @ApiModel("房屋房间分页请求参数")
 public class RoomPageParam extends BasePageParam {
 

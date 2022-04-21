@@ -1,8 +1,9 @@
-package com.steven.solomon.vo;
+package com.steven.solomon.pojo.vo;
 
-import com.steven.solomon.pojo.TenantInfo;
+import com.steven.solomon.pojo.entity.House;
 
-public class TenantInfoVO extends TenantInfo {
+public class HouseVO extends House {
+
   /**
    * 省份名称
    */
@@ -38,5 +39,9 @@ public class TenantInfoVO extends TenantInfo {
 
   public void setAreaName(String areaName) {
     this.areaName = areaName;
+  }
+
+  public String getProvinceCityAreaAddress(){
+    return getProvinceName()+getCityName()+getCityName()+getAddress();
   }
 }

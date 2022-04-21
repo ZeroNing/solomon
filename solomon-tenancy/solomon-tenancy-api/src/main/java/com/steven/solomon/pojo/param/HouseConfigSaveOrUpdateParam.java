@@ -1,10 +1,11 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
-import com.steven.solomon.enums.HouseConfigTypeEnum;
-import com.steven.solomon.enums.RoomTypeEnum;
+import com.steven.solomon.pojo.enums.HouseConfigTypeEnum;
+import com.steven.solomon.pojo.enums.RoomTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+
 @ApiModel("房屋配置保存或者更新请求参数")
 public class HouseConfigSaveOrUpdateParam implements Serializable {
 

@@ -1,4 +1,4 @@
-package com.steven.solomon.pojo;
+package com.steven.solomon.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.annotation.JsonEnum;

@@ -1,13 +1,13 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
 import com.steven.solomon.enums.RoomTypeEnum;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
 @ApiModel("房屋房间更新请求参数")
 public class RoomUpdateParam implements Serializable {
 

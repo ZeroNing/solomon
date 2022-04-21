@@ -4,7 +4,7 @@ import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.graphics2D.DepositReceiptService;
 import com.steven.solomon.graphics2D.ReceiptService;
-import com.steven.solomon.param.AreaListParam;
+import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.ICaheService;
 import io.swagger.annotations.Api;

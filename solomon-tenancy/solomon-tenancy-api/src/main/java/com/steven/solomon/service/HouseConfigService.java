@@ -2,12 +2,12 @@ package com.steven.solomon.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.pojo.House;
-import com.steven.solomon.pojo.HouseConfig;
-import com.steven.solomon.enums.HouseConfigTypeEnum;
-import com.steven.solomon.param.HouseConfigSaveOrUpdateParam;
-import com.steven.solomon.param.HouseConfigSaveParam;
-import com.steven.solomon.param.HouseConfigUpdateParam;
+import com.steven.solomon.pojo.entity.House;
+import com.steven.solomon.pojo.entity.HouseConfig;
+import com.steven.solomon.pojo.enums.HouseConfigTypeEnum;
+import com.steven.solomon.pojo.param.HouseConfigSaveOrUpdateParam;
+import com.steven.solomon.pojo.param.HouseConfigSaveParam;
+import com.steven.solomon.pojo.param.HouseConfigUpdateParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

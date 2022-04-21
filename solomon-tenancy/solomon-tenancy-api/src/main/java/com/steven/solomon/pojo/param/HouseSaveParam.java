@@ -1,4 +1,4 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
 import io.swagger.annotations.ApiModel;
@@ -7,21 +7,15 @@ import java.io.Serializable;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-@ApiModel("房屋更新请求参数")
-public class HouseUpdateParam implements Serializable {
 
-  /**
-   * 主键id
-   */
-  @NotBlank(message = TenancyErrorCode.ID_NOT_NULL)
-  @ApiModelProperty(value = "房屋id",required = true)
-  private String id;
+@ApiModel("房屋保存请求参数")
+public class HouseSaveParam implements Serializable {
 
   /**
    * 省份id
    */
   @NotNull(message = TenancyErrorCode.PROVINCE_ID_NOT_NULL)
-  @ApiModelProperty(value = "省份id",required = true)
+  @ApiModelProperty(value = "省份id")
   private Long provinceId;
 
   /**
@@ -35,14 +29,14 @@ public class HouseUpdateParam implements Serializable {
    * 区id
    */
   @NotNull(message = TenancyErrorCode.AREA_ID_NOT_NULL)
-  @ApiModelProperty(value = "区域id",required = true)
+  @ApiModelProperty(value = "区id",required = true)
   private Long areaId;
 
   /**
    * 地址
    */
-  @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   @ApiModelProperty(value = "地址",required = true)
+  @NotBlank(message = TenancyErrorCode.ADDRESS_NOT_NULL)
   private String address;
 
   /**
@@ -60,30 +54,21 @@ public class HouseUpdateParam implements Serializable {
   /**
    * 总层数
    */
+  @NotNull(message = TenancyErrorCode.ROOM_NUM_NOT_NULL)
   @ApiModelProperty(value = "总层数",required = true)
-  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
-  private Integer totalFloors;
+  private Integer                    totalFloors;
 
+  /**
+   * 房间数量
+   */
+  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
+  @ApiModelProperty(value = "房间数量",required = true)
+  private Integer                            num;
   /**
    * 房间数量配置
    */
   @ApiModelProperty(value = "房间数量配置")
   private List<HouseConfigSaveOrUpdateParam> houseConfigSaveOrUpdateParams;
-
-  /**
-   * 房间数量
-   */
-  @ApiModelProperty(value = "房间数量",required = true)
-  @NotNull(message = TenancyErrorCode.TOTAL_FLOORS_NOT_NULL)
-  private Integer                    num;
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public Long getProvinceId() {
     return provinceId;

@@ -2,10 +2,10 @@ package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.param.TenantInfoGetParam;
-import com.steven.solomon.param.TenantInfoPageParam;
-import com.steven.solomon.param.TenantInfoSaveParam;
-import com.steven.solomon.param.TenantInfoUpdateParam;
+import com.steven.solomon.pojo.param.TenantInfoGetParam;
+import com.steven.solomon.pojo.param.TenantInfoPageParam;
+import com.steven.solomon.pojo.param.TenantInfoSaveParam;
+import com.steven.solomon.pojo.param.TenantInfoUpdateParam;
 import com.steven.solomon.service.TenantInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

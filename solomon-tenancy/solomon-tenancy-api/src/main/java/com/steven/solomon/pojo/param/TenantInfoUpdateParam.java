@@ -1,14 +1,21 @@
-package com.steven.solomon.param;
+package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-@ApiModel("租户信息保存请求参数")
-public class TenantInfoSaveParam implements Serializable {
+
+@ApiModel("租户信息更新请求参数")
+public class TenantInfoUpdateParam implements Serializable {
+
+    /**
+     * 主键id
+     */
+    @ApiModelProperty(value = "租户信息id",required = true)
+    @NotBlank(message = TenancyErrorCode.ID_NOT_NULL)
+    private String id;
 
     /**
      * 租客名称
@@ -113,5 +120,13 @@ public class TenantInfoSaveParam implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -3,9 +3,9 @@ package com.steven.solomon.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.lambda.LambdaUtils;
-import com.steven.solomon.pojo.Area;
 import com.steven.solomon.mapper.AreaMapper;
-import com.steven.solomon.param.AreaListParam;
+import com.steven.solomon.pojo.entity.Area;
+import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.ICaheService;
 import com.steven.solomon.verification.ValidateUtils;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @DubboService
-public class AreaServiceImpl extends ServiceImpl<AreaMapper,Area> implements AreaService {
+public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements AreaService {
 
   @Resource
   private ICaheService iCaheService;
