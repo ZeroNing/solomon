@@ -36,6 +36,7 @@ public class BaseGlobalExceptionHandler {
         }
         baseExceptionVO.setServerId(serverId);
         baseExceptionVO.setLocale(locale);
+        baseExceptionVO.setMessage(ValidateUtils.isEmpty(baseExceptionVO.getMessage()) ? ValidateUtils.isEmpty(locale) ? I18nUtils.getErrorMessage(baseExceptionVO.getCode(),locale,baseExceptionVO.getArg()) : I18nUtils.getErrorMessage(baseExceptionVO.getCode(),baseExceptionVO.getArg()) :baseExceptionVO.getMessage());
         return baseExceptionVO;
     }
 
@@ -44,7 +45,7 @@ public class BaseGlobalExceptionHandler {
         BaseExceptionVO baseExceptionVO = handler(ex, httpStatus, serverId, locale);
         result.put(BaseCode.HTTP_STATUS, HttpStatus.INTERNAL_SERVER_ERROR.value());
         result.put(BaseCode.ERROR_CODE, baseExceptionVO.getCode());
-        result.put(BaseCode.MESSAGE, ValidateUtils.isEmpty(baseExceptionVO.getMessage()) ? ValidateUtils.isEmpty(locale) ? I18nUtils.getErrorMessage(baseExceptionVO.getCode(),locale,baseExceptionVO.getArg()) : I18nUtils.getErrorMessage(baseExceptionVO.getCode(),baseExceptionVO.getArg()) :baseExceptionVO.getMessage());
+        result.put(BaseCode.MESSAGE, baseExceptionVO.getMessage());
         result.put(BaseCode.SERVER_ID, serverId);
         return result;
     }
