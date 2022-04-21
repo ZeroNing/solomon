@@ -23,6 +23,7 @@ public class BaseException extends Exception {
   }
 
   public BaseException(String code, Throwable e, String... args) {
+    super(e);
     this.code = code;
     this.args = args;
   }
