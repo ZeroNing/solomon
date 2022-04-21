@@ -1,4 +1,4 @@
-package com.steven.solomon.utils.image;
+package com.steven.solomon.minio.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

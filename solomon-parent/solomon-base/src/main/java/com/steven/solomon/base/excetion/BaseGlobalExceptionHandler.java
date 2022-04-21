@@ -1,8 +1,8 @@
 package com.steven.solomon.base.excetion;
 
-import com.steven.solomon.base.code.BaseCode;
-import com.steven.solomon.base.code.error.BaseExceptionCode;
 import com.steven.solomon.base.model.BaseExceptionVO;
+import com.steven.solomon.constant.code.BaseCode;
+import com.steven.solomon.constant.code.BaseExceptionCode;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.spring.SpringUtil;
 import com.steven.solomon.utils.verification.ValidateUtils;

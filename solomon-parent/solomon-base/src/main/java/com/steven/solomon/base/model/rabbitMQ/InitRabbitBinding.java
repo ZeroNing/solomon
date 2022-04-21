@@ -2,7 +2,7 @@ package com.steven.solomon.base.model.rabbitMQ;
 
 
 import com.steven.solomon.annotation.RabbitMq;
-import com.steven.solomon.base.code.BaseRabbitMqCode;
+import com.steven.solomon.constant.code.BaseRabbitMqCode;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.io.Serializable;
 import java.util.HashMap;

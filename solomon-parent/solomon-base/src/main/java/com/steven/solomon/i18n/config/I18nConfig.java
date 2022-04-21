@@ -1,6 +1,6 @@
 package com.steven.solomon.i18n.config;
 
-import com.steven.solomon.base.code.BaseCode;
+import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.i18n.I18nControl;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;

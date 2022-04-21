@@ -1,6 +1,7 @@
 package com.steven.solomon.code;
 
-import com.steven.solomon.base.code.error.BaseExceptionCode;
+
+import com.steven.solomon.constant.code.BaseExceptionCode;
 
 public interface TenancyErrorCode extends BaseExceptionCode {
   /**

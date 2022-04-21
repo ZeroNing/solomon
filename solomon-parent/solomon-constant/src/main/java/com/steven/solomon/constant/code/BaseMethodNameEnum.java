@@ -1,4 +1,4 @@
-package com.steven.solomon.base.code;
+package com.steven.solomon.constant.code;
 
 public interface BaseMethodNameEnum {
 

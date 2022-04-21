@@ -1,7 +1,7 @@
 package com.steven.solomon.annotation;
 
 import com.steven.solomon.annotation.impl.EnumValidator;
-import com.steven.solomon.base.code.error.BaseExceptionCode;
+import com.steven.solomon.constant.code.BaseExceptionCode;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

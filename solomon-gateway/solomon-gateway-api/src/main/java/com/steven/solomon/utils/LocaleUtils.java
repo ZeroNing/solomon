@@ -1,6 +1,6 @@
 package com.steven.solomon.utils;
 
-import com.steven.solomon.base.code.BaseCode;
+import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.Arrays;
 import java.util.List;

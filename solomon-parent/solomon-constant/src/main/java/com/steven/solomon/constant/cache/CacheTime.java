@@ -1,4 +1,4 @@
-package com.steven.solomon.base.cache;
+package com.steven.solomon.constant.cache;
 
 public class CacheTime {
 

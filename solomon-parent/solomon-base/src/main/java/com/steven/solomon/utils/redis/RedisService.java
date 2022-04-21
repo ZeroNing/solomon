@@ -1,7 +1,7 @@
 package com.steven.solomon.utils.redis;
 
-import com.steven.solomon.base.code.error.BaseExceptionCode;
 import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.constant.code.BaseExceptionCode;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.List;

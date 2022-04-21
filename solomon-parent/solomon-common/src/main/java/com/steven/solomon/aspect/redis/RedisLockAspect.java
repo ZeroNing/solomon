@@ -1,8 +1,8 @@
 package com.steven.solomon.aspect.redis;
 
 import com.steven.solomon.annotation.Lock;
-import com.steven.solomon.base.code.BaseICacheCode;
 import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.constant.code.BaseICacheCode;
 import com.steven.solomon.utils.redis.ICaheService;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

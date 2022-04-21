@@ -12,6 +12,8 @@
   <modules>
     <module>solomon-base</module>
     <module>solomon-common</module>
+    <module>solomon-constant</module>
+    <module>solomon-minio</module>
   </modules>
 
   <parent>
@@ -59,10 +61,23 @@
     <maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
     <mysql.java.version>8.0.28</mysql.java.version>
     <minio.version>8.2.1</minio.version>
+    <spring.context.version>5.3.5</spring.context.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring.boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.context.version}</version>
+      </dependency>
 
       <!--minio-->
       <dependency>

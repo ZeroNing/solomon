@@ -2,7 +2,7 @@ package com.steven.solomon.rabbitMQ.config;
 
 import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.annotation.RabbitMqRetry;
-import com.steven.solomon.base.code.BaseCode;
+import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.rabbitMQ.init.RabbitMQInitConfig;
 import com.steven.solomon.rabbitMQ.profile.RabbitMQProfile;
 import com.steven.solomon.rabbitMQ.service.AbstractConsumer;

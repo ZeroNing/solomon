@@ -1,6 +1,6 @@
 package com.steven.solomon.utils.i18n;
 
-import com.steven.solomon.base.code.BaseCode;
+import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.utils.logger.LoggerUtils;
 import com.steven.solomon.utils.verification.ValidateUtils;
 import java.util.Locale;

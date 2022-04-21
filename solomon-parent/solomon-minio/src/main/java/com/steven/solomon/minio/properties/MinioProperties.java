@@ -1,4 +1,4 @@
-package com.steven.solomon.config.minio;
+package com.steven.solomon.minio.properties;
 
 import io.minio.MinioClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;

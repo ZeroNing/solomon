@@ -1,8 +1,8 @@
 package com.steven.solomon.utils.rabbit;
 
-import com.steven.solomon.base.code.error.BaseExceptionCode;
 import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.base.model.BaseMq;
+import com.steven.solomon.constant.code.BaseExceptionCode;
 import com.steven.solomon.rabbitMQ.init.RabbitMQInitConfig;
 import com.steven.solomon.base.model.rabbitMQ.MessageQueueDatail;
 import com.steven.solomon.base.model.rabbitMQ.RabbitMqModel;

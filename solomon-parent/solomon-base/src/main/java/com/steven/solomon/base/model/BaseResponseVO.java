@@ -1,6 +1,6 @@
 package com.steven.solomon.base.model;
 
-import com.steven.solomon.base.code.BaseCode;
+import com.steven.solomon.constant.code.BaseCode;
 import org.springframework.http.HttpStatus;
 
 public class BaseResponseVO extends BaseVO {

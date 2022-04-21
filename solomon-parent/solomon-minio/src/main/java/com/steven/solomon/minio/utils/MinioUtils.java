@@ -1,7 +1,6 @@
-package com.steven.solomon.utils.minio;
+package com.steven.solomon.minio.utils;
 
-import com.steven.solomon.config.minio.MinioProperties;
-import com.steven.solomon.utils.logger.LoggerUtils;
+import com.steven.solomon.minio.properties.MinioProperties;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
@@ -30,14 +29,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class MinioUtils {
-
-  private Logger log = LoggerUtils.logger(MinioUtils.class);
 
   private final MinioClient minioClient;
 
@@ -56,11 +51,6 @@ public class MinioUtils {
    */
   public boolean bucketExists(String bucketName) throws Exception {
     boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-    if (found) {
-      log.info(bucketName + " exists");
-    } else {
-      log.info(bucketName + " does not exist");
-    }
     return found;
   }
 
@@ -172,11 +162,11 @@ public class MinioUtils {
    * 文件上传
    *
    * @param bucketName
-   * @param multipartFile
+   * @param inputStream
    */
-  public void putObject(String bucketName, MultipartFile multipartFile, String filename, String fileType)
+  public void putObject(String bucketName, InputStream  inputStream, String filename, String fileType)
       throws Exception {
-    InputStream inputStream = new ByteArrayInputStream(multipartFile.getBytes());
+    makeBucket(bucketName);
     minioClient.putObject(
         PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
             inputStream, -1, minioProperties.getFileSize())

@@ -1,7 +1,7 @@
 package com.steven.solomon.base.excetion;
 
-import com.steven.solomon.base.code.error.BaseExceptionCode;
 import com.steven.solomon.base.model.BaseExceptionVO;
+import com.steven.solomon.constant.code.BaseExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
