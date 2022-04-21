@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.steven.solomon.spring.SpringUtil;
+import com.steven.solomon.verification.ValidateUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class JackJsonUtils {
    * @throws JsonProcessingException
    */
   public static String formatJsonByFilter(Object result, Class<?> filter) throws JsonProcessingException {
-    return filter == null ? mapper.writeValueAsString(result) : mapper.writerWithView(filter).writeValueAsString(result);
+    return ValidateUtils.isEmpty(filter) ? mapper.writeValueAsString(result) : mapper.writerWithView(filter).writeValueAsString(result);
   }
 
 }

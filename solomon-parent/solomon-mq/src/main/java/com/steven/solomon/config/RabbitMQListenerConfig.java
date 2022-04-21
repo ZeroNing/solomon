@@ -4,6 +4,7 @@ import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.annotation.RabbitMqRetry;
 import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.init.RabbitMQInitConfig;
+import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.profile.RabbitMQProfile;
 import com.steven.solomon.service.AbstractConsumer;
 import com.steven.solomon.service.BaseMQService;
@@ -31,7 +32,7 @@ import org.springframework.retry.support.RetryTemplate;
 
 public class RabbitMQListenerConfig {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerUtils.logger(getClass());
 
     private RabbitMq rabbitMq;
 

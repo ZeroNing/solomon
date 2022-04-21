@@ -3,6 +3,7 @@ package com.steven.solomon.pojo;
 
 import com.steven.solomon.annotation.RabbitMq;
 import com.steven.solomon.constant.code.BaseRabbitMqCode;
+import com.steven.solomon.verification.ValidateUtils;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class InitRabbitBinding implements Serializable {
   }
 
   private String getName(String name, boolean isAddDlxPrefix) {
-    if (name == null || "".equals(name)) {
+    if (ValidateUtils.isEmpty(name)) {
       return name;
     }
     return isAddDlxPrefix ? BaseRabbitMqCode.DLX_PREFIX + name : name;

@@ -15,27 +15,27 @@ public class MinioProperties {
   private String endpoint;
 
   /**
-   *     //"TCP/IP端口号"
+   * "TCP/IP端口号"
    */
   private Integer port;
 
   /**
-   *     //"accessKey类似于用户ID，用于唯一标识你的账户"
+   * "accessKey类似于用户ID，用于唯一标识你的账户"
    */
   private String accessKey;
 
   /**
-   *     //"secretKey是你账户的密码"
+   * "secretKey是你账户的密码"
    */
   private String secretKey;
 
   /**
-   *     //"如果是true，则用的是https而不是http,默认值是true"
+   * "如果是true，则用的是https而不是http,默认值是true"
    */
   private boolean secure;
 
   /**
-   *     //"默认存储桶"
+   * "默认存储桶"
    */
   private String bucketName;
 
@@ -122,7 +122,7 @@ public class MinioProperties {
     MinioClient minioClient =
         MinioClient.builder()
             .credentials(accessKey, secretKey)
-            .endpoint(endpoint,port,secure)
+            .endpoint(endpoint, port, secure)
             .build();
     return minioClient;
   }

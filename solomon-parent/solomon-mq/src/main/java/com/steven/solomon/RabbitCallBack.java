@@ -1,5 +1,6 @@
 package com.steven.solomon;
 
+import com.steven.solomon.logger.LoggerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ReturnedMessage;
@@ -9,7 +10,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate.ReturnsCallback;
 
 public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
 
-  private Logger logger = LoggerFactory.getLogger(RabbitCallBack.class);
+  private Logger logger = LoggerUtils.logger(RabbitCallBack.class);
 
   @Override
   public void confirm(CorrelationData correlationData, boolean ack, String cause) {

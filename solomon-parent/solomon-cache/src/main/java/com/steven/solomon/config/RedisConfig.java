@@ -1,5 +1,6 @@
 package com.steven.solomon.config;
 
+import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.serializer.BaseRedisSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerUtils.logger(getClass());
 
 	/**
 	 * 初始化redi（默认用的是用JdkSerializationRedisSerializer进行序列化的）

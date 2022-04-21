@@ -2,6 +2,7 @@ package com.steven.solomon.utils;
 
 import com.steven.solomon.constant.code.BaseExceptionCode;
 import com.steven.solomon.exception.BaseException;
+import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.pojo.BaseMq;
 import com.steven.solomon.pojo.MessageQueueDatail;
 import com.steven.solomon.pojo.RabbitMqModel;
@@ -25,7 +26,7 @@ import org.springframework.util.Assert;
 @Service
 public class RabbitMqService implements MqService {
 
-  private Logger logger = LoggerFactory.getLogger(RabbitMqService.class);
+  private Logger logger = LoggerUtils.logger(RabbitMqService.class);
 
   @Autowired
   private RabbitTemplate rabbitTemplate;

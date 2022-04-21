@@ -1,5 +1,6 @@
 package com.steven.solomon.i18n;
 
+import com.steven.solomon.verification.ValidateUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -35,7 +36,7 @@ public class I18nPropertyResourceBundle extends ResourceBundle {
 
   @Override
   public Object handleGetObject(String key) {
-    if (key == null) {
+    if (ValidateUtils.isEmpty(key)) {
       throw new NullPointerException();
     }
     return lookup.get(key);
