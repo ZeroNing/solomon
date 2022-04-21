@@ -3,7 +3,7 @@ package com.steven.solomon.pojo.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.model.BaseEntity;
-import com.steven.solomon.enums.HouseConfigTypeEnum;
+import com.steven.solomon.pojo.enums.HouseConfigTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;

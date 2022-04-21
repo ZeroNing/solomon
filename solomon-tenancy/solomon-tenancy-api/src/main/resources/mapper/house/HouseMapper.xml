@@ -22,7 +22,7 @@
       a.init_status AS 'initStatus'
   </sql>
 
-  <select id="page" resultType="com.steven.solomon.vo.HouseVO">
+  <select id="page" resultType="com.steven.solomon.pojo.vo.HouseVO">
       select
         <include refid="entity"/>
       from
@@ -30,7 +30,7 @@
       ${ew.customSqlSegment}
   </select>
 
-  <select id="get" resultType="com.steven.solomon.vo.HouseVO">
+  <select id="get" resultType="com.steven.solomon.pojo.vo.HouseVO">
     select
     <include refid="entity"/>
     from

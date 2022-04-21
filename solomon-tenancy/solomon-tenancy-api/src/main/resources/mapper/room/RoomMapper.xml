@@ -15,7 +15,7 @@
         a.house_id AS 'houseId'
     </sql>
 
-    <select id="page" resultType="com.steven.solomon.vo.RoomVO">
+    <select id="page" resultType="com.steven.solomon.pojo.vo.RoomVO">
         select
          <include refid="entity"/>
         from

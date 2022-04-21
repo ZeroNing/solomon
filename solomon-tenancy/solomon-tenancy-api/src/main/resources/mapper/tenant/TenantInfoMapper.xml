@@ -19,7 +19,7 @@
     a.address AS 'address'
   </sql>
 
-  <select id="page" resultType="com.steven.solomon.vo.TenantInfoVO">
+  <select id="page" resultType="com.steven.solomon.pojo.vo.TenantInfoVO">
     select
         <include refid="entity"/>
     from

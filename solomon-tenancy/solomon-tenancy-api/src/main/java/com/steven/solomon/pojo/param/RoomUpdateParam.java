@@ -1,7 +1,7 @@
 package com.steven.solomon.pojo.param;
 
 import com.steven.solomon.code.TenancyErrorCode;
-import com.steven.solomon.enums.RoomTypeEnum;
+import com.steven.solomon.pojo.enums.RoomTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
