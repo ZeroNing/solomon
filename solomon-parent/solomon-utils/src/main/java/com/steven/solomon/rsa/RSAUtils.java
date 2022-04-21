@@ -33,10 +33,15 @@ public class RSAUtils {
    * @return
    */
   public static String decrypt(String text) {
-    if(ValidateUtils.isEmpty(text)){
+    try {
+      if(ValidateUtils.isEmpty(text)){
+        return text;
+      }
+      RSA rsa = new RSA(null, publicKey);
+      return StrUtil.str(rsa.decrypt(text, KeyType.PublicKey), CharsetUtil.CHARSET_UTF_8);
+    } catch (Exception e) {
       return text;
     }
-    RSA rsa = new RSA(null, publicKey);
-    return StrUtil.str(rsa.decrypt(text, KeyType.PublicKey), CharsetUtil.CHARSET_UTF_8);
+
   }
 }
