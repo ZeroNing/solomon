@@ -1,4 +1,4 @@
-package com.steven.solomon.base.model.userAgent;
+package com.steven.solomon.utils.userAgent.entity;
 
 import java.io.Serializable;
 

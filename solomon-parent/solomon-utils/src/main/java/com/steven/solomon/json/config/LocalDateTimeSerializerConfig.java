@@ -1,4 +1,4 @@
-package com.steven.solomon.config.jackson;
+package com.steven.solomon.json.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -1,4 +1,4 @@
-package com.steven.solomon.utils.rmb;
+package com.steven.solomon.rmb;
 
 
 import com.steven.solomon.verification.ValidateUtils;
