@@ -1,10 +1,10 @@
 package com.steven.solomon.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.steven.solomon.base.excetion.BaseException;
-import com.steven.solomon.entity.House;
-import com.steven.solomon.entity.HouseConfig;
-import com.steven.solomon.entity.Room;
+import com.steven.solomon.exception.BaseException;
+import com.steven.solomon.pojo.House;
+import com.steven.solomon.pojo.HouseConfig;
+import com.steven.solomon.pojo.Room;
 import com.steven.solomon.param.RoomPageParam;
 import com.steven.solomon.param.RoomUpdateParam;
 import com.steven.solomon.vo.RoomVO;

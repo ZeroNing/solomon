@@ -1,12 +1,8 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
-import com.steven.solomon.utils.logger.LoggerUtils;
-import com.steven.solomon.utils.redis.ICaheService;
-import com.steven.solomon.utils.redis.RedisService;
+import com.steven.solomon.logger.LoggerUtils;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

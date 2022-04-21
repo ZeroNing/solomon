@@ -1,6 +1,7 @@
 package com.steven.solomon.utils.rmb;
 
-import com.steven.solomon.utils.verification.ValidateUtils;
+
+import com.steven.solomon.verification.ValidateUtils;
 
 /**
  *@Title: ConvertUpMoney

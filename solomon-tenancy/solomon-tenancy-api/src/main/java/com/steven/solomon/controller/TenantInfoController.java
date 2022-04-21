@@ -1,7 +1,7 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
-import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.param.TenantInfoGetParam;
 import com.steven.solomon.param.TenantInfoPageParam;
 import com.steven.solomon.param.TenantInfoSaveParam;

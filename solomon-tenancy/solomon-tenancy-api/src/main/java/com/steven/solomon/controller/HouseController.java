@@ -1,14 +1,13 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
-import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.param.*;
 import com.steven.solomon.service.HouseConfigService;
 import com.steven.solomon.service.HouseService;
 import com.steven.solomon.service.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

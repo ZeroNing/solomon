@@ -1,6 +1,6 @@
 package com.steven.solomon.param;
 
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;

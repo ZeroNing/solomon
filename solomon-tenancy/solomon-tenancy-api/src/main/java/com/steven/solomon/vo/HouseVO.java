@@ -1,6 +1,6 @@
 package com.steven.solomon.vo;
 
-import com.steven.solomon.entity.House;
+import com.steven.solomon.pojo.House;
 
 public class HouseVO extends House {
 

@@ -1,20 +1,15 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
-import com.steven.solomon.base.excetion.BaseException;
+import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.graphics2D.DepositReceiptService;
 import com.steven.solomon.graphics2D.ReceiptService;
-import com.steven.solomon.graphics2D.entity.DepositReceipt;
-import com.steven.solomon.graphics2D.entity.Receipt;
 import com.steven.solomon.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.utils.redis.ICaheService;
+import com.steven.solomon.service.ICaheService;
 import io.swagger.annotations.Api;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,8 +2,8 @@ package com.steven.solomon.i18n.config;
 
 import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.i18n.I18nControl;
-import com.steven.solomon.utils.logger.LoggerUtils;
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.logger.LoggerUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

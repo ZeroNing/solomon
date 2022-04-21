@@ -1,9 +1,9 @@
 package com.steven.solomon.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.steven.solomon.base.excetion.BaseException;
-import com.steven.solomon.entity.House;
-import com.steven.solomon.entity.HouseConfig;
+import com.steven.solomon.exception.BaseException;
+import com.steven.solomon.pojo.House;
+import com.steven.solomon.pojo.HouseConfig;
 import com.steven.solomon.enums.HouseConfigTypeEnum;
 import com.steven.solomon.param.HouseConfigSaveOrUpdateParam;
 import com.steven.solomon.param.HouseConfigSaveParam;

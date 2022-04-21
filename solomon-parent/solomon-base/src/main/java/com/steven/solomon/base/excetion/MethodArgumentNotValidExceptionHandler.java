@@ -1,7 +1,8 @@
 package com.steven.solomon.base.excetion;
 
-import com.steven.solomon.base.model.BaseExceptionVO;
-import com.steven.solomon.utils.logger.LoggerUtils;
+import com.steven.solomon.exception.AbstractExceptionHandler;
+import com.steven.solomon.logger.LoggerUtils;
+import com.steven.solomon.vo.BaseExceptionVO;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,6 @@ public class MethodArgumentNotValidExceptionHandler extends AbstractExceptionHan
   @Override
   public BaseExceptionVO handleBaseException(Exception ex) {
     MethodArgumentNotValidException e = (MethodArgumentNotValidException) ex;
-    return new BaseExceptionVO(e.getBindingResult().getFieldError().getDefaultMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new BaseExceptionVO(e.getBindingResult().getFieldError().getDefaultMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
   }
 }

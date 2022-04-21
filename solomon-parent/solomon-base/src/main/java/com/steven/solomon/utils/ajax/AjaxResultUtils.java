@@ -1,8 +1,8 @@
 package com.steven.solomon.utils.ajax;
 
-import com.steven.solomon.base.model.BaseExceptionVO;
 import com.steven.solomon.constant.code.BaseCode;
-import com.steven.solomon.utils.json.JackJsonUtils;
+import com.steven.solomon.json.JackJsonUtils;
+import com.steven.solomon.vo.BaseExceptionVO;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

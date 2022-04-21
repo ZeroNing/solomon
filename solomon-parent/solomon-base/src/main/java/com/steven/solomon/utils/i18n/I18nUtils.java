@@ -1,8 +1,8 @@
 package com.steven.solomon.utils.i18n;
 
 import com.steven.solomon.constant.code.BaseCode;
-import com.steven.solomon.utils.logger.LoggerUtils;
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.logger.LoggerUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import java.util.Locale;
 import org.slf4j.Logger;
 import org.springframework.context.i18n.LocaleContextHolder;

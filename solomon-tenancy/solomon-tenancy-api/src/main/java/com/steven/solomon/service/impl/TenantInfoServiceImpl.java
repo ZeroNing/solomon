@@ -6,20 +6,20 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.base.enums.DelFlagEnum;
-import com.steven.solomon.base.excetion.BaseException;
 import com.steven.solomon.code.TenancyErrorCode;
-import com.steven.solomon.entity.Area;
-import com.steven.solomon.entity.TenantInfo;
+import com.steven.solomon.exception.BaseException;
+import com.steven.solomon.lambda.LambdaUtils;
+import com.steven.solomon.pojo.Area;
+import com.steven.solomon.pojo.TenantInfo;
 import com.steven.solomon.mapper.TenantInfoMapper;
 import com.steven.solomon.param.TenantInfoGetParam;
 import com.steven.solomon.param.TenantInfoPageParam;
 import com.steven.solomon.param.TenantInfoSaveParam;
 import com.steven.solomon.param.TenantInfoUpdateParam;
+import com.steven.solomon.rsa.RSAUtils;
 import com.steven.solomon.service.AreaService;
 import com.steven.solomon.service.TenantInfoService;
-import com.steven.solomon.utils.lambda.LambdaUtils;
-import com.steven.solomon.utils.rsa.RSAUtils;
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import com.steven.solomon.vo.TenantInfoVO;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
@@ -97,7 +97,8 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
     }
     List<TenantInfoVO> records = page.getRecords();
     List<Long>   areaIds = new ArrayList<>();
-    areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getProvinceId()),TenantInfo::getProvinceId));
+    areaIds.addAll(
+        LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getProvinceId()),TenantInfo::getProvinceId));
     areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getCityId()),TenantInfo::getCityId));
     areaIds.addAll(LambdaUtils.toList(records,tenantInfo -> ValidateUtils.isNotEmpty(tenantInfo.getAreaId()),TenantInfo::getAreaId));
 

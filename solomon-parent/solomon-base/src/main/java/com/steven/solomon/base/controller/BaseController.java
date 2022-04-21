@@ -1,7 +1,7 @@
 package com.steven.solomon.base.controller;
 
 import com.steven.solomon.base.model.BaseResponseVO;
-import com.steven.solomon.utils.json.JackJsonUtils;
+import com.steven.solomon.json.JackJsonUtils;
 import java.io.IOException;
 
 public class BaseController {

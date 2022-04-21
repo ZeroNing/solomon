@@ -1,6 +1,6 @@
 package com.steven.solomon.vo;
 
-import com.steven.solomon.entity.TenantInfo;
+import com.steven.solomon.pojo.TenantInfo;
 
 public class TenantInfoVO extends TenantInfo {
   /**

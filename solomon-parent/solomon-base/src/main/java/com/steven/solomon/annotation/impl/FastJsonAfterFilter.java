@@ -2,9 +2,9 @@ package com.steven.solomon.annotation.impl;
 
 import com.alibaba.fastjson.serializer.AfterFilter;
 import com.steven.solomon.annotation.JsonEnum;
+import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.utils.enums.EnumUtils;
-import com.steven.solomon.utils.logger.LoggerUtils;
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

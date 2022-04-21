@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.steven.solomon.entity.House;
+import com.steven.solomon.pojo.House;
 import com.steven.solomon.vo.HouseVO;
 import org.apache.ibatis.annotations.Param;
 

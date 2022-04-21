@@ -3,8 +3,8 @@ package com.steven.solomon.base.model;
 
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.base.enums.DelFlagEnum;
-import com.steven.solomon.utils.date.DateTimeUtils;
 
+import com.steven.solomon.date.DateTimeUtils;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

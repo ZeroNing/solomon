@@ -1,8 +1,8 @@
 package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.graphics2D.entity.BaseReceipt;
-import com.steven.solomon.utils.minio.MinioUtils;
-import com.steven.solomon.utils.verification.ValidateUtils;
+import com.steven.solomon.minio.utils.MinioUtils;
+import com.steven.solomon.verification.ValidateUtils;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;

@@ -1,9 +1,7 @@
 package com.steven.solomon.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.steven.solomon.base.excetion.BaseException;
-import com.steven.solomon.entity.House;
+import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.param.HouseGetParam;
 import com.steven.solomon.param.HouseInitParam;
 import com.steven.solomon.param.HousePageParam;
