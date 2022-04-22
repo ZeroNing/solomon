@@ -164,13 +164,12 @@ public class MinioUtils {
    * @param bucketName
    * @param inputStream
    */
-  public void putObject(String bucketName, InputStream  inputStream, String filename, String fileType)
-      throws Exception {
+  public void putObject(String bucketName, InputStream  inputStream, String filename) throws Exception {
     makeBucket(bucketName);
     minioClient.putObject(
         PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
             inputStream, -1, minioProperties.getFileSize())
-            .contentType(fileType)
+            .contentType(FileTypeUtils.getFileType(inputStream))
             .build());
   }
 
@@ -180,7 +179,7 @@ public class MinioUtils {
    * @param bucketName
    * @param bi
    */
-  public void putObject(String bucketName, BufferedImage bi, String filename, String fileType) throws Exception {
+  public void putObject(String bucketName, BufferedImage bi, String filename) throws Exception {
     bucketName = bucketName.toLowerCase();
     ByteArrayOutputStream bs    = new ByteArrayOutputStream();
     ImageOutputStream     imOut = ImageIO.createImageOutputStream(bs);
@@ -188,11 +187,7 @@ public class MinioUtils {
     InputStream inputStream = new ByteArrayInputStream(bs.toByteArray());
     makeBucket(bucketName);
 
-    minioClient.putObject(
-        PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
-            inputStream, -1, minioProperties.getFileSize())
-            .contentType(fileType)
-            .build());
+    this.putObject(bucketName, inputStream,filename);
   }
 
   /**

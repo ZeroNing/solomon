@@ -2,7 +2,7 @@ package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.graphics2D.entity.Receipt;
-import com.steven.solomon.utils.rmb.ConvertUpMoney;
+import com.steven.solomon.rmb.ConvertUpMoney;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -151,9 +151,8 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
 
   @Override
   public void upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
-//    minioUtils.putObject("receipt",bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg",
-//        FileTypeUtils.getFileType(bufferedImage));
-    ImageIO.write(bufferedImage,"JPEG",new FileOutputStream("D:/"+"2"+".jpg"));//保存图片 JPEG表示保存格式
+    minioUtils.putObject("receipt",bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg");
+//    ImageIO.write(bufferedImage,"JPEG",new FileOutputStream("D:/"+"2"+".jpg"));//保存图片 JPEG表示保存格式
 
   }
 }

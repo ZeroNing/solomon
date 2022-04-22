@@ -1,4 +1,4 @@
-package com.steven.solomon.utils;
+package com.steven.solomon.minio.utils;
 
 import cn.hutool.core.io.FileTypeUtil;
 import java.awt.image.BufferedImage;
@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
-import org.springframework.web.multipart.MultipartFile;
 
 public class FileTypeUtils {
 
@@ -17,10 +16,6 @@ public class FileTypeUtils {
   private final static String VIDEO_TYPE = "video/";
   private final static String APPLICATION_TYPE = "application/";
   private final static String TXT_TYPE = "text/";
-
-  public static String getFileType(MultipartFile multipartFile) throws IOException {
-    return getFileType(multipartFile.getInputStream());
-  }
 
   public static String getFileType(BufferedImage bufferedImage) throws IOException {
     ByteArrayOutputStream bs    = new ByteArrayOutputStream();
