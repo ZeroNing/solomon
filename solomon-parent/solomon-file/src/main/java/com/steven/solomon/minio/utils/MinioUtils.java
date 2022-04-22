@@ -60,7 +60,7 @@ public class MinioUtils {
    * @param bucketName 存储桶名称
    */
   public boolean makeBucket(String bucketName) throws Exception {
-    boolean flag = bucketExists(bucketName);
+    boolean flag = bucketExists(bucketName.toLowerCase());
     if (!flag) {
       minioClient.makeBucket(
           MakeBucketArgs.builder()
@@ -167,11 +167,15 @@ public class MinioUtils {
   public void putObject(String bucketName, InputStream  inputStream, String filename) throws Exception {
     bucketName = bucketName.toLowerCase();
     makeBucket(bucketName);
-    minioClient.putObject(
-        PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
-            inputStream, -1, minioProperties.getFileSize())
-            .contentType(FileTypeUtils.getFileType(inputStream))
-            .build());
+
+    String fileType = FileTypeUtils.getFileType(inputStream);
+
+    PutObjectArgs args = PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
+        inputStream, -1, minioProperties.getFileSize())
+        .contentType(fileType)
+        .build();
+
+    minioClient.putObject(args);
   }
 
   /**
@@ -339,11 +343,12 @@ public class MinioUtils {
       throws Exception {
     bucketName = bucketName.toLowerCase();
     boolean flag = bucketExists(bucketName);
+    String fileType = FileTypeUtils.getFileType(inputStream);
     if (flag) {
       minioClient.putObject(
           PutObjectArgs.builder().bucket(bucketName).object(objectName).stream(
               inputStream, -1, minioProperties.getFileSize())
-              .contentType(FileTypeUtils.getFileType(inputStream))
+              .contentType(fileType)
               .build());
       StatObjectResponse statObject = statObject(bucketName, objectName);
       if (statObject != null && statObject.size() > 0) {

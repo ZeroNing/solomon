@@ -39,7 +39,7 @@ public abstract class AbsReceiptService <T extends BaseReceipt>{
       g2 = drawTableLines(g2);
       g2 = drawDescribe(g2,receipt);
       g2 = drawData(g2,receipt);
-      setGraphics2DOptimize(g2);
+      g2 = setGraphics2DOptimize(g2);
       upload(bufferedImage,receipt);
     } finally {
       if(ValidateUtils.isNotEmpty(bufferedImage)){
@@ -54,12 +54,13 @@ public abstract class AbsReceiptService <T extends BaseReceipt>{
   /**
    * 因为2D画图画字体会有锯齿，而graphics2D类有抗锯齿和画笔柔顺的开关，设置如下
    */
-  public void setGraphics2DOptimize(Graphics2D g2){
+  public Graphics2D setGraphics2DOptimize(Graphics2D g2){
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     Stroke s = new BasicStroke(imageWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
     g2.setStroke(s);
+    return g2;
   }
 
   /**
