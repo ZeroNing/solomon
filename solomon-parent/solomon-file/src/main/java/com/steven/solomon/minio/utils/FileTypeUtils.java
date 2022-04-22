@@ -17,13 +17,6 @@ public class FileTypeUtils {
   private final static String APPLICATION_TYPE = "application/";
   private final static String TXT_TYPE = "text/";
 
-  public static String getFileType(BufferedImage bufferedImage) throws IOException {
-    ByteArrayOutputStream bs    = new ByteArrayOutputStream();
-    ImageOutputStream     imOut = ImageIO.createImageOutputStream(bs);
-    ImageIO.write(bufferedImage, "jpg", imOut);
-    return getFileType(new ByteArrayInputStream(bs.toByteArray()));
-  }
-
   public static String getFileType(InputStream inputStream) {
     String      type        = null;
     type = FileTypeUtil.getType(inputStream);

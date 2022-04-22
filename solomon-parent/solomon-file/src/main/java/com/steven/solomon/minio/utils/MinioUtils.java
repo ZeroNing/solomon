@@ -165,6 +165,7 @@ public class MinioUtils {
    * @param inputStream
    */
   public void putObject(String bucketName, InputStream  inputStream, String filename) throws Exception {
+    bucketName = bucketName.toLowerCase();
     makeBucket(bucketName);
     minioClient.putObject(
         PutObjectArgs.builder().bucket(bucketName).object(filename).stream(
@@ -180,7 +181,6 @@ public class MinioUtils {
    * @param bi
    */
   public void putObject(String bucketName, BufferedImage bi, String filename) throws Exception {
-    bucketName = bucketName.toLowerCase();
     ByteArrayOutputStream bs    = new ByteArrayOutputStream();
     ImageOutputStream     imOut = ImageIO.createImageOutputStream(bs);
     ImageIO.write(bi, "jpg", imOut);
@@ -333,17 +333,17 @@ public class MinioUtils {
    * @param bucketName  存储桶名称
    * @param objectName  存储桶里的对象名称
    * @param inputStream 要上传的流
-   * @param contentType 要上传的文件类型 MimeTypeUtils.IMAGE_JPEG_VALUE
    * @return
    */
-  public boolean putObject(String bucketName, String objectName, InputStream inputStream, String contentType)
+  public boolean putObject(String bucketName, String objectName, InputStream inputStream)
       throws Exception {
+    bucketName = bucketName.toLowerCase();
     boolean flag = bucketExists(bucketName);
     if (flag) {
       minioClient.putObject(
           PutObjectArgs.builder().bucket(bucketName).object(objectName).stream(
               inputStream, -1, minioProperties.getFileSize())
-              .contentType(contentType)
+              .contentType(FileTypeUtils.getFileType(inputStream))
               .build());
       StatObjectResponse statObject = statObject(bucketName, objectName);
       if (statObject != null && statObject.size() > 0) {
