@@ -2,6 +2,7 @@ package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.graphics2D.entity.Receipt;
+import com.steven.solomon.minio.utils.FileTypeUtils;
 import com.steven.solomon.rmb.ConvertUpMoney;
 import org.springframework.stereotype.Service;
 

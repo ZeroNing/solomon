@@ -2,6 +2,7 @@ package com.steven.solomon.graphics2D;
 
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.graphics2D.entity.DepositReceipt;
+import com.steven.solomon.minio.utils.FileTypeUtils;
 import com.steven.solomon.rmb.ConvertUpMoney;
 import java.awt.Color;
 import java.awt.Font;
