@@ -1,5 +1,6 @@
 package com.steven.solomon.graphics2D.entity;
 
+import com.steven.solomon.minio.graphics2D.entity.BaseReceipt;
 import java.io.Serializable;
 import java.math.BigDecimal;
 

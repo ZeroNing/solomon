@@ -1,6 +1,6 @@
-package com.steven.solomon.graphics2D;
+package com.steven.solomon.minio.graphics2D;
 
-import com.steven.solomon.graphics2D.entity.BaseReceipt;
+import com.steven.solomon.minio.graphics2D.entity.BaseReceipt;
 import com.steven.solomon.minio.utils.MinioUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import java.awt.BasicStroke;
@@ -11,7 +11,7 @@ import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import javax.annotation.Resource;
 
-public abstract class AbsReceiptService <T extends BaseReceipt>{
+public abstract class AbsReceiptService<T extends BaseReceipt>{
 
   //行高
   protected Integer rowheight;

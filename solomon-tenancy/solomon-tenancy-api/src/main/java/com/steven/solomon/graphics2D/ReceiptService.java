@@ -1,20 +1,20 @@
 package com.steven.solomon.graphics2D;
 
+import com.steven.solomon.code.ReceiptMinIoBucketCode;
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.graphics2D.entity.Receipt;
-import com.steven.solomon.minio.utils.FileTypeUtils;
+import com.steven.solomon.minio.graphics2D.AbsReceiptService;
 import com.steven.solomon.rmb.ConvertUpMoney;
-import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Service;
 
 @Service
-public class ReceiptService extends AbsReceiptService <Receipt>{
+public class ReceiptService extends AbsReceiptService<Receipt> {
   
   public ReceiptService(){
     //行高
@@ -152,6 +152,6 @@ public class ReceiptService extends AbsReceiptService <Receipt>{
 
   @Override
   public void upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
-    minioUtils.putObject("receipt",bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg");
+    minioUtils.putObject(ReceiptMinIoBucketCode.RECEIPT,bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg");
   }
 }

@@ -1,6 +1,6 @@
 package com.steven.solomon.graphics2D.entity;
 
-import java.io.Serializable;
+import com.steven.solomon.minio.graphics2D.entity.BaseReceipt;
 import java.math.BigDecimal;
 
 public class Receipt extends BaseReceipt {
