@@ -28,7 +28,7 @@ public class SpringRedisAutoManager extends RedisCacheManager {
   @Override
   public Cache getCache(String name) {
     if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
-      String tenantId = TenantContextHolder.getTenantId();
+      String tenantId = TenantContextHolder.getCode();
       if(ValidateUtils.isEmpty(tenantId)){
         return super.getCache(name);
       }

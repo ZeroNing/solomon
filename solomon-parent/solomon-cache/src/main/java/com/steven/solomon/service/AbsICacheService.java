@@ -13,7 +13,7 @@ public abstract class AbsICacheService implements  ICacheService {
   public String assembleKey(String group, String key) {
     StringBuilder sb = new StringBuilder();
     if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
-      String tenantId = TenantContextHolder.getTenantId();
+      String tenantId = TenantContextHolder.getCode();
       if(ValidateUtils.isNotEmpty(tenantId)){
         sb.append(tenantId).append(":");
       }
