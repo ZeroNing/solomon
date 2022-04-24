@@ -1,6 +1,8 @@
 package com.steven.solomon.service.impl;
 
-import com.steven.solomon.service.ICaheService;
+import com.steven.solomon.service.AbsICacheService;
+import com.steven.solomon.service.ICacheService;
+import com.steven.solomon.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  * Redis工具类
@@ -17,7 +18,7 @@ import org.springframework.util.StringUtils;
  * @date 2018年6月7日
  */
 @Service("redisService")
-public class RedisService implements ICaheService {
+public class RedisService extends AbsICacheService {
 
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
@@ -55,7 +56,7 @@ public class RedisService implements ICaheService {
   @Override
   public void del(String group, String... key) {
 
-    if (!StringUtils.isEmpty(key) && key.length > 0) {
+    if (!ValidateUtils.isEmpty(key) && key.length > 0) {
       if (key.length == 1) {
         redisTemplate.delete(assembleKey(group, key[0]));
       } else {
@@ -71,7 +72,7 @@ public class RedisService implements ICaheService {
   @Override
   public Object get(String group, String key) {
     String k = assembleKey(group, key);
-    return StringUtils.isEmpty(k) ? null : redisTemplate.boundValueOps(k).get();
+    return ValidateUtils.isEmpty(k) ? null : redisTemplate.boundValueOps(k).get();
   }
 
   @Override
@@ -94,7 +95,7 @@ public class RedisService implements ICaheService {
   public boolean lockSet(String group, String key, Object value, Integer time) {
     Boolean success = redisTemplate.opsForValue().setIfAbsent(assembleKey(group, key), value);
     redisTemplate.expire(key, time, TimeUnit.SECONDS);
-    return !StringUtils.isEmpty(success) ? success : false;
+    return !ValidateUtils.isEmpty(success) ? success : false;
   }
 
   @Override

@@ -23,7 +23,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
   private final Logger logger = LoggerUtils.logger(getClass());
 
   @Resource(name = "redisService")
-  private ICaheService iCaheService;
+  private ICacheService iCacheService;
 
   private final int retryNumber = 1;
 
@@ -49,7 +49,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       //保存重试失败次数达到retryNumber上线后拒绝此消息入队列并删除redis
       saveFailNumber(messageProperties, channel, deliveryTag,correlationId,e);
      } finally {
-      iCaheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
+      iCacheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
     }
   }
 
@@ -57,7 +57,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
    * 记录失败次数并决定是否拒绝此消息
    */
   public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId,Exception e) throws Exception {
-    Integer lock = (Integer) iCaheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
+    Integer lock = (Integer) iCacheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
     Integer actualLock = ValidateUtils.isEmpty(lock) ? 1 : lock + 1;
     logger.info("rabbitMQ 失败记录:消费者correlationId为:{},deliveryTag为:{},失败次数为:{}", correlationId, deliveryTag,actualLock);
     int retryNumber = getRetryNumber();
@@ -66,12 +66,12 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
         logger.info("rabbitMQ 失败记录:因记录不需要重试因此直接拒绝此消息,消费者correlationId为:{},消费者设置重试次数为:{}", correlationId, retryNumber);
       } else {
         logger.info("rabbitMQ 失败记录:已满足重试次数,删除redis消息并且拒绝此消息,消费者correlationId为:{},重试次数为:{}", correlationId, actualLock);
-        iCaheService.del(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
+        iCacheService.del(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
       }
       channel.basicNack(messageProperties.getDeliveryTag(), false, false);
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
-      iCaheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
+      iCacheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
       throw e;
     }
   }

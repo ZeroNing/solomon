@@ -3,7 +3,7 @@ package com.steven.solomon.aspect;
 import com.steven.solomon.annotation.Lock;
 import com.steven.solomon.constant.code.BaseICacheCode;
 import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.service.ICaheService;
+import com.steven.solomon.service.ICacheService;
 import com.steven.solomon.verification.ValidateUtils;
 import java.lang.reflect.Method;
 import javax.annotation.Resource;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class RedisLockAspect {
 
   @Resource(name="redisService")
-  private ICaheService iCaheService;
+  private ICacheService iCacheService;
 
   /**
    * 切点，拦截带有@RedisLock的注解方法
@@ -46,13 +46,13 @@ public class RedisLockAspect {
 
     String             key     = lock.lockKey();
     //通过setnx设置值，如果值不存在，则获得该锁
-    boolean flag = iCaheService.lockSet(BaseICacheCode.REDIS_LOCK,key, 0, lock.expire());
+    boolean flag = iCacheService.lockSet(BaseICacheCode.REDIS_LOCK,key, 0, lock.expire());
     if (flag) {
       try {
         Object result = point.proceed();
         return result;
       } finally {
-        iCaheService.deleteLock(BaseICacheCode.REDIS_LOCK,key);
+        iCacheService.deleteLock(BaseICacheCode.REDIS_LOCK,key);
       }
     } else {
       //查找错误处理器

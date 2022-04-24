@@ -1,7 +1,7 @@
 package com.steven.solomon.service;
 
 
-public interface ICaheService {
+public interface ICacheService {
 
   /**
    * 指定缓存失效时间
@@ -86,13 +86,5 @@ public interface ICaheService {
    * @param key   键
    */
   void deleteLock(String group, String key);
-
-  default String assembleKey(String group, String key) {
-    StringBuilder sb = new StringBuilder();
-    if (group != null || !group.equals("")) {
-      sb.append(group).append(":");
-    }
-    return sb.append(key).toString();
-  }
 
 }

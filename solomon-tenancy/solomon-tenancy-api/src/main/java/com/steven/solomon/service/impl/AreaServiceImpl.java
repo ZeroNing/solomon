@@ -7,7 +7,7 @@ import com.steven.solomon.mapper.AreaMapper;
 import com.steven.solomon.pojo.entity.Area;
 import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.service.ICaheService;
+import com.steven.solomon.service.ICacheService;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements AreaService {
 
   @Resource
-  private ICaheService iCaheService;
+  private ICacheService iCacheService;
 
   @Override
-  @Cacheable(cacheNames ="area", key="#param.getAreaCode()")
+  @Cacheable(value ="area", key="#param.getAreaCode()")
   public List<Area> findByAreaCode(AreaListParam param) {
     LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(Area::getParentCode,param.getAreaCode());
