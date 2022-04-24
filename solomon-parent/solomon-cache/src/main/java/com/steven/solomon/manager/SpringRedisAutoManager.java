@@ -27,17 +27,12 @@ public class SpringRedisAutoManager extends RedisCacheManager {
    */
   @Override
   public Cache getCache(String name) {
-    if(ValidateUtils.isEmpty(name) || CacheModeEnum.NORMAL.toString().equals(cacheMode)){
-      return super.getCache(name);
-    } else if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
+    if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
       String tenantId = TenantContextHolder.getTenantId();
       if(ValidateUtils.isEmpty(tenantId)){
         return super.getCache(name);
       }
       return super.getCache(1 + StrUtil.COLON + name);
-    } else if(CacheModeEnum.SWITCH_DB.toString().equals(cacheMode)){
-      //TODO 还没想好怎么做,按照默认返回
-      return super.getCache(name);
     } else {
       return super.getCache(name);
     }
