@@ -24,7 +24,7 @@ public class SpringRedisAutoManager extends RedisCacheManager {
    * 数组元素1=缓存过期时间TTL
    * 数组元素2=缓存在多少秒开始主动失效来强制刷新
    */
-  private String separator = "@@";
+  public static final String separator = "@@";
 
   public SpringRedisAutoManager(RedisCacheWriter cacheWriter,
       RedisCacheConfiguration defaultCacheConfiguration) {
