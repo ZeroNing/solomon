@@ -6,11 +6,13 @@ import com.steven.solomon.graphics2D.DepositReceiptService;
 import com.steven.solomon.graphics2D.ReceiptService;
 import com.steven.solomon.graphics2D.entity.DepositReceipt;
 import com.steven.solomon.graphics2D.entity.Receipt;
+import com.steven.solomon.pojo.entity.Area;
 import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.service.ICaheService;
+import com.steven.solomon.service.ICacheService;
 import io.swagger.annotations.Api;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +29,7 @@ public class AreaController extends BaseController {
   private AreaService areaService;
 
   @Resource
-  private ICaheService iCaheService;
+  private ICacheService iCacheService;
 
   @Resource
   private DepositReceiptService depositReceiptService;
