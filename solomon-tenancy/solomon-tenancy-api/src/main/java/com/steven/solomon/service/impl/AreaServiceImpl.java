@@ -2,6 +2,7 @@ package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.steven.solomon.constant.cache.CacheTime;
 import com.steven.solomon.lambda.LambdaUtils;
 import com.steven.solomon.mapper.AreaMapper;
 import com.steven.solomon.pojo.entity.Area;
@@ -25,7 +26,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
   private ICacheService iCacheService;
 
   @Override
-  @Cacheable(value ="area", key="#param.getAreaCode()")
+  @Cacheable(value ="area@@"+ CacheTime.CACHE_EXP_WEEK, key="#param.getAreaCode()")
   public List<Area> findByAreaCode(AreaListParam param) {
     LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(Area::getParentCode,param.getAreaCode());
