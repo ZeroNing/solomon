@@ -1,18 +1,13 @@
-package com.steven.solomon.utils.i18n;
+package com.steven.solomon.utils;
 
 import com.steven.solomon.constant.code.BaseCode;
-import com.steven.solomon.logger.LoggerUtils;
-import com.steven.solomon.verification.ValidateUtils;
 import java.util.Locale;
-import org.slf4j.Logger;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class I18nUtils {
-
-  private static Logger log = LoggerUtils.logger(I18nUtils.class);
 
   private static ResourceBundleMessageSource resourceBundleMessageSource;
 
@@ -28,7 +23,7 @@ public class I18nUtils {
    * @return
    */
   public static String getErrorMessage(String code, String... args) {
-    if(ValidateUtils.isEmpty(code)){
+    if(code == null || code.length() == 0){
       return null;
     }
     return getMessage(BaseCode.BASE_EXCEPTION_CODE + code, args);
@@ -42,7 +37,7 @@ public class I18nUtils {
    * @return
    */
   public static String getErrorMessage(String code,Locale locale, String... args) {
-    if(ValidateUtils.isEmpty(code)){
+    if(code == null || code.length() == 0){
       return null;
     }
     return getMessage(BaseCode.BASE_EXCEPTION_CODE + code,locale, args);
@@ -56,7 +51,7 @@ public class I18nUtils {
    * @return
    */
   public static String getEnumMessage(String code, String... args) {
-    if(ValidateUtils.isEmpty(code)){
+    if(code == null || code.length() == 0){
       return null;
     }
     return getMessage(BaseCode.BASE_ENUM_CODE + code, args);

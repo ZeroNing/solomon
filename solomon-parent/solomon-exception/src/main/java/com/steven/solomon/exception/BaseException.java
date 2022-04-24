@@ -1,5 +1,7 @@
 package com.steven.solomon.exception;
 
+import com.steven.solomon.utils.I18nUtils;
+
 public class BaseException extends Exception {
 
   private static final long serialVersionUID = -5121152313724499190L;
@@ -14,16 +16,18 @@ public class BaseException extends Exception {
   }
 
   public BaseException(String code) {
+    super(I18nUtils.getErrorMessage(code));
     this.code = code;
   }
 
   public BaseException(String code, String... args) {
+    super(I18nUtils.getErrorMessage(code,args));
     this.code = code;
     this.args = args;
   }
 
   public BaseException(String code, Throwable e, String... args) {
-    super(e);
+    super(I18nUtils.getErrorMessage(code,args),e);
     this.code = code;
     this.args = args;
   }

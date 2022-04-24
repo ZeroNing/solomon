@@ -5,7 +5,7 @@ import com.steven.solomon.constant.code.BaseExceptionCode;
 import com.steven.solomon.exception.AbstractExceptionHandler;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.spring.SpringUtil;
-import com.steven.solomon.utils.i18n.I18nUtils;
+import com.steven.solomon.utils.I18nUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import com.steven.solomon.vo.BaseExceptionVO;
 import java.util.HashMap;
@@ -36,7 +36,8 @@ public class BaseGlobalExceptionHandler {
         }
         baseExceptionVO.setServerId(serverId);
         baseExceptionVO.setLocale(locale);
-        baseExceptionVO.setMessage(ValidateUtils.isEmpty(baseExceptionVO.getMessage()) ? ValidateUtils.isEmpty(locale) ? I18nUtils.getErrorMessage(baseExceptionVO.getCode(),locale,baseExceptionVO.getArg()) : I18nUtils.getErrorMessage(baseExceptionVO.getCode(),baseExceptionVO.getArg()) :baseExceptionVO.getMessage());
+        baseExceptionVO.setMessage(ValidateUtils.isEmpty(baseExceptionVO.getMessage()) ? ValidateUtils.isEmpty(locale) ? I18nUtils
+            .getErrorMessage(baseExceptionVO.getCode(),locale,baseExceptionVO.getArg()) : I18nUtils.getErrorMessage(baseExceptionVO.getCode(),baseExceptionVO.getArg()) : baseExceptionVO.getMessage());
         return baseExceptionVO;
     }
 
