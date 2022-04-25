@@ -1,13 +1,13 @@
 package com.steven.solomon.service.impl;
 
 import com.steven.solomon.service.AbsICacheService;
-import com.steven.solomon.service.ICacheService;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,23 @@ public class RedisService extends AbsICacheService {
 
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
+
+  @Override
+  public void setDbIndex(int dbIndex) {
+    if (dbIndex > 15 || dbIndex < 0) {
+      return;
+    }
+    LettuceConnectionFactory redisConnectionFactory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
+    if (redisConnectionFactory == null) {
+      return;
+    }
+    redisConnectionFactory.setDatabase(dbIndex);
+    redisTemplate.setConnectionFactory(redisConnectionFactory);
+    // 属性设置后
+    redisConnectionFactory.afterPropertiesSet();
+    // 重置连接
+    redisConnectionFactory.resetConnection();
+  }
 
   // =============================common============================
 

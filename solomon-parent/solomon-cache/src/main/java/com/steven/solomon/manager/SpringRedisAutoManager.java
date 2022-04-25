@@ -3,8 +3,10 @@ package com.steven.solomon.manager;
 import cn.hutool.core.util.StrUtil;
 import com.steven.solomon.enums.CacheModeEnum;
 import com.steven.solomon.holder.TenantContextHolder;
+import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import java.time.Duration;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.data.redis.cache.RedisCache;
@@ -14,6 +16,8 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.util.StringUtils;
 
 public class SpringRedisAutoManager extends RedisCacheManager {
+
+  private Logger log = LoggerUtils.logger(SpringRedisAutoManager.class);
 
   @Value("${cache.mode}")
   private String cacheMode;
@@ -41,6 +45,7 @@ public class SpringRedisAutoManager extends RedisCacheManager {
     if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
       String tenantId = TenantContextHolder.getCode();
       if(ValidateUtils.isEmpty(tenantId)){
+        log.info("在{}模式下,获取到的租户id为空,将redis的Key转为默认模式",cacheMode);
         return super.getCache(name);
       }
       return super.getCache(tenantId + StrUtil.COLON + name);

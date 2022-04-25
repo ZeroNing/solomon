@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.constant.cache.CacheTime;
 import com.steven.solomon.lambda.LambdaUtils;
+import com.steven.solomon.manager.SpringRedisAutoManager;
 import com.steven.solomon.mapper.AreaMapper;
 import com.steven.solomon.pojo.entity.Area;
 import com.steven.solomon.pojo.param.AreaListParam;
@@ -16,6 +17,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.SpringCacheAnnotationParser;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +28,7 @@ public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements Ar
   private ICacheService iCacheService;
 
   @Override
-  @Cacheable(value ="area@@"+ CacheTime.CACHE_EXP_WEEK, key="#param.getAreaCode()")
+  @Cacheable(value ="area"+ SpringRedisAutoManager.separator + CacheTime.CACHE_EXP_WEEK, key="#param.getAreaCode()")
   public List<Area> findByAreaCode(AreaListParam param) {
     LambdaQueryWrapper<Area> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(Area::getParentCode,param.getAreaCode());
