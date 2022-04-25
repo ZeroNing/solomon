@@ -23,23 +23,6 @@ public class RedisService extends AbsICacheService {
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
 
-  @Override
-  public void setDbIndex(int dbIndex) {
-    if (dbIndex > 15 || dbIndex < 0) {
-      return;
-    }
-    LettuceConnectionFactory redisConnectionFactory = (LettuceConnectionFactory) redisTemplate.getConnectionFactory();
-    if (redisConnectionFactory == null) {
-      return;
-    }
-    redisConnectionFactory.setDatabase(dbIndex);
-    redisTemplate.setConnectionFactory(redisConnectionFactory);
-    // 属性设置后
-    redisConnectionFactory.afterPropertiesSet();
-    // 重置连接
-    redisConnectionFactory.resetConnection();
-  }
-
   // =============================common============================
 
   @Override

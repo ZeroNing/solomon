@@ -23,8 +23,4 @@ public abstract class AbsICacheService implements  ICacheService {
     }
     return sb.append(key).toString();
   }
-
-  public void setDbIndex(int dbIndex) {
-
-  }
 }

@@ -86,5 +86,4 @@ public interface ICacheService {
    * @param key   键
    */
   void deleteLock(String group, String key);
-
 }
