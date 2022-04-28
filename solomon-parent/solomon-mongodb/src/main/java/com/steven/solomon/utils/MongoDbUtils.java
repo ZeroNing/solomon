@@ -6,8 +6,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.steven.solomon.enums.MongoDbRoleEnum;
 import com.steven.solomon.verification.ValidateUtils;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import org.bson.Document;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class MongoDbUtils {
 
@@ -63,17 +66,29 @@ public class MongoDbUtils {
     }
     try {
       MongoClient mongoClients = MongoClients.create(mongoClient);
-
-      Document doc = new Document();
-      Document roleDoc = new Document();
-
-      roleDoc.put("role", roleEnum.getValue());
-      roleDoc.put("db", dbName);
-
-      doc.put("createUser",userName);
-      doc.put("pwd",password);
-      doc.put("roles", Collections.singletonList(roleDoc));
+      Document doc = createUSerDocument(userName, password, roleEnum, dbName);
       mongoClients.getDatabase(dbName).runCommand(doc);
+    }catch (Exception e) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 创建用户并赋予权限
+   * @param mongoDatabase mongodb数据连接
+   * @param userName 用户名
+   * @param password 密码
+   * @param roleEnum mongodb权限
+   * @return
+   */
+  public static boolean createUser(MongoDatabase mongoDatabase,String userName,String password, MongoDbRoleEnum roleEnum){
+    if(ValidateUtils.isEmpty(mongoDatabase) || ValidateUtils.isEmpty(userName) || ValidateUtils.isEmpty(roleEnum) || ValidateUtils.isEmpty(password)){
+      return false;
+    }
+    try {
+      Document doc = createUSerDocument(userName, password, roleEnum, mongoDatabase.getName());
+      mongoDatabase.runCommand(doc);
     }catch (Exception e) {
       return false;
     }
@@ -91,10 +106,24 @@ public class MongoDbUtils {
 
   private static void createCollection(MongoDatabase mongoDatabase,String collectionName){
     if(ValidateUtils.isNotEmpty(mongoDatabase)){
-      MongoCollection<Document> mongoCollection =  mongoDatabase.getCollection(collectionName);
-      if(ValidateUtils.isEmpty(mongoCollection)){
+      List<String> collectionNames = new ArrayList<>();
+      mongoDatabase.listCollectionNames().forEach(name -> collectionNames.add(name));
+      if(!collectionNames.contains(collectionName)){
         mongoDatabase.createCollection(collectionName);
       }
     }
+  }
+
+  private static Document createUSerDocument(String userName,String password, MongoDbRoleEnum roleEnum,String dbName){
+    Document doc = new Document();
+    Document roleDoc = new Document();
+
+    roleDoc.put("role", roleEnum.getValue());
+    roleDoc.put("db", dbName);
+
+    doc.put("createUser",userName);
+    doc.put("pwd",password);
+    doc.put("roles", Collections.singletonList(roleDoc));
+    return doc;
   }
 }
