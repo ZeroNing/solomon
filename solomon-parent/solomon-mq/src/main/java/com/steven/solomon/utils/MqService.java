@@ -15,12 +15,14 @@ public interface MqService {
   /**
    * 发送消息
    * @param mq
+   * @param delay 过期时间 毫秒为单位
    * @throws Exception
    */
   void sendDelay(BaseMq mq,long delay) throws Exception;
   /**
    * 发送消息
    * @param mq
+   * @param expiration 过期时间 毫秒为单位
    * @throws Exception
    */
   void sendExpiration(BaseMq mq,long expiration) throws Exception;
