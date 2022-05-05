@@ -47,17 +47,6 @@
       <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
 
-    <!-- userAgent解析用户 -->
-    <dependency>
-      <groupId>nl.basjes.parse.useragent</groupId>
-      <artifactId>yauaa</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>easyexcel</artifactId>
-    </dependency>
-
     <!-- 校验注解所有需要jar包 开始 -->
     <dependency>
       <groupId>javax.validation</groupId>
@@ -69,12 +58,6 @@
       <artifactId>hibernate-validator</artifactId>
     </dependency>
     <!-- 校验注解所有需要jar包 结束 -->
-
-    <!-- 去除图片Exif -->
-    <dependency>
-      <groupId>com.drewnoakes</groupId>
-      <artifactId>metadata-extractor</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>org.springframework.cloud</groupId>

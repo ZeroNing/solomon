@@ -24,6 +24,24 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
+    <!-- userAgent解析用户 -->
+    <dependency>
+      <groupId>nl.basjes.parse.useragent</groupId>
+      <artifactId>yauaa</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>easyexcel</artifactId>
+    </dependency>
+
+    <!-- 去除图片Exif -->
+    <dependency>
+      <groupId>com.drewnoakes</groupId>
+      <artifactId>metadata-extractor</artifactId>
+    </dependency>
+
+
   </dependencies>
 
 </project>
