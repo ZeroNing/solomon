@@ -31,36 +31,23 @@ public class RabbitMqService implements MqService {
   @Autowired
   private RabbitTemplate rabbitTemplate;
 
-  /**
-   * queue2ContainerAllMap初始化标识
-   */
-//  private volatile boolean hasInit = false;
-
-  public Collection<AbstractMessageListenerContainer> getAllQueueContainerList(){
-    return RabbitMQInitConfig.allQueueContainerMap.values();
-  }
-
-  public List<MessageQueueDatail> statAllMessageQueueDetail() {
-    List<MessageQueueDatail> queueDetailList = new ArrayList<>();
-    RabbitMQInitConfig.allQueueContainerMap.entrySet().forEach(entry -> {
-      String                           queueName = entry.getKey();
-      AbstractMessageListenerContainer container = entry.getValue();
-      MessageQueueDatail               deatil    = new MessageQueueDatail(queueName, container);
-      queueDetailList.add(deatil);
-    });
-
-    return queueDetailList;
-  }
-
-  public AbstractMessageListenerContainer findContainerByQueueName(String queueName) {
-    String                         key       = StringUtils.trim(queueName);
-    AbstractMessageListenerContainer container = RabbitMQInitConfig.allQueueContainerMap.get(key);
-    return container;
+  @Override
+  public void send(BaseMq mq) throws Exception {
+    if (!convertAndSend(mq,0,false)) {
+      throw new BaseException(BaseExceptionCode.BASE_EXCEPTION_CODE);
+    }
   }
 
   @Override
-  public void send(BaseMq mq) throws Exception {
-    if (!convertAndSend(mq)) {
+  public void sendDelay(BaseMq mq, long delay) throws Exception {
+    if (!convertAndSend(mq,delay,true)) {
+      throw new BaseException(BaseExceptionCode.BASE_EXCEPTION_CODE);
+    }
+  }
+
+  @Override
+  public void sendExpiration(BaseMq mq, long expiration) throws Exception {
+    if (!convertAndSend(mq,expiration,false)) {
       throw new BaseException(BaseExceptionCode.BASE_EXCEPTION_CODE);
     }
   }
@@ -116,13 +103,51 @@ public class RabbitMqService implements MqService {
 //    return allQueueContainerMap;
 //  }
 
-  private boolean convertAndSend(BaseMq baseMq) {
+  private boolean convertAndSend(BaseMq baseMq, long expiration,boolean isDelayed) {
     RabbitMqModel rabbitMQModel = (RabbitMqModel) baseMq;
     if (ValidateUtils.isEmpty(rabbitMQModel) || ValidateUtils.isEmpty(rabbitMQModel.getExchange())) {
       return false;
     }
-    rabbitTemplate.convertAndSend(rabbitMQModel.getExchange(), rabbitMQModel.getRoutingKey(), rabbitMQModel,new CorrelationData(
+
+    rabbitTemplate.convertAndSend(rabbitMQModel.getExchange(), rabbitMQModel.getRoutingKey(), rabbitMQModel,msg->{
+      if(ValidateUtils.equals(0,expiration)){
+        return msg;
+      }
+      if(isDelayed){
+        msg.getMessageProperties().setHeader("x-delay",expiration);
+      } else {
+        msg.getMessageProperties().setExpiration(String.valueOf(expiration));
+      }
+      return msg;
+    },new CorrelationData(
         UUID.randomUUID().toString()));
     return true;
+  }
+
+  /**
+   * queue2ContainerAllMap初始化标识
+   */
+//  private volatile boolean hasInit = false;
+
+  public Collection<AbstractMessageListenerContainer> getAllQueueContainerList(){
+    return RabbitMQInitConfig.allQueueContainerMap.values();
+  }
+
+  public List<MessageQueueDatail> statAllMessageQueueDetail() {
+    List<MessageQueueDatail> queueDetailList = new ArrayList<>();
+    RabbitMQInitConfig.allQueueContainerMap.entrySet().forEach(entry -> {
+      String                           queueName = entry.getKey();
+      AbstractMessageListenerContainer container = entry.getValue();
+      MessageQueueDatail               deatil    = new MessageQueueDatail(queueName, container);
+      queueDetailList.add(deatil);
+    });
+
+    return queueDetailList;
+  }
+
+  public AbstractMessageListenerContainer findContainerByQueueName(String queueName) {
+    String                         key       = StringUtils.trim(queueName);
+    AbstractMessageListenerContainer container = RabbitMQInitConfig.allQueueContainerMap.get(key);
+    return container;
   }
 }

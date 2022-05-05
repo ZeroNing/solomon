@@ -47,8 +47,9 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       //将消费失败的记录保存到数据库或者不处理也可以
       this.saveFailMessage(message, e);
       //保存重试失败次数达到retryNumber上线后拒绝此消息入队列并删除redis
-      saveFailNumber(messageProperties, channel, deliveryTag,correlationId,e);
-     } finally {
+      saveFailNumber(messageProperties, channel, deliveryTag,correlationId);
+      throw e;
+    } finally {
       iCacheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
     }
   }
@@ -56,7 +57,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
   /**
    * 记录失败次数并决定是否拒绝此消息
    */
-  public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId,Exception e) throws Exception {
+  public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId) throws Exception {
     Integer lock = (Integer) iCacheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
     Integer actualLock = ValidateUtils.isEmpty(lock) ? 1 : lock + 1;
     logger.info("rabbitMQ 失败记录:消费者correlationId为:{},deliveryTag为:{},失败次数为:{}", correlationId, deliveryTag,actualLock);
@@ -72,7 +73,6 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
       iCacheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
-      throw e;
     }
   }
 
@@ -90,7 +90,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
    * 消费方法
    * @param body 请求数据
    */
-  public abstract void handleMessage(T body);
+  public abstract void handleMessage(T body) throws Exception;
 
   /**
    * 保存消费失败的消息

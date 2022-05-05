@@ -1,6 +1,7 @@
 package com.steven.solomon.utils;
 
 import com.steven.solomon.pojo.BaseMq;
+import org.springframework.data.redis.core.types.Expiration;
 
 public interface MqService {
 
@@ -10,6 +11,20 @@ public interface MqService {
    * @throws Exception
    */
   void send(BaseMq mq) throws Exception;
+
+  /**
+   * 发送消息
+   * @param mq
+   * @throws Exception
+   */
+  void sendDelay(BaseMq mq,long delay) throws Exception;
+  /**
+   * 发送消息
+   * @param mq
+   * @throws Exception
+   */
+  void sendExpiration(BaseMq mq,long expiration) throws Exception;
+
 
   /**
    *重置队列并发使用者

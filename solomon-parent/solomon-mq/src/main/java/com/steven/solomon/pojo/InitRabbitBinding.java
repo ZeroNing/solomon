@@ -83,11 +83,15 @@ public class InitRabbitBinding implements Serializable {
     Map<String, Object> args = new HashMap<>(3);
     args.put(BaseRabbitMqCode.DLX_EXCHANGE_KEY, BaseRabbitMqCode.DLX_PREFIX + rabbitMq.exchange());
 
-    if (rabbitMq.routingKey() != null || !"".equals(rabbitMq.routingKey())) {
+    if (ValidateUtils.isNotEmpty(rabbitMq.routingKey())) {
       args.put(BaseRabbitMqCode.DLX_ROUTING_KEY, BaseRabbitMqCode.DLX_PREFIX + rabbitMq.routingKey());
     }
-
-    if (rabbitMq.delay() != 0L) {
+    /**
+     * x-message-ttl 在创建队列时设置的消息TTL，表示消息在队列中最多能存活多久（ms）；
+     * Expiration 发布消息时设置的消息TTL，消息自产生后的存活时间（ms）；
+     * x-delay 由rabbitmq_delayed_message_exchange插件提供TTL，从交换机延迟投递到队列的时间（ms）；
+     */
+    if (rabbitMq.delay() != 0L && !rabbitMq.isDelayExchange()) {
       args.put(BaseRabbitMqCode.DLX_TTL, rabbitMq.delay());
     }
     return args;

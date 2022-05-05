@@ -70,4 +70,9 @@ public @interface RabbitMq {
 	 * 死信队列Class
 	 */
 	Class dlxClazz() default void.class;
+
+	/**
+	 * 是否启用插件内的ttl队列
+	 */
+	boolean isDelayExchange() default false;
 }

@@ -110,7 +110,7 @@ public class RabbitMQListenerConfig {
         // 初始化队列绑定
         Queue queues = initBinding(abstractMQMap,queueName,false, true,admin);
         // 启动监听器
-        this.startContainer(abstractConsumer, queue,admin,rabbitConnectionFactory);
+        this.startContainer(abstractConsumer, queues,admin,rabbitConnectionFactory);
         logger.info("MessageListenerConfig队列:{}绑定{}死信队列",queue.getName(),queues.getName());
     }
 
@@ -177,7 +177,13 @@ public class RabbitMQListenerConfig {
     }
 
     private Queue initBinding(Map<String, AbstractMQService> abstractMQMap,String queue,boolean isInitDlxMap, boolean isAddDlxPrefix,RabbitAdmin admin) {
-        return abstractMQMap.get(rabbitMq.exchangeTypes() + BaseMQService.SERVICE_NAME).initBinding(rabbitMq,queue, admin, isInitDlxMap, isAddDlxPrefix);
+        AbstractMQService abstractMQService = null;
+        if(ValidateUtils.isNotEmpty(rabbitMq) && rabbitMq.isDelayExchange()){
+            abstractMQService = abstractMQMap.get("delayedMQService");
+        } else {
+            abstractMQService = abstractMQMap.get(rabbitMq.exchangeTypes() + BaseMQService.SERVICE_NAME);
+        }
+        return abstractMQService.initBinding(rabbitMq,queue, admin, isInitDlxMap, isAddDlxPrefix);
     }
 
 }
