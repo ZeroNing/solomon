@@ -19,6 +19,7 @@
     <module>solomon-utils</module>
     <module>solomon-exception</module>
     <module>solomon-mongodb</module>
+    <module>solomon-i18n</module>
   </modules>
 
   <properties>

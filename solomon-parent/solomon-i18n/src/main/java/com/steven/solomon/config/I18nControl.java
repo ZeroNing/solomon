@@ -1,4 +1,4 @@
-package com.steven.solomon.i18n;
+package com.steven.solomon.config;
 
 import java.io.IOException;
 import java.io.InputStream;

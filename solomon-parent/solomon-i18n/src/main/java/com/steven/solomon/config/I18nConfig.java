@@ -1,24 +1,21 @@
-package com.steven.solomon.i18n.config;
+package com.steven.solomon.config;
 
 import com.steven.solomon.constant.code.BaseCode;
-import com.steven.solomon.i18n.I18nControl;
-import com.steven.solomon.logger.LoggerUtils;
-import com.steven.solomon.verification.ValidateUtils;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 @Component
 public class I18nConfig {
 
-  private Logger logger = LoggerUtils.logger(getClass());
+  private Logger logger = LoggerFactory.getLogger(getClass());
 
   @Value("${i18n.language}")
   public Locale DEFAULT_LOCALE;
@@ -37,7 +34,7 @@ public class I18nConfig {
     bundleMessageSource.setDefaultEncoding(BaseCode.UTF8);
 
     bundleMessageSource.setBasenames(resourceBundle.getBaseBundleName());
-    bundleMessageSource.setDefaultLocale(ValidateUtils.isEmpty(DEFAULT_LOCALE) ? Locale.CHINESE : DEFAULT_LOCALE);
+    bundleMessageSource.setDefaultLocale(DEFAULT_LOCALE == null ? Locale.CHINESE : DEFAULT_LOCALE);
     bundleMessageSource.setDefaultEncoding("UTF-8");
     logger.info("BaseI18nConfig初始化I18N国际化文件成功,国际化默认语言为:{},国际化文件路径为:{}",DEFAULT_LOCALE.toString(), resourceBundle.getBaseBundleName());
     return bundleMessageSource;
@@ -48,7 +45,7 @@ public class I18nConfig {
       return resourceBundle;
     }
     String language = locales.get(index);
-    if(ValidateUtils.isEmpty(language)){
+    if(language.isEmpty() || "".equals(language)){
       return resourceBundle;
     }
     resourceBundle = ResourceBundle.getBundle("classpath*:i18n/messages", new Locale(language), new I18nControl());
