@@ -10,5 +10,7 @@ public enum CacheModeEnum {
     this.desc = desc;
   }
 
-
+  public String getDesc() {
+    return desc;
+  }
 }
