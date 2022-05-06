@@ -2,20 +2,21 @@ package com.steven.solomon.spring;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description Spring上下文工具类
  * @Author Sans
  * @CreateTime 2019/6/17 13:40
  */
-@Configuration("springUtil")
-@Lazy(false)
+@Component
 @Order(1)
 public class SpringUtil implements ApplicationContextAware {
 
