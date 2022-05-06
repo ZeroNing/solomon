@@ -33,14 +33,15 @@ public class MongoContext {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        List<TenantMongoProperties>      mongoClients        = new ArrayList<>();
-        List<MongoClient> mongoClientServices = new ArrayList<>(SpringUtil.getBeansOfType(MongoClient.class).values());
-        if(ValidateUtils.isEmpty(mongoClientServices)){
+        List<TenantMongoProperties>         mongoClients                          = new ArrayList<>();
+        List<AbstractMongoClientProperties> abstractMongoClientPropertiesServices = new ArrayList<>(SpringUtil.getBeansOfType(
+            AbstractMongoClientProperties.class).values());
+        if(ValidateUtils.isEmpty(abstractMongoClientPropertiesServices)){
             logger.info("不存在需要的用到的多租户mongodb配置");
             return;
         }
 
-        mongoClientServices.forEach(service ->{
+        abstractMongoClientPropertiesServices.forEach(service ->{
             service.setMongoClient();
             mongoClients.addAll(service.getMongoClientList());
         });
