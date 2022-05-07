@@ -1,18 +1,45 @@
 package com.steven.solomon.utils;
 
+import com.mongodb.ReadPreference;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
 import com.steven.solomon.enums.MongoDbRoleEnum;
 import com.steven.solomon.verification.ValidateUtils;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.bson.Document;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class MongoDbUtils {
+  /**
+   * 检测数据库是否是固定集合
+   * @param collectionName 集合名称
+   * @return
+   */
+  public static Document cherCheckCapped(String collectionName){
+    return new Document("collStats", collectionName);
+  }
+
+  public static void checkCapped(MongoDatabase database, String collectionName, int size, int maxDocuments) {
+    List<String> a= new ArrayList<>();
+    database.listCollectionNames().forEach(s -> {
+      a.add(s);
+    });
+    if (a.contains(collectionName)) {
+      Document command = new Document("collStats", collectionName);
+      Boolean isCapped = database.runCommand(command, ReadPreference.primary()).getBoolean("capped");
+
+      if (!isCapped) {
+        command = new Document("convertToCapped", collectionName).append("maxSize", size).append("max",maxDocuments).append("capped",true);
+        database.runCommand(command, ReadPreference.primary());
+      }
+    } else {
+      database.createCollection(collectionName,new CreateCollectionOptions().capped(true).maxDocuments(maxDocuments).sizeInBytes(size));
+    }
+  }
 
   /**
    * 转换固定集合语句
@@ -26,10 +53,11 @@ public class MongoDbUtils {
     }
     Document doc = new Document();
     doc.put("convertToCapped",collectionName);
-    if(ValidateUtils.isEmpty(size)){
-      doc.put("size",size);
+    doc.put("capped",true);
+    if(ValidateUtils.isNotEmpty(size)){
+      doc.put("maxSize",size);
     }
-    if (ValidateUtils.isEmpty(max)) {
+    if (ValidateUtils.isNotEmpty(max)) {
       doc.put("max",max);
     }
     return doc;
