@@ -4,11 +4,12 @@ import com.mongodb.client.MongoDatabase;
 import com.steven.solomon.context.MongoContext;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.convert.MongoConverter;
 
 public class DynamicMongoTemplate extends MongoTemplate {
 
-  public DynamicMongoTemplate(MongoDatabaseFactory mongoDbFactory) {
-    super(mongoDbFactory);
+  public DynamicMongoTemplate(MongoDatabaseFactory mongoDbFactory, MongoConverter mongoConverter) {
+    super(mongoDbFactory,mongoConverter);
   }
 
   @Override

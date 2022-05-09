@@ -2,6 +2,9 @@ package com.steven.solomon.context;
 
 import com.mongodb.client.MongoClients;
 import com.steven.solomon.condition.MongoCondition;
+import com.steven.solomon.converter.BigDecimalToDecimal128Converter;
+import com.steven.solomon.converter.DateToStringConverter;
+import com.steven.solomon.converter.Decimal128ToBigDecimalConverter;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.properties.TenantMongoProperties;
 import com.steven.solomon.spring.SpringUtil;
@@ -12,8 +15,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.config.StringToWriteConcernConverter;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -63,10 +73,23 @@ public class MongoContext {
         });
     }
 
+    @Bean("customConversions")
+    public CustomConversions customConversions() {
+        List<Converter<?, ?>> converterList = new ArrayList<>();
+        converterList.add(new BigDecimalToDecimal128Converter());//自定义的类型转换器
+        converterList.add(new Decimal128ToBigDecimalConverter());//自定义的类型转换器
+        converterList.add(new DateToStringConverter());//自定义的类型转换器
+        converterList.add(new StringToWriteConcernConverter());//自定义的类型转换器
+        return new MongoCustomConversions(converterList);
+    }
+
     @Bean(name = "mongoTemplate")
     @Conditional(value = MongoCondition.class)
-    public DynamicMongoTemplate dynamicMongoTemplate() {
-        return new DynamicMongoTemplate(MONGO_FACTORY_MAP.values().iterator().next());
+    public DynamicMongoTemplate dynamicMongoTemplate(MongoMappingContext mappingContext,CustomConversions customConversions) {
+        DefaultDbRefResolver dbRefResolver = new DefaultDbRefResolver(this.mongoDbFactory());
+        MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, mappingContext);
+        mappingConverter.setCustomConversions(customConversions);
+        return new DynamicMongoTemplate(MONGO_FACTORY_MAP.values().iterator().next(),mappingConverter);
     }
 
     @Bean(name = "mongoDbFactory")
