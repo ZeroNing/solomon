@@ -1,6 +1,7 @@
 package com.steven.solomon.context;
 
 import com.mongodb.client.MongoClients;
+import com.steven.solomon.condition.MongoCondition;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.properties.TenantMongoProperties;
 import com.steven.solomon.spring.SpringUtil;
@@ -8,6 +9,7 @@ import com.steven.solomon.template.DynamicMongoTemplate;
 import com.steven.solomon.verification.ValidateUtils;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -31,6 +33,14 @@ public class MongoContext {
 
     private static final  Map<String,SimpleMongoClientDatabaseFactory> MONGO_FACTORY_MAP = new ConcurrentHashMap<>();
 
+    public static void setMongoFactoryMap(Map<String, SimpleMongoClientDatabaseFactory> mongoFactoryMap){
+        MongoContext.MONGO_FACTORY_MAP.putAll(mongoFactoryMap);
+    }
+
+    public static Map<String,SimpleMongoClientDatabaseFactory> getMongoFactoryMap(){
+        return MongoContext.MONGO_FACTORY_MAP;
+    }
+
     @PostConstruct
     public void afterPropertiesSet() {
         List<TenantMongoProperties>         mongoClients                          = new ArrayList<>();
@@ -53,12 +63,14 @@ public class MongoContext {
         });
     }
 
-    @Bean(name = "fileMongoTemplate")
+    @Bean(name = "mongoTemplate")
+    @Conditional(value = MongoCondition.class)
     public DynamicMongoTemplate dynamicMongoTemplate() {
         return new DynamicMongoTemplate(MONGO_FACTORY_MAP.values().iterator().next());
     }
 
-    @Bean(name = "fileMongoDbFactory")
+    @Bean(name = "mongoDbFactory")
+    @Conditional(value = MongoCondition.class)
     public MongoDatabaseFactory mongoDbFactory() {
         return MONGO_FACTORY_MAP.values().iterator().next();
     }
