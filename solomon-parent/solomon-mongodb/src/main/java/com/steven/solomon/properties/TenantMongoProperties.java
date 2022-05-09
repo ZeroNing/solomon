@@ -4,13 +4,13 @@ import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 
 public class TenantMongoProperties extends MongoProperties {
 
-  private String tenantId;
+  private String tenantCode;
 
-  public String getTenantId() {
-    return tenantId;
+  public String getTenantCode() {
+    return tenantCode;
   }
 
-  public void setTenantId(String tenantId) {
-    this.tenantId = tenantId;
+  public void setTenantCode(String tenantCode) {
+    this.tenantCode = tenantCode;
   }
 }

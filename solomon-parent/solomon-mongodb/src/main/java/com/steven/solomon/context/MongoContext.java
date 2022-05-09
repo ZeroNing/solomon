@@ -58,8 +58,8 @@ public class MongoContext {
 
         mongoClients.forEach(mongoProperties -> {
             com.mongodb.client.MongoClient   mongoClient = MongoClients.create(mongoProperties.getUri());
-            SimpleMongoClientDatabaseFactory factory     = new SimpleMongoClientDatabaseFactory(mongoClient,mongoProperties.getDatabase());
-            MONGO_FACTORY_MAP.put(mongoProperties.getTenantId(),factory);
+            SimpleMongoClientDatabaseFactory factory     = new SimpleMongoClientDatabaseFactory(mongoClient,mongoProperties.getTenantCode());
+            MONGO_FACTORY_MAP.put(mongoProperties.getTenantCode(),factory);
         });
     }
 
