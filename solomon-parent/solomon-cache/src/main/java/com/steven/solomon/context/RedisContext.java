@@ -6,18 +6,26 @@ import com.steven.solomon.serializer.BaseRedisSerializer;
 import com.steven.solomon.spring.SpringUtil;
 import com.steven.solomon.template.DynamicRedisTemplate;
 import com.steven.solomon.verification.ValidateUtils;
+import java.io.Serializable;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Pool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
@@ -30,13 +38,33 @@ public class RedisContext {
 
   private static final ThreadLocal<RedisConnectionFactory> REDIS_FACTORY_THREAD_LOCAL = new ThreadLocal<>();
 
-  private static final Map<String,RedisConnectionFactory> REDIS_FACTORY_MAP = new ConcurrentHashMap<>();
+  private static final Map<String, RedisConnectionFactory> REDIS_FACTORY_MAP = new ConcurrentHashMap<>();
 
-  public static void setMongoFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap){
+  private static final ThreadLocal<TenantHeardHolder> threadLocal = ThreadLocal.withInitial(() -> {
+    TenantHeardHolder header = new TenantHeardHolder();
+    return header;
+  });
+
+  public static String getTenantId(){
+    TenantHeardHolder tenantHeardHolder = threadLocal.get();
+    return ValidateUtils.getOrDefault(tenantHeardHolder.getTenantId(),"");
+  }
+
+  public static String getCode(){
+    TenantHeardHolder tenantHeardHolder = threadLocal.get();
+    return ValidateUtils.getOrDefault(tenantHeardHolder.getCode(),"");
+  }
+
+  public static String getName(){
+    TenantHeardHolder tenantHeardHolder = threadLocal.get();
+    return ValidateUtils.getOrDefault(tenantHeardHolder.getName(),"");
+  }
+
+  public static void setMongoFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap) {
     RedisContext.REDIS_FACTORY_MAP.putAll(redisFactoryMap);
   }
 
-  public static Map<String,RedisConnectionFactory> getRedisFactoryMap(){
+  public static Map<String, RedisConnectionFactory> getRedisFactoryMap() {
     return RedisContext.REDIS_FACTORY_MAP;
   }
 
@@ -44,28 +72,33 @@ public class RedisContext {
     return REDIS_FACTORY_THREAD_LOCAL.get();
   }
 
-  public static void removeMongoDbFactory(){
+  public static void setRedisFactory(String name) {
+    REDIS_FACTORY_THREAD_LOCAL.set(REDIS_FACTORY_MAP.get(name));
+  }
+
+  public static void removeMongoDbFactory() {
     REDIS_FACTORY_THREAD_LOCAL.remove();
   }
 
   @PostConstruct
   public void afterPropertiesSet() {
     List<TenantRedisProperties> redisPropertiesList = new ArrayList<>();
-    List<AbstractRedisClientProperties> abstractRedisClientPropertiesServices = new ArrayList<>(SpringUtil.getBeansOfType(
-        AbstractRedisClientProperties.class).values());
-    if(ValidateUtils.isEmpty(abstractRedisClientPropertiesServices)){
+    List<AbstractRedisClientProperties> abstractRedisClientPropertiesServices = new ArrayList<>(
+        SpringUtil.getBeansOfType(
+            AbstractRedisClientProperties.class).values());
+    if (ValidateUtils.isEmpty(abstractRedisClientPropertiesServices)) {
       logger.info("不存在需要的用到的多租户redis配置");
       return;
     }
 
-    abstractRedisClientPropertiesServices.forEach(service ->{
+    abstractRedisClientPropertiesServices.forEach(service -> {
       service.setRedisClient();
       redisPropertiesList.addAll(service.getMongoClientList());
     });
 
     redisPropertiesList.forEach(redisProperties -> {
-      LettuceConnectionFactory   factory = new LettuceConnectionFactory(redisProperties);
-      REDIS_FACTORY_MAP.put(redisProperties.getTenantCode(),factory);
+      RedisConnectionFactory factory = initConnectionFactory(redisProperties);
+      REDIS_FACTORY_MAP.put(redisProperties.getTenantCode(), factory);
     });
   }
 
@@ -74,7 +107,8 @@ public class RedisContext {
     logger.info("初始化redis start");
     DynamicRedisTemplate<String, Object> redisTemplate = new DynamicRedisTemplate<String, Object>();
     // 注入数据源
-    redisTemplate.setConnectionFactory(REDIS_FACTORY_MAP.values().iterator().next());
+    RedisConnectionFactory factory = REDIS_FACTORY_MAP.values().iterator().next();
+    redisTemplate.setConnectionFactory(factory);
     // 使用Jackson2JsonRedisSerialize 替换默认序列化
     StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
     BaseRedisSerializer   baseRedisSerializer   = new BaseRedisSerializer();
@@ -97,6 +131,73 @@ public class RedisContext {
     return REDIS_FACTORY_MAP.values().iterator().next();
   }
 
+  private LettuceConnectionFactory initConnectionFactory(TenantRedisProperties redisProperties) {
+    GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
+    Pool                    pool                     = redisProperties.getLettuce().getPool();
+
+    if(ValidateUtils.isNotEmpty(pool)){
+      genericObjectPoolConfig.setMaxIdle(ValidateUtils.getOrDefault(pool.getMaxIdle(),0));
+      genericObjectPoolConfig.setMinIdle(ValidateUtils.getOrDefault(pool.getMinIdle(),0));
+      genericObjectPoolConfig.setMaxTotal(ValidateUtils.getOrDefault(pool.getMaxActive(),8));
+      genericObjectPoolConfig.setMaxWaitMillis(ValidateUtils.getOrDefault(pool.getMaxWait().toMillis(),-1L));
+      genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(ValidateUtils.getOrDefault(pool.getTimeBetweenEvictionRuns().toMillis(),60L));
+    }
+
+    RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+    redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
+    redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+    redisStandaloneConfiguration.setPort(redisProperties.getPort());
+    redisStandaloneConfiguration.setPassword(RedisPassword.of(redisProperties.getPassword()));
+
+    LettuceClientConfiguration clientConfig = LettucePoolingClientConfiguration.builder()
+        .commandTimeout(ValidateUtils.getOrDefault(redisProperties.getTimeout(),Duration.ofMillis(60L)))
+        .shutdownTimeout(ValidateUtils.getOrDefault(redisProperties.getLettuce().getShutdownTimeout(),Duration.ofMillis(100)))
+        .poolConfig(genericObjectPoolConfig)
+        .build();
+    LettuceConnectionFactory factory = new LettuceConnectionFactory(redisStandaloneConfiguration, clientConfig);
+    factory.afterPropertiesSet();
+    return factory;
+  }
+
+  public static class TenantHeardHolder implements Serializable {
+
+    /**
+     * SAAS租户id
+     */
+    private String tenantId;
+    /**
+     * SAAS租户名称
+     */
+    private String name;
+    /**
+     * SAAS租户编码
+     */
+    private String code;
+
+    public String getTenantId() {
+      return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+      this.tenantId = tenantId;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public String getCode() {
+      return code;
+    }
+
+    public void setCode(String code) {
+      this.code = code;
+    }
+  }
 }
 
 

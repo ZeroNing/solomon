@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class RedisService extends AbsICacheService {
 
   @Autowired
-  private DynamicRedisTemplate<String, Object> redisTemplate;
+  private RedisTemplate<String, Object> redisTemplate;
 
   // =============================common============================
 
