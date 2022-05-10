@@ -15,11 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Pool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -108,6 +111,7 @@ public class RedisContext {
     DynamicRedisTemplate<String, Object> redisTemplate = new DynamicRedisTemplate<String, Object>();
     // 注入数据源
     RedisConnectionFactory factory = REDIS_FACTORY_MAP.values().iterator().next();
+    RedisConnection        redisConnection= factory.getConnection();
     redisTemplate.setConnectionFactory(factory);
     // 使用Jackson2JsonRedisSerialize 替换默认序列化
     StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -121,7 +125,6 @@ public class RedisContext {
     // 启用默认序列化方式
     redisTemplate.setEnableDefaultSerializer(true);
     redisTemplate.setEnableTransactionSupport(true);
-
     redisTemplate.afterPropertiesSet();
     return redisTemplate;
   }
@@ -134,7 +137,6 @@ public class RedisContext {
   private LettuceConnectionFactory initConnectionFactory(TenantRedisProperties redisProperties) {
     GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
     Pool                    pool                     = redisProperties.getLettuce().getPool();
-
     if(ValidateUtils.isNotEmpty(pool)){
       genericObjectPoolConfig.setMaxIdle(ValidateUtils.getOrDefault(pool.getMaxIdle(),0));
       genericObjectPoolConfig.setMinIdle(ValidateUtils.getOrDefault(pool.getMinIdle(),0));
@@ -142,7 +144,6 @@ public class RedisContext {
       genericObjectPoolConfig.setMaxWaitMillis(ValidateUtils.getOrDefault(pool.getMaxWait().toMillis(),-1L));
       genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(ValidateUtils.getOrDefault(pool.getTimeBetweenEvictionRuns().toMillis(),60L));
     }
-
     RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
     redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
     redisStandaloneConfiguration.setHostName(redisProperties.getHost());
@@ -150,8 +151,8 @@ public class RedisContext {
     redisStandaloneConfiguration.setPassword(RedisPassword.of(redisProperties.getPassword()));
 
     LettuceClientConfiguration clientConfig = LettucePoolingClientConfiguration.builder()
-        .commandTimeout(ValidateUtils.getOrDefault(redisProperties.getTimeout(),Duration.ofMillis(60L)))
-        .shutdownTimeout(ValidateUtils.getOrDefault(redisProperties.getLettuce().getShutdownTimeout(),Duration.ofMillis(100)))
+//        .commandTimeout(ValidateUtils.getOrDefault(redisProperties.getTimeout(),Duration.ofMillis(60L)))
+//        .shutdownTimeout(ValidateUtils.getOrDefault(redisProperties.getLettuce().getShutdownTimeout(),Duration.ofMillis(100)))
         .poolConfig(genericObjectPoolConfig)
         .build();
     LettuceConnectionFactory factory = new LettuceConnectionFactory(redisStandaloneConfiguration, clientConfig);

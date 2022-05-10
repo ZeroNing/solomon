@@ -1,6 +1,7 @@
 package com.steven.solomon.template;
 
 import com.steven.solomon.context.RedisContext;
+import com.steven.solomon.verification.ValidateUtils;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -12,6 +13,7 @@ public class DynamicRedisTemplate<K,V> extends RedisTemplate<K,V> {
 
   @Override
   public RedisConnectionFactory getConnectionFactory() {
-    return RedisContext.getRedisFactory();
+    RedisConnectionFactory factory = RedisContext.getRedisFactory();
+    return ValidateUtils.isEmpty(factory) ? super.getConnectionFactory() : factory;
   }
 }
