@@ -1,7 +1,9 @@
 package com.steven.solomon.context;
 
+import com.steven.solomon.enums.CacheModeEnum;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.manager.SpringRedisAutoManager;
+import com.steven.solomon.profile.CacheProfile;
 import com.steven.solomon.profile.TenantRedisProperties;
 import com.steven.solomon.serializer.BaseRedisSerializer;
 import com.steven.solomon.spring.SpringUtil;
@@ -9,6 +11,7 @@ import com.steven.solomon.template.DynamicRedisTemplate;
 import com.steven.solomon.verification.ValidateUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Pool;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -17,7 +20,6 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheWriter;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -28,6 +30,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +48,26 @@ public class RedisContext extends CachingConfigurerSupport {
 
   private static final Map<String, RedisConnectionFactory> REDIS_FACTORY_MAP = new ConcurrentHashMap<>();
 
+  private static List<TenantRedisProperties> redisPropertiesList = new ArrayList<>();
+
   private static final ThreadLocal<TenantHeardHolder> threadLocal = ThreadLocal.withInitial(() -> {
     TenantHeardHolder header = new TenantHeardHolder();
     return header;
   });
+
+  @Resource
+  private RedisProperties redisProperties;
+
+  @Resource
+  private CacheProfile cacheProfile;
+
+  public List<TenantRedisProperties> getMongoClientList(){
+    return redisPropertiesList;
+  }
+
+  public void setMongoClient(TenantRedisProperties properties){
+    RedisContext.redisPropertiesList.add(properties);
+  };
 
   public static String getTenantId(){
     TenantHeardHolder tenantHeardHolder = threadLocal.get();
@@ -88,17 +107,17 @@ public class RedisContext extends CachingConfigurerSupport {
   @PostConstruct
   public void afterPropertiesSet() {
     List<TenantRedisProperties> redisPropertiesList = new ArrayList<>();
-    List<AbstractRedisClientProperties> abstractRedisClientPropertiesServices = new ArrayList<>(
+    List<RedisClientPropertiesService> abstractRedisClientPropertiesServices = new ArrayList<>(
         SpringUtil.getBeansOfType(
-            AbstractRedisClientProperties.class).values());
-    if (ValidateUtils.isEmpty(abstractRedisClientPropertiesServices)) {
-      logger.info("不存在需要的用到的多租户redis配置");
-      return;
+                RedisClientPropertiesService.class).values());
+
+    if(ValidateUtils.isNotEmpty(cacheProfile) && CacheModeEnum.NORMAL.toString().equalsIgnoreCase(cacheProfile.getMode()) && CacheModeEnum.TENANT_PREFIX.toString().equalsIgnoreCase(cacheProfile.getMode())){
+      REDIS_FACTORY_MAP.put("default", initConnectionFactory(redisProperties));
     }
 
     abstractRedisClientPropertiesServices.forEach(service -> {
       service.setRedisClient();
-      redisPropertiesList.addAll(service.getMongoClientList());
+      redisPropertiesList.addAll(RedisContext.redisPropertiesList);
     });
 
     redisPropertiesList.forEach(redisProperties -> {
@@ -113,7 +132,6 @@ public class RedisContext extends CachingConfigurerSupport {
     DynamicRedisTemplate<String, Object> redisTemplate = new DynamicRedisTemplate<String, Object>();
     // 注入数据源
     RedisConnectionFactory factory = REDIS_FACTORY_MAP.values().iterator().next();
-    RedisConnection        redisConnection= factory.getConnection();
     redisTemplate.setConnectionFactory(factory);
     // 使用Jackson2JsonRedisSerialize 替换默认序列化
     StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -136,7 +154,7 @@ public class RedisContext extends CachingConfigurerSupport {
     return REDIS_FACTORY_MAP.values().iterator().next();
   }
 
-  private LettuceConnectionFactory initConnectionFactory(TenantRedisProperties redisProperties) {
+  private LettuceConnectionFactory initConnectionFactory(RedisProperties redisProperties) {
     GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
     Pool                    pool                     = redisProperties.getLettuce().getPool();
     if(ValidateUtils.isNotEmpty(pool)){
