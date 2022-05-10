@@ -3,6 +3,7 @@ package com.steven.solomon.config;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.manager.SpringRedisAutoManager;
 import com.steven.solomon.serializer.BaseRedisSerializer;
+import com.steven.solomon.template.DynamicRedisTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -26,9 +27,9 @@ public class RedisConfig extends CachingConfigurerSupport {
 	 * @return
 	 */
 	@Bean("redisTemplate")
-	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+	public DynamicRedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
 		logger.info("初始化redis start");
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+		DynamicRedisTemplate<String, Object> redisTemplate = new DynamicRedisTemplate<String, Object>();
 		// 注入数据源
 		redisTemplate.setConnectionFactory(factory);
 		// 使用Jackson2JsonRedisSerialize 替换默认序列化

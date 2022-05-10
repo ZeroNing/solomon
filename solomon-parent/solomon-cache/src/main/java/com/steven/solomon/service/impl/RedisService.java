@@ -1,6 +1,7 @@
 package com.steven.solomon.service.impl;
 
 import com.steven.solomon.service.AbsICacheService;
+import com.steven.solomon.template.DynamicRedisTemplate;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class RedisService extends AbsICacheService {
 
   @Autowired
-  private RedisTemplate<String, Object> redisTemplate;
+  private DynamicRedisTemplate<String, Object> redisTemplate;
 
   // =============================common============================
 

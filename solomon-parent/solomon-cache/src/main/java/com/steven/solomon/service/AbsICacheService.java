@@ -1,7 +1,7 @@
 package com.steven.solomon.service;
 
 import com.steven.solomon.enums.CacheModeEnum;
-import com.steven.solomon.holder.TenantContextHolder;
+import com.steven.solomon.context.RedisContext;
 import com.steven.solomon.verification.ValidateUtils;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -13,7 +13,7 @@ public abstract class AbsICacheService implements  ICacheService {
   public String assembleKey(String group, String key) {
     StringBuilder sb = new StringBuilder();
     if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
-      String tenantId = TenantContextHolder.getCode();
+      String tenantId = RedisContext.getCode();
       if(ValidateUtils.isNotEmpty(tenantId)){
         sb.append(tenantId).append(":");
       }

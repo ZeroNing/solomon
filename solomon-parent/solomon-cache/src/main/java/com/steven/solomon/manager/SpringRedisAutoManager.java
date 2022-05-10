@@ -2,7 +2,7 @@ package com.steven.solomon.manager;
 
 import cn.hutool.core.util.StrUtil;
 import com.steven.solomon.enums.CacheModeEnum;
-import com.steven.solomon.holder.TenantContextHolder;
+import com.steven.solomon.context.RedisContext;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import java.time.Duration;
@@ -43,7 +43,7 @@ public class SpringRedisAutoManager extends RedisCacheManager {
   @Override
   public Cache getCache(String name) {
     if(CacheModeEnum.TENANT_PREFIX.toString().equals(cacheMode)){
-      String tenantId = TenantContextHolder.getCode();
+      String tenantId = RedisContext.getCode();
       if(ValidateUtils.isEmpty(tenantId)){
         log.info("在{}模式下,获取到的租户id为空,将redis的Key转为默认模式",cacheMode);
         return super.getCache(name);
