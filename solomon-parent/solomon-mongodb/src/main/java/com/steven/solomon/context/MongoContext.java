@@ -45,11 +45,11 @@ public class MongoContext {
     @Resource
     private MongoProfile mongoProfile;
 
-    public List<TenantMongoProperties> getMongoClientList(){
+    public static List<TenantMongoProperties> getMongoClientList(){
         return mongoClientList;
     }
 
-    public void setMongoClient(TenantMongoProperties properties){
+    public static void setMongoClient(TenantMongoProperties properties){
         MongoContext.mongoClientList.add(properties);
     };
 
