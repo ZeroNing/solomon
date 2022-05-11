@@ -61,11 +61,11 @@ public class RedisContext extends CachingConfigurerSupport {
   @Resource
   private CacheProfile cacheProfile;
 
-  public List<TenantRedisProperties> getMongoClientList(){
+  public static List<TenantRedisProperties> getRedisClientList(){
     return redisPropertiesList;
   }
 
-  public void setMongoClient(TenantRedisProperties properties){
+  public static void setRedisClient(TenantRedisProperties properties){
     RedisContext.redisPropertiesList.add(properties);
   };
 
@@ -84,7 +84,7 @@ public class RedisContext extends CachingConfigurerSupport {
     return ValidateUtils.getOrDefault(tenantHeardHolder.getName(),"");
   }
 
-  public static void setMongoFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap) {
+  public static void setRedisFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap) {
     RedisContext.REDIS_FACTORY_MAP.putAll(redisFactoryMap);
   }
 
