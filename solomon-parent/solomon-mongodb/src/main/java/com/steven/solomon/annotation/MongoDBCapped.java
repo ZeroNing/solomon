@@ -18,7 +18,7 @@ import org.springframework.data.annotation.Persistent;
 public @interface MongoDBCapped {
 
   /**
-   * 限制记录大小使用的是KB
+   * 限制记录大小使用的是(字节)
    * @return
    */
   long size() default 1024;
