@@ -181,9 +181,10 @@ public class RedisContext extends CachingConfigurerSupport {
   }
 
   @Bean
-  public CacheManager cacheManager(RedisConnectionFactory factory){
+  @Override
+  public CacheManager cacheManager(){
     RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().computePrefixWith((name -> name + ":"));
-    SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(RedisCacheWriter.nonLockingRedisCacheWriter(factory), defaultCacheConfig);
+    SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(RedisCacheWriter.nonLockingRedisCacheWriter(REDIS_FACTORY_MAP.values().iterator().next()), defaultCacheConfig);
     return springRedisAutoManager;
   }
 
