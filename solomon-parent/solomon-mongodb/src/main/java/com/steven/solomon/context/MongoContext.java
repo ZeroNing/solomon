@@ -9,6 +9,7 @@ import com.steven.solomon.properties.TenantMongoProperties;
 import com.steven.solomon.spring.SpringUtil;
 import com.steven.solomon.template.DynamicMongoTemplate;
 import com.steven.solomon.verification.ValidateUtils;
+import java.util.HashMap;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,8 @@ public class MongoContext {
 
     private static List<TenantMongoProperties> mongoClientList = new ArrayList<>();
 
+    private static Map<String,Class<?>> CAPPED_COLLECTION_NAME_MAP = new HashMap<>();
+
     @Resource
     private MongoProperties mongoProperties;
 
@@ -61,6 +64,14 @@ public class MongoContext {
         return MongoContext.MONGO_FACTORY_MAP;
     }
 
+    public static void setCappedCollectionNameMap(Map<String,Class<?>> cappedCollectionNameMap){
+        MongoContext.CAPPED_COLLECTION_NAME_MAP = cappedCollectionNameMap;
+    }
+
+    public static Map<String,Class<?>> getCappedCollectionNameMap(){
+        return MongoContext.CAPPED_COLLECTION_NAME_MAP;
+    }
+
     @PostConstruct
     public void afterPropertiesSet() {
         List<TenantMongoProperties>         mongoClients                          = new ArrayList<>();
@@ -73,6 +84,7 @@ public class MongoContext {
 
         abstractMongoClientPropertiesServices.forEach(service ->{
             service.setMongoClient();
+            service.setCappedCollectionNameMap();
             mongoClients.addAll(MongoContext.mongoClientList);
         });
 
