@@ -1,7 +1,6 @@
 package com.steven.solomon.utils;
 
 import com.steven.solomon.pojo.BaseMq;
-import org.springframework.data.redis.core.types.Expiration;
 
 public interface MqService {
 
