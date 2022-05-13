@@ -7,10 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.data.annotation.Persistent;
 
-/**
- * @author suliujie
- * @since 2021-11-03 9:43
- */
 @Persistent
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

@@ -13,14 +13,17 @@
 
   <properties>
     <swagger.version>2.9.2</swagger.version>
-    <mybatis-plus.version>3.5.1</mybatis-plus.version>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>com.steven</groupId>
       <artifactId>solomon-mongodb</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.steven</groupId>
+      <artifactId>solomon-mq</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
@@ -60,26 +63,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>${mybatis-plus.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-extension</artifactId>
-      <version>${mybatis-plus.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid-spring-boot-starter</artifactId>
-      <version>1.2.8</version>
-    </dependency>
-
-    <!-- mysql -->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.16</version>
+      <groupId>com.steven</groupId>
+      <artifactId>solomon-mybatis</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>

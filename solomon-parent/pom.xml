@@ -20,6 +20,7 @@
     <module>solomon-exception</module>
     <module>solomon-mongodb</module>
     <module>solomon-i18n</module>
+    <module>solomon-mybatis</module>
   </modules>
 
   <properties>
@@ -63,6 +64,9 @@
     <minio.version>8.2.1</minio.version>
     <spring.context.version>5.3.1</spring.context.version>
     <slf4j.version>1.7.30</slf4j.version>
+    <mybatis-plus.version>3.5.1</mybatis-plus.version>
+    <mysql.connector.java.version>8.0.16</mysql.connector.java.version>
+    <druid.version>1.2.8</druid.version>
   </properties>
 
   <parent>
@@ -74,6 +78,29 @@
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.connector.java.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-extension</artifactId>
+        <version>${mybatis-plus.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
