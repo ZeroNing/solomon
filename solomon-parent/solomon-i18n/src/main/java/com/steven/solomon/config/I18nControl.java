@@ -26,10 +26,10 @@ public class I18nControl extends ResourceBundle.Control{
     String bundleName = super.toBundleName(baseName, locale);
     final String               resourceName = bundleName + ".properties";
     I18nPropertyResourceBundle bundle       = null;
-    if (format.equals("java.class")) {
+    if ("java.class".equals(format)) {
       // 不支持
       bundle = null;
-    } else if (format.equals("java.properties")) {
+    } else if ("java.properties".equals(format)) {
       if (bundleName.startsWith(ALL_CLASSPATH_URL_PERFIX)) {
         bundle = this.getBundleFromAllClasspath(resourceName, classLoader, reload);
       } else {
