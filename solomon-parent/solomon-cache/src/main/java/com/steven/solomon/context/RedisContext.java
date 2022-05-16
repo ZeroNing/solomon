@@ -49,11 +49,6 @@ public class RedisContext extends CachingConfigurerSupport {
 
   private static List<TenantRedisProperties> redisPropertiesList = new ArrayList<>();
 
-  private static final ThreadLocal<TenantHeardHolder> threadLocal = ThreadLocal.withInitial(() -> {
-    TenantHeardHolder header = new TenantHeardHolder();
-    return header;
-  });
-
   @Resource
   private RedisProperties redisProperties;
 
@@ -67,21 +62,6 @@ public class RedisContext extends CachingConfigurerSupport {
   public static void setRedisClient(TenantRedisProperties properties){
     RedisContext.redisPropertiesList.add(properties);
   };
-
-  public static String getTenantId(){
-    TenantHeardHolder tenantHeardHolder = threadLocal.get();
-    return ValidateUtils.getOrDefault(tenantHeardHolder.getTenantId(),"");
-  }
-
-  public static String getCode(){
-    TenantHeardHolder tenantHeardHolder = threadLocal.get();
-    return ValidateUtils.getOrDefault(tenantHeardHolder.getCode(),"");
-  }
-
-  public static String getName(){
-    TenantHeardHolder tenantHeardHolder = threadLocal.get();
-    return ValidateUtils.getOrDefault(tenantHeardHolder.getName(),"");
-  }
 
   public static void setRedisFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap) {
     RedisContext.REDIS_FACTORY_MAP.putAll(redisFactoryMap);
@@ -184,46 +164,6 @@ public class RedisContext extends CachingConfigurerSupport {
     RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().computePrefixWith((name -> name + ":"));
     SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(DynamicDefaultRedisCacheWriter.nonLockingRedisCacheWriter(RedisContext.getRedisFactoryMap().values().iterator().next()), defaultCacheConfig);
     return springRedisAutoManager;
-  }
-
-  public static class TenantHeardHolder implements Serializable {
-
-    /**
-     * SAAS租户id
-     */
-    private String tenantId;
-    /**
-     * SAAS租户名称
-     */
-    private String name;
-    /**
-     * SAAS租户编码
-     */
-    private String code;
-
-    public String getTenantId() {
-      return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-      this.tenantId = tenantId;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name = name;
-    }
-
-    public String getCode() {
-      return code;
-    }
-
-    public void setCode(String code) {
-      this.code = code;
-    }
   }
 }
 

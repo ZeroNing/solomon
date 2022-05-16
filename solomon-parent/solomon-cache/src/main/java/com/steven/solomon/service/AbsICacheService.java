@@ -2,6 +2,7 @@ package com.steven.solomon.service;
 
 import com.steven.solomon.context.RedisContext;
 import com.steven.solomon.enums.CacheModeEnum;
+import com.steven.solomon.holder.TenantHolder;
 import com.steven.solomon.profile.CacheProfile;
 import com.steven.solomon.verification.ValidateUtils;
 
@@ -15,7 +16,7 @@ public abstract class AbsICacheService implements  ICacheService {
   public String assembleKey(String group, String key) {
     StringBuilder sb = new StringBuilder();
     if(ValidateUtils.isNotEmpty(cacheProfile) && CacheModeEnum.TENANT_PREFIX.toString().equals(cacheProfile.getMode())){
-      String tenantId = RedisContext.getCode();
+      String tenantId = TenantHolder.getCode();
       if(ValidateUtils.isNotEmpty(tenantId)){
         sb.append(tenantId).append(":");
       }

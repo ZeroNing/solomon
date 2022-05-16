@@ -21,6 +21,7 @@
     <module>solomon-mongodb</module>
     <module>solomon-i18n</module>
     <module>solomon-mybatis</module>
+    <module>solomon-tenants</module>
   </modules>
 
   <properties>

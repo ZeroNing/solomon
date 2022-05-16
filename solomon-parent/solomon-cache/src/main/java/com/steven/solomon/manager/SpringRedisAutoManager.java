@@ -1,11 +1,13 @@
 package com.steven.solomon.manager;
 
 import cn.hutool.core.util.StrUtil;
-import com.steven.solomon.context.RedisContext;
 import com.steven.solomon.enums.CacheModeEnum;
+import com.steven.solomon.holder.TenantHolder;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.profile.CacheProfile;
 import com.steven.solomon.verification.ValidateUtils;
+import java.time.Duration;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.springframework.cache.Cache;
 import org.springframework.data.redis.cache.RedisCache;
@@ -13,9 +15,6 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.util.StringUtils;
-
-import javax.annotation.Resource;
-import java.time.Duration;
 
 public class SpringRedisAutoManager extends RedisCacheManager {
 
@@ -45,7 +44,7 @@ public class SpringRedisAutoManager extends RedisCacheManager {
   @Override
   public Cache getCache(String name) {
     if(ValidateUtils.isNotEmpty(cacheProfile) && CacheModeEnum.TENANT_PREFIX.toString().equals(cacheProfile.getMode())) {
-      String tenantId = RedisContext.getCode();
+      String tenantId = TenantHolder.getCode();
       if(ValidateUtils.isEmpty(tenantId)){
         log.info("在{}模式下,获取到的租户id为空,将redis的Key转为默认模式",cacheProfile.getMode());
         return super.getCache(name);
