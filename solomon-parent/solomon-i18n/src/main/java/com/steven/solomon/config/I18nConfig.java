@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,8 @@ public class I18nConfig {
   /**
    * 初始化I18N国际化文件
    */
-  @Bean("resourceBundleMessageSource")
-  public ResourceBundleMessageSource init() {
+  @Bean("messageSource")
+  public MessageSource init() {
     List<String> allLocale = Arrays.asList(ALL_LOCALE.split(","));
     ResourceBundle resourceBundle = initResources(allLocale,0,null);
 

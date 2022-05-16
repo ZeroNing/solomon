@@ -2,17 +2,17 @@ package com.steven.solomon.utils;
 
 import com.steven.solomon.constant.code.BaseCode;
 import java.util.Locale;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class I18nUtils {
 
-  private static ResourceBundleMessageSource resourceBundleMessageSource;
+  private static MessageSource messageSource;
 
-  I18nUtils(ResourceBundleMessageSource resourceBundleMessageSource) {
-    I18nUtils.resourceBundleMessageSource = resourceBundleMessageSource;
+  I18nUtils(MessageSource messageSource) {
+    I18nUtils.messageSource = messageSource;
   }
 
   /**
@@ -81,7 +81,7 @@ public class I18nUtils {
 
   private static String getMessage(String code,Locale locale, String... args) {
     try {
-      return resourceBundleMessageSource.getMessage(code, args, locale);
+      return messageSource.getMessage(code, args, locale);
     }catch (Exception e) {
       return null;
     }
