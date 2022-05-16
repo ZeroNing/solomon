@@ -1,6 +1,10 @@
 package com.steven.solomon.context;
 
+import com.mongodb.ReadPreference;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.steven.solomon.annotation.MongoDBCapped;
 import com.steven.solomon.condition.MongoCondition;
 import com.steven.solomon.enums.MongoModeEnum;
 import com.steven.solomon.logger.LoggerUtils;
@@ -10,11 +14,13 @@ import com.steven.solomon.spring.SpringUtil;
 import com.steven.solomon.template.DynamicMongoTemplate;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.HashMap;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
@@ -89,7 +95,36 @@ public class MongoContext {
         });
 
         mongoClients.forEach(mongoProperties -> {
-            MONGO_FACTORY_MAP.put(mongoProperties.getTenantCode(),new SimpleMongoClientDatabaseFactory(MongoClients.create(mongoProperties.getUri()),mongoProperties.getTenantCode()));
+            SimpleMongoClientDatabaseFactory factory = new SimpleMongoClientDatabaseFactory(MongoClients.create(mongoProperties.getUri()),mongoProperties.getTenantCode());
+            MONGO_FACTORY_MAP.put(mongoProperties.getTenantCode(),factory);
+
+            List<String> collectionNameList = new ArrayList<>();
+            MongoDatabase mongoDatabase = factory.getMongoDatabase();
+            mongoDatabase.listCollectionNames().forEach(name->{
+                collectionNameList.add(name);
+            });
+
+            getCappedCollectionNameMap().forEach((key,value)->{
+                boolean isCreate = collectionNameList.contains(key);
+                if(!isCreate){
+                    MongoDBCapped mongoDBCapped = AnnotationUtils.getAnnotation(value, MongoDBCapped.class);
+                    if(ValidateUtils.isNotEmpty(mongoDBCapped)){
+                        mongoDatabase.createCollection(key,new CreateCollectionOptions().capped(true).maxDocuments(mongoDBCapped.maxDocuments()).sizeInBytes(mongoDBCapped.size()));
+                    } else {
+                        mongoDatabase.createCollection(key);
+                    }
+                } else {
+                    MongoDBCapped mongoDBCapped = AnnotationUtils.getAnnotation(value, MongoDBCapped.class);
+                    if(ValidateUtils.isNotEmpty(mongoDBCapped)){
+                        Document command  = new Document("collStats", key);
+                        Boolean  isCapped = mongoDatabase.runCommand(command, ReadPreference.primary()).getBoolean("capped");
+                        if(!isCapped){
+                            command = new Document("convertToCapped", key).append("maxSize", mongoDBCapped.size()).append("max",mongoDBCapped.maxDocuments()).append("capped",true);
+                            mongoDatabase.runCommand(command, ReadPreference.primary());
+                        }
+                    }
+                }
+            });
         });
     }
 
