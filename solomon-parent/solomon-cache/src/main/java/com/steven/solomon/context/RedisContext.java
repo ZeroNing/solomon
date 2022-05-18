@@ -90,7 +90,7 @@ public class RedisContext extends CachingConfigurerSupport {
         SpringUtil.getBeansOfType(
                 RedisClientPropertiesService.class).values());
 
-    if(ValidateUtils.isNotEmpty(cacheProfile) && CacheModeEnum.NORMAL.toString().equalsIgnoreCase(cacheProfile.getMode()) && CacheModeEnum.TENANT_PREFIX.toString().equalsIgnoreCase(cacheProfile.getMode())){
+    if((ValidateUtils.isNotEmpty(cacheProfile) && CacheModeEnum.NORMAL.toString().equalsIgnoreCase(cacheProfile.getMode())) || (CacheModeEnum.TENANT_PREFIX.toString().equalsIgnoreCase(cacheProfile.getMode()))){
       REDIS_FACTORY_MAP.put("default", initConnectionFactory(redisProperties));
     }
 

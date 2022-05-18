@@ -30,7 +30,7 @@ public class BaseGlobalExceptionHandler {
         AbstractExceptionHandler abstractExceptionHandler = AbstractExceptionHandler.exceptionHandlerMap.get(exceptionHandlerName);
 
         if (ValidateUtils.isEmpty(abstractExceptionHandler)) {
-            logger.info("BaseGlobalExceptionHandler 处理gateWay异常遇到未知异常抛出默认的系统异常 S9999,未知异常为:{}", exceptionSimpleName);
+            logger.info("BaseGlobalExceptionHandler 处理异常遇到未知异常抛出默认的系统异常 S9999,未知异常为:{}", exceptionSimpleName);
         } else {
             baseExceptionVO = abstractExceptionHandler.handleBaseException(ex);
         }
