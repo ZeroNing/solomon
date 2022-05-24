@@ -22,13 +22,11 @@ public class ImageAnalysisUtils {
     return analysis(ImageMetadataReader.readMetadata(inputStream));
   }
 
-  public static Map<String,Object> analysis(Metadata metadata) throws Exception {
+  private static Map<String,Object> analysis(Metadata metadata) throws Exception {
     Iterable<Directory> directories = metadata.getDirectories();
     Map<String, Object> map = new HashMap<>();
     for (Directory directory : directories) {
       for (Tag tag : directory.getTags()) {
-        System.out.print(tag.getTagName() + " --> ");
-        System.out.println(tag.getDescription());
         map.put(tag.getTagName(),tag.getDirectoryName());
       }
     }
