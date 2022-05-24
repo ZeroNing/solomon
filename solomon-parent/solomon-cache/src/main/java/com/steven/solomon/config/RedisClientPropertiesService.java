@@ -1,4 +1,4 @@
-package com.steven.solomon.context;
+package com.steven.solomon.config;
 
 public interface RedisClientPropertiesService {
 

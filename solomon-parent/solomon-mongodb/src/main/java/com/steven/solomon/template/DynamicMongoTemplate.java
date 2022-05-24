@@ -4,9 +4,7 @@ import com.mongodb.ReadPreference;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.steven.solomon.annotation.MongoDBCapped;
-import com.steven.solomon.context.MongoContext;
-import com.steven.solomon.verification.ValidateUtils;
-import java.util.List;
+import com.steven.solomon.config.MongoConfig;
 import java.util.Map;
 import org.bson.Document;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -21,13 +19,13 @@ public class DynamicMongoTemplate extends MongoTemplate {
 
   @Override
   protected MongoDatabase doGetDatabase() {
-    MongoDatabaseFactory mongoDbFactory = MongoContext.getMongoDbFactory();
+    MongoDatabaseFactory mongoDbFactory = MongoConfig.getMongoDbFactory();
     return mongoDbFactory == null ? super.doGetDatabase() : mongoDbFactory.getMongoDatabase();
   }
 
   @Override
   public MongoDatabaseFactory getMongoDbFactory() {
-    MongoDatabaseFactory mongoDbFactory = MongoContext.getMongoDbFactory();
+    MongoDatabaseFactory mongoDbFactory = MongoConfig.getMongoDbFactory();
     return mongoDbFactory == null ? super.getMongoDbFactory() : mongoDbFactory;
   }
 
@@ -35,7 +33,7 @@ public class DynamicMongoTemplate extends MongoTemplate {
   protected MongoCollection<Document> doCreateCollection(String collectionName, Document collectionOptions) {
     MongoCollection<Document> createCollection = super.doCreateCollection(collectionName, collectionOptions);
 
-    Map<String,Class<?>> cappedCollectionNameMap = MongoContext.getCappedCollectionNameMap();
+    Map<String,Class<?>> cappedCollectionNameMap = MongoConfig.getCappedCollectionNameMap();
     if(cappedCollectionNameMap.containsKey(collectionName)){
       Document command = new Document("collStats", collectionName);
       Boolean isCapped = this.doGetDatabase().runCommand(command, ReadPreference.primary()).getBoolean("capped");

@@ -1,4 +1,4 @@
-package com.steven.solomon.context;
+package com.steven.solomon.config;
 
 import com.steven.solomon.enums.CacheModeEnum;
 import com.steven.solomon.logger.LoggerUtils;
@@ -10,7 +10,6 @@ import com.steven.solomon.serializer.BaseRedisSerializer;
 import com.steven.solomon.spring.SpringUtil;
 import com.steven.solomon.template.DynamicRedisTemplate;
 import com.steven.solomon.verification.ValidateUtils;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(2)
 @DependsOn("springUtil")
-public class RedisContext extends CachingConfigurerSupport {
+public class RedisConfig extends CachingConfigurerSupport {
 
   private Logger logger = LoggerUtils.logger(getClass());
 
@@ -60,15 +59,15 @@ public class RedisContext extends CachingConfigurerSupport {
   }
 
   public static void setRedisClient(TenantRedisProperties properties){
-    RedisContext.redisPropertiesList.add(properties);
+    RedisConfig.redisPropertiesList.add(properties);
   };
 
   public static void setRedisFactoryMap(Map<String, RedisConnectionFactory> redisFactoryMap) {
-    RedisContext.REDIS_FACTORY_MAP.putAll(redisFactoryMap);
+    RedisConfig.REDIS_FACTORY_MAP.putAll(redisFactoryMap);
   }
 
   public static Map<String, RedisConnectionFactory> getRedisFactoryMap() {
-    return RedisContext.REDIS_FACTORY_MAP;
+    return RedisConfig.REDIS_FACTORY_MAP;
   }
 
   public static RedisConnectionFactory getRedisFactory() {
@@ -96,7 +95,7 @@ public class RedisContext extends CachingConfigurerSupport {
 
     abstractRedisClientPropertiesServices.forEach(service -> {
       service.setRedisClient();
-      redisPropertiesList.addAll(RedisContext.redisPropertiesList);
+      redisPropertiesList.addAll(RedisConfig.redisPropertiesList);
     });
 
     redisPropertiesList.forEach(redisProperties -> {
@@ -162,7 +161,8 @@ public class RedisContext extends CachingConfigurerSupport {
   @Bean
   public CacheManager cacheManager(){
     RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().computePrefixWith((name -> name + ":"));
-    SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(DynamicDefaultRedisCacheWriter.nonLockingRedisCacheWriter(RedisContext.getRedisFactoryMap().values().iterator().next()), defaultCacheConfig);
+    SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(DynamicDefaultRedisCacheWriter.nonLockingRedisCacheWriter(
+        RedisConfig.getRedisFactoryMap().values().iterator().next()), defaultCacheConfig);
     return springRedisAutoManager;
   }
 }

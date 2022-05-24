@@ -1,4 +1,4 @@
-package com.steven.solomon.context;
+package com.steven.solomon.config;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.client.MongoClients;
@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Order(2)
 @DependsOn("springUtil")
-public class MongoContext {
+public class MongoConfig {
 
     private Logger logger = LoggerUtils.logger(getClass());
 
@@ -59,23 +59,23 @@ public class MongoContext {
     }
 
     public static void setMongoClient(TenantMongoProperties properties){
-        MongoContext.mongoClientList.add(properties);
+        MongoConfig.mongoClientList.add(properties);
     };
 
     public static void setMongoFactoryMap(Map<String, SimpleMongoClientDatabaseFactory> mongoFactoryMap){
-        MongoContext.MONGO_FACTORY_MAP.putAll(mongoFactoryMap);
+        MongoConfig.MONGO_FACTORY_MAP.putAll(mongoFactoryMap);
     }
 
     public static Map<String,SimpleMongoClientDatabaseFactory> getMongoFactoryMap(){
-        return MongoContext.MONGO_FACTORY_MAP;
+        return MongoConfig.MONGO_FACTORY_MAP;
     }
 
     public static void setCappedCollectionNameMap(Map<String,Class<?>> cappedCollectionNameMap){
-        MongoContext.CAPPED_COLLECTION_NAME_MAP = cappedCollectionNameMap;
+        MongoConfig.CAPPED_COLLECTION_NAME_MAP = cappedCollectionNameMap;
     }
 
     public static Map<String,Class<?>> getCappedCollectionNameMap(){
-        return MongoContext.CAPPED_COLLECTION_NAME_MAP;
+        return MongoConfig.CAPPED_COLLECTION_NAME_MAP;
     }
 
     @PostConstruct
@@ -91,7 +91,7 @@ public class MongoContext {
         abstractMongoClientPropertiesServices.forEach(service ->{
             service.setMongoClient();
             service.setCappedCollectionNameMap();
-            mongoClients.addAll(MongoContext.mongoClientList);
+            mongoClients.addAll(MongoConfig.mongoClientList);
         });
 
         mongoClients.forEach(mongoProperties -> {
