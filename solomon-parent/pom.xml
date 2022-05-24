@@ -68,6 +68,8 @@
     <mybatis-plus.version>3.5.1</mybatis-plus.version>
     <mysql.connector.java.version>8.0.16</mysql.connector.java.version>
     <druid.version>1.2.8</druid.version>
+    <xmpcore.version>6.1.11</xmpcore.version>
+    <metadata.version>2.18.0</metadata.version>
   </properties>
 
   <parent>
@@ -79,6 +81,20 @@
 
   <dependencyManagement>
     <dependencies>
+
+      <!--解析图片exif 开始-->
+      <dependency>
+        <groupId>com.drewnoakes</groupId>
+        <artifactId>metadata-extractor</artifactId>
+        <version>${metadata.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.adobe.xmp</groupId>
+        <artifactId>xmpcore</artifactId>
+        <version>${xmpcore.version}</version>
+      </dependency>
+      <!--解析图片exif 结束-->
 
       <dependency>
         <groupId>com.alibaba</groupId>
