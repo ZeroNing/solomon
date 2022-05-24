@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * 解析图片exif属性
+ * key解释参考https://blog.csdn.net/itsonglin/article/details/46405313
  */
 public class ImageAnalysisUtils {
 
