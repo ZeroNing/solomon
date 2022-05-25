@@ -1,5 +1,6 @@
 package com.steven.solomon.minio.utils;
 
+import com.steven.solomon.minio.graphics2D.entity.MinIo;
 import com.steven.solomon.minio.properties.MinioProperties;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
@@ -186,12 +187,13 @@ public class MinioUtils {
    * @param bucketName
    * @param bi
    */
-  public void putObject(String bucketName, BufferedImage bi, String filename) throws Exception {
+  public MinIo putObject(String bucketName, BufferedImage bi, String filename) throws Exception {
     bucketName = bucketName.toLowerCase();
     ByteArrayOutputStream bs    = new ByteArrayOutputStream();
     ImageOutputStream     imOut = ImageIO.createImageOutputStream(bs);
     ImageIO.write(bi, "jpg", imOut);
     this.putObject(bucketName,new ByteArrayInputStream(bs.toByteArray()),filename,FileTypeUtils.getFileType(new ByteArrayInputStream(bs.toByteArray())));
+    return new MinIo(bucketName,filename);
   }
 
   /**

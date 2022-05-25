@@ -4,6 +4,7 @@ import com.steven.solomon.code.ReceiptMinIoBucketCode;
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.graphics2D.entity.Receipt;
 import com.steven.solomon.minio.graphics2D.AbsReceiptService;
+import com.steven.solomon.minio.graphics2D.entity.MinIo;
 import com.steven.solomon.rmb.ConvertUpMoney;
 import java.awt.Color;
 import java.awt.Font;
@@ -151,9 +152,8 @@ public class ReceiptService extends AbsReceiptService<Receipt> {
   }
 
   @Override
-  public String upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
+  public MinIo upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
     String fileName = DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg";
-    minioUtils.putObject(ReceiptMinIoBucketCode.RECEIPT,bufferedImage, fileName);
-    return fileName;
+    return minioUtils.putObject(ReceiptMinIoBucketCode.RECEIPT,bufferedImage, fileName);
   }
 }

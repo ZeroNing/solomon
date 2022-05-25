@@ -1,6 +1,7 @@
 package com.steven.solomon.minio.graphics2D;
 
 import com.steven.solomon.minio.graphics2D.entity.BaseReceipt;
+import com.steven.solomon.minio.graphics2D.entity.MinIo;
 import com.steven.solomon.minio.utils.MinioUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import java.awt.BasicStroke;
@@ -27,11 +28,11 @@ public abstract class AbsReceiptService<T extends BaseReceipt>{
   @Resource
   protected MinioUtils minioUtils;
 
-  public String drawReceipt(T receipt) throws Exception {
+  public MinIo drawReceipt(T receipt) throws Exception {
     return drawReceipt(BufferedImage.TYPE_INT_RGB, Color.white,receipt);
   }
 
-  public String drawReceipt(int imageType,Color backgroundColor, T receipt) throws Exception{
+  public MinIo drawReceipt(int imageType,Color backgroundColor, T receipt) throws Exception{
     BufferedImage bufferedImage = null;
     try {
       bufferedImage = drawImageBasics(imageType);
@@ -103,5 +104,5 @@ public abstract class AbsReceiptService<T extends BaseReceipt>{
   /**
    * 上传图片
    */
-  public abstract String upload(BufferedImage bufferedImage,T receipt) throws Exception;
+  public abstract MinIo upload(BufferedImage bufferedImage,T receipt) throws Exception;
 }
