@@ -44,6 +44,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         .randomUUID().toString()+"."+type,multipartFile);
     File file= new File(minIo);
     file.setMd5(documentCheckCode);
+    file.setSize(multipartFile.getSize());
     return this.insert(file);
   }
 

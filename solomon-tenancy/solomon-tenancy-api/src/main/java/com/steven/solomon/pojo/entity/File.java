@@ -20,6 +20,9 @@ public class File extends BaseEntity<String> {
   @ApiModelProperty(value="文件校验码")
   String md5;
 
+  @ApiModelProperty(value="文件大小（字节）")
+  Long size;
+
   public File() {
     super();
     setId(UUID.randomUUID().toString());
@@ -56,5 +59,13 @@ public class File extends BaseEntity<String> {
 
   public void setMd5(String md5) {
     this.md5 = md5;
+  }
+
+  public Long getSize() {
+    return size;
+  }
+
+  public void setSize(Long size) {
+    this.size = size;
   }
 }
