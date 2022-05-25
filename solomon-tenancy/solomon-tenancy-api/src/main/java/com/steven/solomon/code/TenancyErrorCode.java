@@ -116,4 +116,9 @@ public interface TenancyErrorCode extends BaseExceptionCode {
    * 房屋配置信息不存在
    */
   String ROOM_CONFIG_IS_NULL="ROOM_CONFIG_IS_NULL";
+
+  /**
+   * 文件已存在
+   */
+  String FILE_IS_EXIT="FILE_IS_EXIT";
 }

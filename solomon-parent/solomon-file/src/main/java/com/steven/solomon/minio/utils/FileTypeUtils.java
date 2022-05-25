@@ -57,6 +57,9 @@ public class FileTypeUtils {
     if (type.equalsIgnoreCase("txt")) {
       return TXT_TYPE+type;
     }
+    if(ValidateUtils.isEmpty(type)){
+      return APPLICATION_TYPE+"file";
+    }
     return null;
   }
 }

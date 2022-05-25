@@ -1,15 +1,8 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
-import com.steven.solomon.date.DateTimeUtils;
-import com.steven.solomon.exception.BaseException;
-import com.steven.solomon.minio.graphics2D.entity.MinIo;
-import com.steven.solomon.minio.utils.MinioUtils;
-import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.FileService;
 import io.swagger.annotations.Api;
-import java.io.IOException;
-import java.util.UUID;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
