@@ -15,17 +15,18 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
-  public void save(String bucke, String fileName) {
+  public String save(String bucke, String fileName) {
     File file = new File();
     file.create("1");
-    file.setBucke(bucke);
-    file.setFileName(fileName);
+    file.setBucke(bucke.trim());
+    file.setFileName(fileName.trim());
     baseMapper.insert(file);
+    return file.getId();
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class, readOnly = false)
-  public void save(MinIo minIo) {
-    this.save(minIo.getBucke(),minIo.getFileName());
+  public String save(MinIo minIo) {
+    return this.save(minIo.getBucke(),minIo.getFileName());
   }
 }

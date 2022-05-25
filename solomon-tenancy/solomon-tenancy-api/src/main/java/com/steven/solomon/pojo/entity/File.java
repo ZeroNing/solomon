@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.steven.solomon.base.model.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.UUID;
 
 @TableName("file")
 @ApiModel("文件实体类")
@@ -14,6 +15,11 @@ public class File extends BaseEntity<String> {
 
   @ApiModelProperty(value="文件路径（包括文件名称）")
   String fileName;
+
+  public File() {
+    setId(UUID.randomUUID().toString());
+    this.create();
+  }
 
   public String getBucke() {
     return bucke;
