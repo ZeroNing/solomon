@@ -10,6 +10,13 @@ import java.time.LocalDateTime;
 
 /**
  * 基础实体类
+ * ALTER TABLE `tenancy`.`*`
+ * ADD COLUMN `create_id` varchar(50) NOT NULL COMMENT '创建人id' AFTER `id`,
+ * ADD COLUMN `create_date` datetime NOT NULL COMMENT '创建时间' AFTER `create_id`,
+ * ADD COLUMN `update_id` varchar(50) NOT NULL COMMENT '更新人' AFTER `create_date`,
+ * ADD COLUMN `update_date` datetime NOT NULL COMMENT '更新时间' AFTER `update_id`,
+ * ADD COLUMN `remark` varchar(255) NULL COMMENT '备注' AFTER `update_date`,
+ * ADD COLUMN `del_flag` char(1) NOT NULL DEFAULT 0 COMMENT '删除标记' AFTER `remark`;
  */
 public class BaseEntity<I> implements Serializable {
 

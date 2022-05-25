@@ -27,11 +27,11 @@ public abstract class AbsReceiptService<T extends BaseReceipt>{
   @Resource
   protected MinioUtils minioUtils;
 
-  public void drawReceipt(T receipt) throws Exception {
-    drawReceipt(BufferedImage.TYPE_INT_RGB, Color.white,receipt);
+  public String drawReceipt(T receipt) throws Exception {
+    return drawReceipt(BufferedImage.TYPE_INT_RGB, Color.white,receipt);
   }
 
-  public void drawReceipt(int imageType,Color backgroundColor, T receipt) throws Exception{
+  public String drawReceipt(int imageType,Color backgroundColor, T receipt) throws Exception{
     BufferedImage bufferedImage = null;
     try {
       bufferedImage = drawImageBasics(imageType);
@@ -40,7 +40,7 @@ public abstract class AbsReceiptService<T extends BaseReceipt>{
       g2 = drawDescribe(g2,receipt);
       g2 = drawData(g2,receipt);
       g2 = setGraphics2DOptimize(g2);
-      upload(bufferedImage,receipt);
+      return upload(bufferedImage,receipt);
     } finally {
       if(ValidateUtils.isNotEmpty(bufferedImage)){
         bufferedImage.getGraphics().dispose();
@@ -103,5 +103,5 @@ public abstract class AbsReceiptService<T extends BaseReceipt>{
   /**
    * 上传图片
    */
-  public abstract void upload(BufferedImage bufferedImage,T receipt) throws Exception;
+  public abstract String upload(BufferedImage bufferedImage,T receipt) throws Exception;
 }

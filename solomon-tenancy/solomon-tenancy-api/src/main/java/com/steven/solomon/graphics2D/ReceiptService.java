@@ -151,7 +151,9 @@ public class ReceiptService extends AbsReceiptService<Receipt> {
   }
 
   @Override
-  public void upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
-    minioUtils.putObject(ReceiptMinIoBucketCode.RECEIPT,bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg");
+  public String upload(BufferedImage bufferedImage,Receipt receipt) throws Exception {
+    String fileName = DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的当月水电房租收据"+".jpg";
+    minioUtils.putObject(ReceiptMinIoBucketCode.RECEIPT,bufferedImage, fileName);
+    return fileName;
   }
 }

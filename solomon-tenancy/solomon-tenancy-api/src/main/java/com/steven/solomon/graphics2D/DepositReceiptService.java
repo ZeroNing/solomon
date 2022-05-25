@@ -71,7 +71,9 @@ public class DepositReceiptService extends AbsReceiptService<DepositReceipt> {
   }
 
   @Override
-  public void upload(BufferedImage bufferedImage, DepositReceipt receipt) throws Exception {
-    minioUtils.putObject(ReceiptMinIoBucketCode.DEPOSIT_RECEIPT,bufferedImage, DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的押金单"+".jpg");
+  public String upload(BufferedImage bufferedImage, DepositReceipt receipt) throws Exception {
+    String fileName = DateTimeUtils.getLocalYearString()+"/"+DateTimeUtils.getLocalMonthString()+"/"+receipt.getTenantName()+"的押金单"+".jpg";
+    minioUtils.putObject(ReceiptMinIoBucketCode.DEPOSIT_RECEIPT,bufferedImage, fileName);
+    return fileName;
   }
 }
