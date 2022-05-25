@@ -1,13 +1,9 @@
 package com.steven.solomon.minio.utils;
 
 import cn.hutool.core.io.FileTypeUtil;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import com.steven.solomon.verification.ValidateUtils;
+import java.io.File;
 import java.io.InputStream;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 
 public class FileTypeUtils {
 
@@ -18,8 +14,18 @@ public class FileTypeUtils {
   private final static String TXT_TYPE = "text/";
 
   public static String getFileType(InputStream inputStream) {
-    String      type        = null;
-    type = FileTypeUtil.getType(inputStream);
+    return getFileType(FileTypeUtil.getType(inputStream));
+  }
+
+  public static String getFileType(File file){
+    return getFileType(FileTypeUtil.getType(file));
+  }
+
+
+  public static String getFileType(String type){
+    if(ValidateUtils.isEmpty(type)){
+      return null;
+    }
     if (type.equalsIgnoreCase("JPG") || type.equalsIgnoreCase("JPEG")
         || type.equalsIgnoreCase("GIF") || type.equalsIgnoreCase("PNG")
         || type.equalsIgnoreCase("BMP") || type.equalsIgnoreCase("PCX")

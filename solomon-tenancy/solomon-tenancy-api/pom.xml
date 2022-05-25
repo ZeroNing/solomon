@@ -18,11 +18,6 @@
   <dependencies>
     <dependency>
       <groupId>com.steven</groupId>
-      <artifactId>solomon-mongodb</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.steven</groupId>
       <artifactId>solomon-mq</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>

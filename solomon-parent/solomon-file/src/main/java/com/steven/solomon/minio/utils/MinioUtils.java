@@ -23,6 +23,7 @@ import io.minio.messages.Item;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class MinioUtils {
@@ -362,5 +364,34 @@ public class MinioUtils {
       }
     }
     return false;
+  }
+
+  /**
+   * 通过InputStream上传对象
+   *
+   * @param bucketName  存储桶名称
+   * @param objectName  存储桶里的对象名称
+   * @param inputStream 要上传的流
+   * @return
+   */
+  public MinIo putObject(String bucketName, String objectName, InputStream inputStream)
+      throws Exception {
+    this.putObject(bucketName,objectName,inputStream,FileTypeUtils.getFileType(inputStream));
+    return new MinIo(bucketName,objectName);
+  }
+
+  /**
+   * 通过InputStream上传对象
+   *
+   * @param bucketName  存储桶名称
+   * @param objectName  存储桶里的对象名称
+   * @param file        要上传的文件
+   * @return
+   */
+  public MinIo putObject(String bucketName, String objectName, MultipartFile file)
+      throws Exception {
+    String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
+    this.putObject(bucketName,objectName,file.getInputStream(),FileTypeUtils.getFileType(type));
+    return new MinIo(bucketName,objectName);
   }
 }
