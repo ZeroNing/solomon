@@ -2,6 +2,7 @@ package com.steven.solomon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.steven.solomon.mapper.FileMapper;
+import com.steven.solomon.minio.graphics2D.entity.MinIo;
 import com.steven.solomon.pojo.entity.File;
 import com.steven.solomon.service.FileService;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -20,5 +21,11 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     file.setBucke(bucke);
     file.setFileName(fileName);
     baseMapper.insert(file);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class, readOnly = false)
+  public void save(MinIo minIo) {
+    this.save(minIo.getBucke(),minIo.getFileName());
   }
 }
