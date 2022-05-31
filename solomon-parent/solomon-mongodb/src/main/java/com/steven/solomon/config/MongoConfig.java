@@ -40,63 +40,31 @@ public class MongoConfig {
 
     private Logger logger = LoggerUtils.logger(getClass());
 
-    private static final ThreadLocal<SimpleMongoClientDatabaseFactory> MONGO_DB_FACTORY_THREAD_LOCAL = new ThreadLocal<>();
-
-    private static final  Map<String,SimpleMongoClientDatabaseFactory> MONGO_FACTORY_MAP = new ConcurrentHashMap<>();
-
-    private static List<TenantMongoProperties> mongoClientList = new ArrayList<>();
-
-    private static Map<String,Class<?>> CAPPED_COLLECTION_NAME_MAP = new HashMap<>();
-
     @Resource
     private MongoProperties mongoProperties;
 
     @Resource
     private MongoProfile mongoProfile;
 
-    public static List<TenantMongoProperties> getMongoClientList(){
-        return mongoClientList;
-    }
-
-    public static void setMongoClient(TenantMongoProperties properties){
-        MongoConfig.mongoClientList.add(properties);
-    };
-
-    public static void setMongoFactoryMap(Map<String, SimpleMongoClientDatabaseFactory> mongoFactoryMap){
-        MongoConfig.MONGO_FACTORY_MAP.putAll(mongoFactoryMap);
-    }
-
-    public static Map<String,SimpleMongoClientDatabaseFactory> getMongoFactoryMap(){
-        return MongoConfig.MONGO_FACTORY_MAP;
-    }
-
-    public static void setCappedCollectionNameMap(Map<String,Class<?>> cappedCollectionNameMap){
-        MongoConfig.CAPPED_COLLECTION_NAME_MAP = cappedCollectionNameMap;
-    }
-
-    public static Map<String,Class<?>> getCappedCollectionNameMap(){
-        return MongoConfig.CAPPED_COLLECTION_NAME_MAP;
-    }
-
     @PostConstruct
     public void afterPropertiesSet() {
         List<TenantMongoProperties>         mongoClients                          = new ArrayList<>();
         List<MongoClientPropertiesService> abstractMongoClientPropertiesServices = new ArrayList<>(SpringUtil.getBeansOfType(
                 MongoClientPropertiesService.class).values());
-
+        Map<String,SimpleMongoClientDatabaseFactory> factoryMap = new ConcurrentHashMap<>();
         if(ValidateUtils.isNotEmpty(mongoProfile) && MongoModeEnum.NORMAL.toString().equalsIgnoreCase(mongoProfile.getMode())){
-            MONGO_FACTORY_MAP.put("default", new SimpleMongoClientDatabaseFactory(MongoClients.create(mongoProperties.getUri()),mongoProperties.getDatabase()));
+            factoryMap.put("default", new SimpleMongoClientDatabaseFactory(MongoClients.create(mongoProperties.getUri()),mongoProperties.getDatabase()));
         }
 
         abstractMongoClientPropertiesServices.forEach(service ->{
             service.setMongoClient();
             service.setCappedCollectionNameMap();
-            mongoClients.addAll(MongoConfig.mongoClientList);
+            mongoClients.addAll(MongoTenantsHandler.getMongoClientList());
         });
 
         mongoClients.forEach(mongoProperties -> {
             SimpleMongoClientDatabaseFactory factory = new SimpleMongoClientDatabaseFactory(MongoClients.create(mongoProperties.getUri()),mongoProperties.getTenantCode());
-            MONGO_FACTORY_MAP.put(mongoProperties.getTenantCode(),factory);
+            factoryMap.put(mongoProperties.getTenantCode(),factory);
 
             List<String> collectionNameList = new ArrayList<>();
             MongoDatabase mongoDatabase = factory.getMongoDatabase();
@@ -104,7 +72,7 @@ public class MongoConfig {
                 collectionNameList.add(name);
             });
 
-            getCappedCollectionNameMap().forEach((key,value)->{
+            MongoTenantsHandler.getCappedCollectionNameMap().forEach((key,value)->{
                 boolean isCreate = collectionNameList.contains(key);
                 if(!isCreate){
                     MongoDBCapped mongoDBCapped = AnnotationUtils.getAnnotation(value, MongoDBCapped.class);
@@ -126,30 +94,20 @@ public class MongoConfig {
                 }
             });
         });
+        MongoTenantsHandler.setMongoFactoryMap(factoryMap);
     }
 
     @Bean(name = "mongoTemplate")
     @Conditional(value = MongoCondition.class)
     public DynamicMongoTemplate dynamicMongoTemplate() {
-        return new DynamicMongoTemplate(MONGO_FACTORY_MAP.values().iterator().next());
+        return new DynamicMongoTemplate(MongoTenantsHandler.getMongoFactoryMap().values().iterator().next());
     }
 
     @Bean(name = "mongoDbFactory")
     @Conditional(value = MongoCondition.class)
     public MongoDatabaseFactory mongoDbFactory() {
-        return MONGO_FACTORY_MAP.values().iterator().next();
+        return MongoTenantsHandler.getMongoFactoryMap().values().iterator().next();
     }
 
-    public static void setMongoDbFactory(String name) {
-        MONGO_DB_FACTORY_THREAD_LOCAL.set(MONGO_FACTORY_MAP.get(name));
-    }
-
-    public static MongoDatabaseFactory getMongoDbFactory() {
-        return MONGO_DB_FACTORY_THREAD_LOCAL.get();
-    }
-
-    public static void removeMongoDbFactory(){
-        MONGO_DB_FACTORY_THREAD_LOCAL.remove();
-    }
 
 }
