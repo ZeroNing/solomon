@@ -1,5 +1,6 @@
 package com.steven.solomon.manager;
 import com.steven.solomon.config.RedisConfig;
+import com.steven.solomon.config.RedisTenantsHandler;
 import com.steven.solomon.verification.ValidateUtils;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import javax.annotation.Resource;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.data.redis.cache.CacheStatistics;
 import org.springframework.data.redis.cache.CacheStatisticsCollector;
@@ -24,6 +26,9 @@ public class DynamicDefaultRedisCacheWriter implements RedisCacheWriter {
   private RedisConnectionFactory   connectionFactory;
   private Duration                 sleepTime;
   private CacheStatisticsCollector statistics;
+
+  @Resource
+  private RedisTenantsHandler redisTenantsHandler;
 
   public static RedisCacheWriter nonLockingRedisCacheWriter(RedisConnectionFactory connectionFactory) {
 
@@ -67,7 +72,7 @@ public class DynamicDefaultRedisCacheWriter implements RedisCacheWriter {
   }
 
   public RedisConnectionFactory getRedisConnectionFactory(){
-    RedisConnectionFactory connectionFactory = RedisConfig.getRedisFactory();
+    RedisConnectionFactory connectionFactory = redisTenantsHandler.getFactory();
     return ValidateUtils.isEmpty(connectionFactory) ? this.connectionFactory : connectionFactory;
   }
 
