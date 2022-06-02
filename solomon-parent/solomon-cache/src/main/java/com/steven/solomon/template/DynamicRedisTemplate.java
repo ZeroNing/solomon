@@ -13,8 +13,7 @@ public class DynamicRedisTemplate<K,V> extends RedisTemplate<K,V> {
     super();
   }
 
-  @Resource
-  private RedisTenantsHandler redisTenantsHandler;
+  private RedisTenantsHandler redisTenantsHandler = new RedisTenantsHandler();
 
   @Override
   public RedisConnectionFactory getConnectionFactory() {

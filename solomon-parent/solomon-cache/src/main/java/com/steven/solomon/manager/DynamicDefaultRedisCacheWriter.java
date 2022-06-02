@@ -27,8 +27,7 @@ public class DynamicDefaultRedisCacheWriter implements RedisCacheWriter {
   private Duration                 sleepTime;
   private CacheStatisticsCollector statistics;
 
-  @Resource
-  private RedisTenantsHandler redisTenantsHandler;
+  private RedisTenantsHandler redisTenantsHandler = new RedisTenantsHandler();
 
   public static RedisCacheWriter nonLockingRedisCacheWriter(RedisConnectionFactory connectionFactory) {
 
