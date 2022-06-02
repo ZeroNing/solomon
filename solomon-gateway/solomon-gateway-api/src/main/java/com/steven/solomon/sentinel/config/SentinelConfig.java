@@ -1,7 +1,7 @@
-package com.steven.solomon.config;
+package com.steven.solomon.sentinel.config;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.SentinelGatewayFilter;
-import com.steven.solomon.exception.handler.SentinelGatewayBlockExceptionHandler;
+import com.steven.solomon.sentinel.exception.SentinelGatewayBlockExceptionHandler;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.ObjectProvider;

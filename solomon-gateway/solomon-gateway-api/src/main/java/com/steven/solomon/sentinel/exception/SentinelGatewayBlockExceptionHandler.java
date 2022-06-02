@@ -1,4 +1,4 @@
-package com.steven.solomon.exception.handler;
+package com.steven.solomon.sentinel.exception;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import com.alibaba.csp.sentinel.slots.block.BlockException;

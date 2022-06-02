@@ -1,4 +1,4 @@
-package com.steven.solomon.config;
+package com.steven.solomon.security.config;
 
 
 import org.springframework.context.annotation.Bean;
