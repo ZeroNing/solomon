@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
-import org.springframework.stereotype.Service;
 
-@Service
-public class MongoTenantsHandler extends AbstractTenantsHandler<MongoDatabaseFactory> {
+@Configuration
+public class MongoTenantsHandler extends AbstractTenantsHandler<SimpleMongoClientDatabaseFactory,TenantMongoProperties> {
 
   private static final ThreadLocal<SimpleMongoClientDatabaseFactory> MONGO_DB_FACTORY_THREAD_LOCAL = new ThreadLocal<>();
 
@@ -21,18 +20,6 @@ public class MongoTenantsHandler extends AbstractTenantsHandler<MongoDatabaseFac
   private static List<TenantMongoProperties> mongoClientList = new ArrayList<>();
 
   private static Map<String,Class<?>> CAPPED_COLLECTION_NAME_MAP = new HashMap<>();
-
-  public static void setMongoFactoryMap(Map<String, SimpleMongoClientDatabaseFactory> mongoFactoryMap){
-    MongoTenantsHandler.MONGO_FACTORY_MAP.putAll(mongoFactoryMap);
-  }
-
-  public static Map<String,SimpleMongoClientDatabaseFactory> getMongoFactoryMap(){
-    return MongoTenantsHandler.MONGO_FACTORY_MAP;
-  }
-
-  public static List<TenantMongoProperties> getMongoClientList(){
-    return mongoClientList;
-  }
 
 
   public static void setCappedCollectionNameMap(Map<String,Class<?>> cappedCollectionNameMap){
@@ -44,7 +31,7 @@ public class MongoTenantsHandler extends AbstractTenantsHandler<MongoDatabaseFac
   }
 
   @Override
-  public MongoDatabaseFactory getFactory() {
+  public SimpleMongoClientDatabaseFactory getFactory() {
     return MONGO_DB_FACTORY_THREAD_LOCAL.get();
   }
 
@@ -56,6 +43,26 @@ public class MongoTenantsHandler extends AbstractTenantsHandler<MongoDatabaseFac
   @Override
   public void setFactory(String name) {
     MONGO_DB_FACTORY_THREAD_LOCAL.set(MONGO_FACTORY_MAP.get(name));
+  }
+
+  @Override
+  public void setProperties(TenantMongoProperties properties) {
+    MongoTenantsHandler.mongoClientList.add(properties);
+  }
+
+  @Override
+  public List<TenantMongoProperties> getProperties() {
+    return MongoTenantsHandler.mongoClientList;
+  }
+
+  @Override
+  public Map<String, SimpleMongoClientDatabaseFactory> getFactoryMap() {
+    return MongoTenantsHandler.MONGO_FACTORY_MAP;
+  }
+
+  @Override
+  public void setFactoryMap(Map<String, SimpleMongoClientDatabaseFactory> factoryMap) {
+    MongoTenantsHandler.MONGO_FACTORY_MAP.putAll(factoryMap);
   }
 
 }

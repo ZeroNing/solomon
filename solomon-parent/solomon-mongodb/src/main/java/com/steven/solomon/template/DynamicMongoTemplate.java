@@ -4,10 +4,8 @@ import com.mongodb.ReadPreference;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.steven.solomon.annotation.MongoDBCapped;
-import com.steven.solomon.config.MongoConfig;
 import com.steven.solomon.config.MongoTenantsHandler;
 import java.util.Map;
-import javax.annotation.Resource;
 import org.bson.Document;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -19,8 +17,7 @@ public class DynamicMongoTemplate extends MongoTemplate {
     super(mongoDbFactory);
   }
 
-  @Resource
-  private MongoTenantsHandler mongoTenantsHandler;
+  private MongoTenantsHandler mongoTenantsHandler = new MongoTenantsHandler();
 
   @Override
   protected MongoDatabase doGetDatabase() {
