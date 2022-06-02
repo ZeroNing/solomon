@@ -27,8 +27,6 @@ public class DynamicDefaultRedisCacheWriter implements RedisCacheWriter {
   private Duration                 sleepTime;
   private CacheStatisticsCollector statistics;
 
-  private RedisTenantsHandler redisTenantsHandler = new RedisTenantsHandler();
-
   public static RedisCacheWriter nonLockingRedisCacheWriter(RedisConnectionFactory connectionFactory) {
 
     Assert.notNull(connectionFactory, "ConnectionFactory must not be null!");
@@ -71,7 +69,7 @@ public class DynamicDefaultRedisCacheWriter implements RedisCacheWriter {
   }
 
   public RedisConnectionFactory getRedisConnectionFactory(){
-    RedisConnectionFactory connectionFactory = redisTenantsHandler.getFactory();
+    RedisConnectionFactory connectionFactory = RedisTenantsHandler.getFactory();
     return ValidateUtils.isEmpty(connectionFactory) ? this.connectionFactory : connectionFactory;
   }
 

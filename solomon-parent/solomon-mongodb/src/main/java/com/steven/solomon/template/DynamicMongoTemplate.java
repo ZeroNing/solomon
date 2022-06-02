@@ -17,17 +17,15 @@ public class DynamicMongoTemplate extends MongoTemplate {
     super(mongoDbFactory);
   }
 
-  private MongoTenantsHandler mongoTenantsHandler = new MongoTenantsHandler();
-
   @Override
   protected MongoDatabase doGetDatabase() {
-    MongoDatabaseFactory mongoDbFactory = mongoTenantsHandler.getFactory();
+    MongoDatabaseFactory mongoDbFactory = MongoTenantsHandler.getFactory();
     return mongoDbFactory == null ? super.doGetDatabase() : mongoDbFactory.getMongoDatabase();
   }
 
   @Override
   public MongoDatabaseFactory getMongoDbFactory() {
-    MongoDatabaseFactory mongoDbFactory = mongoTenantsHandler.getFactory();
+    MongoDatabaseFactory mongoDbFactory = MongoTenantsHandler.getFactory();
     return mongoDbFactory == null ? super.getMongoDbFactory() : mongoDbFactory;
   }
 

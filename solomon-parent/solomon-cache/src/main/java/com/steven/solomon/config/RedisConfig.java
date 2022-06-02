@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(2)
-@DependsOn({"springUtil","redisTenantsHandler"})
+@DependsOn({"springUtil"})
 public class RedisConfig extends CachingConfigurerSupport {
 
   private Logger logger = LoggerUtils.logger(getClass());
@@ -48,8 +48,6 @@ public class RedisConfig extends CachingConfigurerSupport {
   @Resource
   private CacheProfile cacheProfile;
   
-  private static RedisTenantsHandler redisTenantsHandler = new RedisTenantsHandler();
-
   @PostConstruct
   public void afterPropertiesSet() {
     List<TenantRedisProperties> redisPropertiesList = new ArrayList<>();
@@ -65,14 +63,14 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     abstractRedisClientPropertiesServices.forEach(service -> {
       service.setRedisClient();
-      redisPropertiesList.addAll(redisTenantsHandler.getProperties());
+      redisPropertiesList.addAll(RedisTenantsHandler.getProperties());
     });
 
     redisPropertiesList.forEach(redisProperties -> {
       RedisConnectionFactory factory = initConnectionFactory(redisProperties);
       factoryMap.put(redisProperties.getTenantCode(), factory);
     });
-    redisTenantsHandler.setFactoryMap(factoryMap);
+    RedisTenantsHandler.setFactoryMap(factoryMap);
   }
 
   @Bean(name = "redisTemplate")
@@ -80,7 +78,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     logger.info("初始化redis start");
     DynamicRedisTemplate<String, Object> redisTemplate = new DynamicRedisTemplate<String, Object>();
     // 注入数据源
-    RedisConnectionFactory factory = redisTenantsHandler.getFactoryMap().values().iterator().next();
+    RedisConnectionFactory factory = RedisTenantsHandler.getFactoryMap().values().iterator().next();
     redisTemplate.setConnectionFactory(factory);
     // 使用Jackson2JsonRedisSerialize 替换默认序列化
     StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
@@ -100,7 +98,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
   @Bean(name = "redisFactory")
   public RedisConnectionFactory redisFactory() {
-    return redisTenantsHandler.getFactoryMap().values().iterator().next();
+    return RedisTenantsHandler.getFactoryMap().values().iterator().next();
   }
 
   private LettuceConnectionFactory initConnectionFactory(RedisProperties redisProperties) {
@@ -133,7 +131,7 @@ public class RedisConfig extends CachingConfigurerSupport {
   public CacheManager cacheManager(){
     RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().computePrefixWith((name -> name + ":"));
     SpringRedisAutoManager springRedisAutoManager = new SpringRedisAutoManager(DynamicDefaultRedisCacheWriter.nonLockingRedisCacheWriter(
-        redisTenantsHandler.getFactoryMap().values().iterator().next()), defaultCacheConfig);
+        RedisTenantsHandler.getFactoryMap().values().iterator().next()), defaultCacheConfig);
     return springRedisAutoManager;
   }
 }

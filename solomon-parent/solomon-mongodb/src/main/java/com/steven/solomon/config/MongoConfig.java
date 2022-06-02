@@ -46,8 +46,6 @@ public class MongoConfig {
     @Resource
     private MongoProfile mongoProfile;
 
-    private MongoTenantsHandler mongoTenantsHandler = new MongoTenantsHandler();
-
     @PostConstruct
     public void afterPropertiesSet() {
         List<TenantMongoProperties>         mongoClients                          = new ArrayList<>();
@@ -61,7 +59,7 @@ public class MongoConfig {
         abstractMongoClientPropertiesServices.forEach(service ->{
             service.setMongoClient();
             service.setCappedCollectionNameMap();
-            mongoClients.addAll(mongoTenantsHandler.getProperties());
+            mongoClients.addAll(MongoTenantsHandler.getProperties());
         });
 
         mongoClients.forEach(mongoProperties -> {
@@ -96,19 +94,19 @@ public class MongoConfig {
                 }
             });
         });
-        mongoTenantsHandler.setFactoryMap(factoryMap);
+        MongoTenantsHandler.setFactoryMap(factoryMap);
     }
 
     @Bean(name = "mongoTemplate")
     @Conditional(value = MongoCondition.class)
     public DynamicMongoTemplate dynamicMongoTemplate() {
-        return new DynamicMongoTemplate(mongoTenantsHandler.getFactoryMap().values().iterator().next());
+        return new DynamicMongoTemplate(MongoTenantsHandler.getFactoryMap().values().iterator().next());
     }
 
     @Bean(name = "mongoDbFactory")
     @Conditional(value = MongoCondition.class)
     public MongoDatabaseFactory mongoDbFactory() {
-        return mongoTenantsHandler.getFactoryMap().values().iterator().next();
+        return MongoTenantsHandler.getFactoryMap().values().iterator().next();
     }
 
 
