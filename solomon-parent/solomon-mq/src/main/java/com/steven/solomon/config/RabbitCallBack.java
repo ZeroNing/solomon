@@ -27,7 +27,7 @@ public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
   public void confirm(CorrelationData correlationData, boolean ack, String cause) {
     if(ValidateUtils.isNotEmpty(RabbitCallBack.rabbitCallBackList)){
       for(AbstractRabbitCallBack abstractRabbitCallBack : RabbitCallBack.rabbitCallBackList){
-        abstractRabbitCallBack.saveRabbitCallBack(correlationData,ack,cause);
+        abstractRabbitCallBack.confirm(correlationData,ack,cause);
       }
     }
   }
