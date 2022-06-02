@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class SecurityLogoutHandler implements ServerLogoutHandler {
+public class SecurityLogoutSuccessHandler implements ServerLogoutSuccessHandler {
 
   @Override
-  public Mono<Void> logout(WebFilterExchange webFilterExchange, Authentication authentication) {
+  public Mono<Void> onLogoutSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
     return null;
   }
 }
