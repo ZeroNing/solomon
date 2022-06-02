@@ -30,11 +30,6 @@ public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
         abstractRabbitCallBack.saveRabbitCallBack(correlationData,ack,cause);
       }
     }
-    if (!ack) {
-      logger.info("RabbitMQConfig:消息发送失败:correlationData({}),ack(false),cause({})", correlationData,cause);
-    } else {
-      logger.info("RabbitMQConfig:消息发送成功::correlationData({}),ack(true),cause({})", correlationData,cause);
-    }
   }
 
   @Override
