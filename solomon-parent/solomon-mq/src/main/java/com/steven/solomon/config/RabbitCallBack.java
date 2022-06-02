@@ -1,8 +1,10 @@
-package com.steven.solomon;
+package com.steven.solomon.config;
 
 import com.steven.solomon.logger.LoggerUtils;
+import com.steven.solomon.service.AbstractRabbitCallBack;
+import com.steven.solomon.verification.ValidateUtils;
+import java.util.List;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ReturnedMessage;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback;
@@ -12,8 +14,22 @@ public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
 
   private Logger logger = LoggerUtils.logger(RabbitCallBack.class);
 
+  private static List<AbstractRabbitCallBack> rabbitCallBackList;
+
+  public RabbitCallBack(List<AbstractRabbitCallBack> rabbitCallBackList){
+    RabbitCallBack.rabbitCallBackList = rabbitCallBackList;
+  }
+
+  public RabbitCallBack(){
+  }
+
   @Override
   public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+    if(ValidateUtils.isNotEmpty(RabbitCallBack.rabbitCallBackList)){
+      for(AbstractRabbitCallBack abstractRabbitCallBack : RabbitCallBack.rabbitCallBackList){
+        abstractRabbitCallBack.saveRabbitCallBack(correlationData,ack,cause);
+      }
+    }
     if (!ack) {
       logger.info("RabbitMQConfig:消息发送失败:correlationData({}),ack(false),cause({})", correlationData,cause);
     } else {
