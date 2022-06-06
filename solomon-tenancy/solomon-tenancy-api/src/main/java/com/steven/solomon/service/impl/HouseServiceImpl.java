@@ -112,9 +112,9 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Override
   public IPage<HouseVO> page(HousePageParam param) {
     QueryWrapper<House> queryWrapper = new QueryWrapper<>();
-    queryWrapper.eq(false, "a.province_id", param.getProvinceId());
-    queryWrapper.eq(false, "a.city_id", param.getCityId());
-    queryWrapper.eq(false, "a.area_id", param.getAreaId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getProvinceId()), "a.province_id", param.getProvinceId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getCityId()), "a.city_id", param.getCityId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getAreaId()), "a.area_id", param.getAreaId());
     queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
     IPage<HouseVO> page = baseMapper.page(new Page<House>(param.getPageNo(), param.getPageSize()), queryWrapper);
     if(ValidateUtils.isEmpty(page)){

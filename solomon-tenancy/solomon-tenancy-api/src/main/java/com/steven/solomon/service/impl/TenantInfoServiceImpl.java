@@ -87,9 +87,9 @@ public class TenantInfoServiceImpl extends ServiceImpl<TenantInfoMapper, TenantI
   @Override
   public IPage<TenantInfoVO> page(TenantInfoPageParam param) {
     QueryWrapper<TenantInfo> queryWrapper = new QueryWrapper<>();
-    queryWrapper.eq(false, "a.province_id", param.getProvinceId());
-    queryWrapper.eq(false, "a.city_id", param.getCityId());
-    queryWrapper.eq(false, "a.area_id", param.getAreaId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getProvinceId()), "a.province_id", param.getProvinceId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getCityId()), "a.city_id", param.getCityId());
+    queryWrapper.eq(ValidateUtils.isNotEmpty(param.getAreaId()), "a.area_id", param.getAreaId());
     queryWrapper.eq("a.del_flag", DelFlagEnum.NOT_DELETE.label());
     IPage<TenantInfoVO> page    = baseMapper.page(new Page<TenantInfo>(param.getPageNo(), param.getPageSize()), queryWrapper);
     if(ValidateUtils.isEmpty(page)){
