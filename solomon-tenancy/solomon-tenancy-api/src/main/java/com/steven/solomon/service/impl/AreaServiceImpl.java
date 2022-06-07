@@ -9,23 +9,17 @@ import com.steven.solomon.mapper.AreaMapper;
 import com.steven.solomon.pojo.entity.Area;
 import com.steven.solomon.pojo.param.AreaListParam;
 import com.steven.solomon.service.AreaService;
-import com.steven.solomon.service.ICacheService;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.SpringCacheAnnotationParser;
 import org.springframework.stereotype.Service;
 
 @Service
 @DubboService
 public class AreaServiceImpl extends ServiceImpl<AreaMapper, Area> implements AreaService {
-
-  @Resource
-  private ICacheService iCacheService;
 
   @Override
   @Cacheable(value ="area"+ SpringRedisAutoManager.separator + CacheTime.CACHE_EXP_WEEK, key="#param.getAreaCode()")
