@@ -22,6 +22,7 @@ public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
   }
 
   public RabbitCallBack(){
+    super();
   }
 
   @Override
@@ -35,7 +36,10 @@ public class RabbitCallBack implements ReturnsCallback, ConfirmCallback {
 
   @Override
   public void returnedMessage(ReturnedMessage returned) {
-    logger.info("RabbitMQConfig:消息丢失:exchange({}),route({}),replyCode({}),replyText({}),message:{}",
-        returned.getExchange(), returned.getRoutingKey(), returned.getReplyCode(), returned.getReplyText(), returned.getMessage());
+    if(ValidateUtils.isNotEmpty(RabbitCallBack.rabbitCallBackList)){
+      for(AbstractRabbitCallBack abstractRabbitCallBack : RabbitCallBack.rabbitCallBackList){
+        abstractRabbitCallBack.confirm(returned);
+      }
+    }
   }
 }
