@@ -5,6 +5,11 @@ i18n:
   messages:
     baseNames: i18n/messages
 spring:
+  datasource:
+    password: Select*From136623;
+    username: tenancy
+    url: jdbc:mysql://106.52.186.166:3306/tenancy?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: gateway-api
   cloud:
