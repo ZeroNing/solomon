@@ -11,8 +11,6 @@
 
   <modules>
     <module>solomon-parent</module>
-    <module>solomon-gateway</module>
-    <module>solomon-tenancy</module>
   </modules>
 
 
