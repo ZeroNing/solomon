@@ -1,6 +1,8 @@
 package com.steven.solomon.config;
 
 import com.steven.solomon.logger.LoggerUtils;
+import com.steven.solomon.service.AbstractRabbitCallBack;
+import com.steven.solomon.spring.SpringUtil;
 import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -38,7 +40,7 @@ public class RabbitMQConfig {
 		cachingConnectionFactory.setPublisherReturns(true);
 		rabbitTemplate.setMandatory(true);
 		rabbitTemplate.setMessageConverter(messageConverter());
-		RabbitCallBack rabbitCallBack = new RabbitCallBack();
+		RabbitCallBack rabbitCallBack = new RabbitCallBack(SpringUtil.getBeansOfType(AbstractRabbitCallBack.class).values());
 		rabbitTemplate.setConfirmCallback(rabbitCallBack);
 		rabbitTemplate.setReturnsCallback(rabbitCallBack);
 		return rabbitTemplate;

@@ -2,18 +2,19 @@ package com.steven.solomon.service;
 
 import com.rabbitmq.client.Channel;
 import com.steven.solomon.annotation.RabbitMqRetry;
-import com.steven.solomon.constant.cache.CacheTime;
 import com.steven.solomon.constant.code.BaseICacheCode;
 import com.steven.solomon.json.JackJsonUtils;
 import com.steven.solomon.logger.LoggerUtils;
 import com.steven.solomon.pojo.RabbitMqModel;
 import com.steven.solomon.verification.ValidateUtils;
-import java.nio.charset.StandardCharsets;
-import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * RabbitMq消费器
@@ -22,10 +23,9 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
 
   private final Logger logger = LoggerUtils.logger(getClass());
 
-  @Resource(name = "redisService")
-  private ICacheService iCacheService;
-
   private final int retryNumber = 1;
+
+  private static Map<String,Object> retryNumberMap = new HashMap<>();
 
   @Override
   public void onMessage(Message message, Channel channel) throws Exception {
@@ -50,7 +50,8 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
       saveFailNumber(messageProperties, channel, deliveryTag,correlationId);
       throw e;
     } finally {
-      iCacheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
+      //iCacheService.del(BaseICacheCode.RABBIT_LOCK,correlationId);
+      delKey(BaseICacheCode.RABBIT_LOCK,correlationId);
     }
   }
 
@@ -58,7 +59,7 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
    * 记录失败次数并决定是否拒绝此消息
    */
   public void saveFailNumber(MessageProperties messageProperties, Channel channel, long deliveryTag,String correlationId) throws Exception {
-    Integer lock = (Integer) iCacheService.get(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
+    Integer lock = (Integer) getKey(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
     Integer actualLock = ValidateUtils.isEmpty(lock) ? 1 : lock + 1;
     logger.info("rabbitMQ 失败记录:消费者correlationId为:{},deliveryTag为:{},失败次数为:{}", correlationId, deliveryTag,actualLock);
     int retryNumber = getRetryNumber();
@@ -67,12 +68,12 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
         logger.info("rabbitMQ 失败记录:因记录不需要重试因此直接拒绝此消息,消费者correlationId为:{},消费者设置重试次数为:{}", correlationId, retryNumber);
       } else {
         logger.info("rabbitMQ 失败记录:已满足重试次数,删除redis消息并且拒绝此消息,消费者correlationId为:{},重试次数为:{}", correlationId, actualLock);
-        iCacheService.del(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
+        delKey(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId);
       }
       channel.basicNack(messageProperties.getDeliveryTag(), false, false);
     } else {
       logger.info("rabbitMQ 失败记录:因记录重试次数还未达到重试上限，还将继续进行重试,消费者correlationId为:{},消费者设置重试次数为:{},现重试次数为:{}", correlationId, retryNumber,actualLock);
-      iCacheService.set(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId, actualLock, CacheTime.CACHE_EXP_THIRTY_MINUTES);
+      setKey(BaseICacheCode.RABBIT_FAIL_GROUP,correlationId,actualLock);
     }
   }
 
@@ -99,4 +100,16 @@ public abstract class AbstractConsumer<T> extends MessageListenerAdapter {
    * @param e 异常
    */
   public abstract void saveFailMessage(Message message, Exception e);
+
+  public void setKey(String group,String key,Object value){
+    AbstractConsumer.retryNumberMap.put(group+":"+key,value);
+  }
+
+  public Object getKey(String group,String key){
+    return AbstractConsumer.retryNumberMap.get(group + ":"+key);
+  }
+
+  public void delKey(String group,String key){
+    AbstractConsumer.retryNumberMap.remove(group + ":"+key);
+  }
 }

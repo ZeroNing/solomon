@@ -1,14 +1,8 @@
 package com.steven.solomon.lambda;
 
 import com.steven.solomon.verification.ValidateUtils;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.DoubleSummaryStatistics;
-import java.util.IntSummaryStatistics;
-import java.util.List;
-import java.util.LongSummaryStatistics;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -27,7 +21,9 @@ public class LambdaUtils {
    */
   public static <T, S> List<T> toList(Collection<S> list, Predicate<S> predicate, Function<S, T> func) {
     if (ValidateUtils.isEmpty(list)) {
-      return null;
+      List<T> arrays = new ArrayList<>();
+      arrays.add(null);
+      return arrays;
     }
     return list.stream().filter(predicate).map(func).collect(Collectors.toList());
   }
@@ -39,6 +35,11 @@ public class LambdaUtils {
    * @param func 需要的字段
    */
   public static <T, S> List<T> toList(Collection<S> list, Function<S, T> func) {
+    if (ValidateUtils.isEmpty(list)) {
+      List<T> arrays = new ArrayList<>();
+      arrays.add(null);
+      return arrays;
+    }
     return list.stream().map(func).collect(Collectors.toList());
   }
 
@@ -50,6 +51,11 @@ public class LambdaUtils {
    * @param func      需要的字段
    */
   public static <T, S> Set<T> toSet(Collection<S> list, Predicate<S> predicate, Function<S, T> func) {
+    if (ValidateUtils.isEmpty(list)) {
+      Set<T> arrays = new HashSet<>();
+      arrays.add(null);
+      return arrays;
+    }
     return list.stream().filter(predicate).map(func).collect(Collectors.toSet());
   }
 
@@ -60,6 +66,11 @@ public class LambdaUtils {
    * @param func 需要的字段
    */
   public static <T, S> Set<T> toSet(Collection<S> list, Function<S, T> func) {
+    if (ValidateUtils.isEmpty(list)) {
+      Set<T> arrays = new HashSet<>();
+      arrays.add(null);
+      return arrays;
+    }
     return list.stream().map(func).collect(Collectors.toSet());
   }
 
@@ -70,6 +81,9 @@ public class LambdaUtils {
    * @param keyFunc 需要的字段
    */
   public static <K, T> Map<K, T> toMap(Collection<T> list, Function<T, K> keyFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.toMap(keyFunc, Function.identity(), (key1, key2) -> key2));
   }
 
@@ -81,6 +95,9 @@ public class LambdaUtils {
    * @param keyFunc   需要的字段
    */
   public static <K, T> Map<K, T> toMap(Collection<T> list, Predicate<T> predicate, Function<T, K> keyFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate)
         .collect(Collectors.toMap(keyFunc, Function.identity(), (key1, key2) -> key2));
   }
@@ -95,6 +112,9 @@ public class LambdaUtils {
    */
   public static <K, V, T> Map<K, V> toMap(Collection<T> list, Predicate<T> predicate, Function<T, K> keyFunc,
       Function<T, V> valFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate).collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
   }
 
@@ -106,6 +126,9 @@ public class LambdaUtils {
    * @param valFunc 需要的字段
    */
   public static <K, V, T> Map<K, V> toMap(Collection<T> list, Function<T, K> keyFunc, Function<T, V> valFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.toMap(keyFunc, valFunc, (key1, key2) -> key2));
   }
 
@@ -117,6 +140,9 @@ public class LambdaUtils {
    * @param groupByFunc 分组需要字段
    */
   public static <K, T> Map<K, List<T>> groupBy(Collection<T> list, Predicate<T> predicate, Function<T, K> groupByFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc));
   }
 
@@ -127,6 +153,9 @@ public class LambdaUtils {
    * @param groupByFunc 分组需要字段
    */
   public static <K, T> Map<K, List<T>> groupBy(Collection<T> list, Function<T, K> groupByFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.groupingBy(groupByFunc));
   }
 
@@ -200,6 +229,9 @@ public class LambdaUtils {
    * @param groupByFunc 分组统计的字段
    */
   public static <K, T> Map<K, Long> groupByCount(Collection<T> list, Function<T, K> groupByFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.groupingBy(groupByFunc, Collectors.counting()));
   }
 
@@ -212,6 +244,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Long> groupByCount(Collection<T> list, Function<T, K> groupByFunc,
       Predicate<T> predicate) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc, Collectors.counting()));
   }
 
@@ -224,6 +259,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Integer> groupBySum(Collection<T> list, Function<T, K> groupByFunc,
       ToIntFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.groupingBy(groupByFunc, Collectors.summingInt(sumFunc)));
   }
 
@@ -237,6 +275,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Integer> groupBySum(Collection<T> list, Function<T, K> groupByFunc,
       Predicate<T> predicate, ToIntFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc, Collectors.summingInt(sumFunc)));
   }
 
@@ -249,6 +290,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc,
       ToLongFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.groupingBy(groupByFunc, Collectors.summingLong(sumFunc)));
   }
 
@@ -262,6 +306,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Long> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,
       ToLongFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate).collect(Collectors.groupingBy(groupByFunc, Collectors.summingLong(sumFunc)));
   }
 
@@ -274,6 +321,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc,
       ToDoubleFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().collect(Collectors.groupingBy(groupByFunc, Collectors.summingDouble(sumFunc)));
   }
 
@@ -287,6 +337,9 @@ public class LambdaUtils {
    */
   public static <K, T> Map<K, Double> groupBySum(Collection<T> list, Function<T, K> groupByFunc, Predicate<T> predicate,
       ToDoubleFunction<T> sumFunc) {
+    if (ValidateUtils.isEmpty(list)) {
+      return new HashMap<>();
+    }
     return list.stream().filter(predicate)
         .collect(Collectors.groupingBy(groupByFunc, Collectors.summingDouble(sumFunc)));
   }
@@ -298,6 +351,9 @@ public class LambdaUtils {
    * @param predicate  条件筛选数据
    */
   public static <T> List<T> cross(Collection<T> sourceList, Predicate<T> predicate) {
+    if (ValidateUtils.isEmpty(sourceList)) {
+      return new ArrayList<>();
+    }
     return sourceList.stream().filter(predicate).collect(Collectors.toList());
   }
 
@@ -517,6 +573,9 @@ public class LambdaUtils {
    * @param comparator 条件排序(Comparator.comparing)
    */
   public static <T> List<T> sort(Collection<T> list, Comparator<? super T> comparator) {
+    if(ValidateUtils.isEmpty(list)){
+      return new ArrayList<>();
+    }
     return list.stream().sorted(comparator).collect(Collectors.toList());
   }
 
