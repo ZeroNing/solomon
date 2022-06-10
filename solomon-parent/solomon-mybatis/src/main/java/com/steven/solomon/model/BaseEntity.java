@@ -1,6 +1,9 @@
 package com.steven.solomon.model;
 
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.steven.solomon.annotation.JsonEnum;
 import com.steven.solomon.date.DateTimeUtils;
 import com.steven.solomon.enums.DelFlagEnum;
@@ -34,6 +37,7 @@ public class BaseEntity<I> implements Serializable {
   /**
    * 创建时间
    */
+  @TableField(fill = FieldFill.INSERT)
   private              LocalDateTime createDate;
 
   /**
@@ -44,11 +48,13 @@ public class BaseEntity<I> implements Serializable {
   /**
    * 更新时间
    */
+  @TableField(fill = FieldFill.INSERT_UPDATE)
   private              LocalDateTime updateDate;
   /**
    * 删除标记
    */
   @JsonEnum(enumClass = DelFlagEnum.class)
+  @TableLogic(value = "0",delval = "1")
   private              String        delFlag;
 
   /**
