@@ -1,7 +1,6 @@
-package com.steven.solomon.utils.enums;
+package com.steven.solomon.enums;
 
 
-import com.steven.solomon.base.enums.BaseEnum;
 import com.steven.solomon.verification.ValidateUtils;
 import java.util.Collection;
 

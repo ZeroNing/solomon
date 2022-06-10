@@ -1,4 +1,4 @@
-package com.steven.solomon.base.enums;
+package com.steven.solomon.enums;
 import com.steven.solomon.utils.I18nUtils;
 
 public interface BaseEnum {

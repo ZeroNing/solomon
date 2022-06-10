@@ -1,6 +1,4 @@
-package com.steven.solomon.base.enums;
-
-import com.steven.solomon.enums.BaseEnum;
+package com.steven.solomon.enums;
 
 /**
  * 删除枚举

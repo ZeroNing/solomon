@@ -1,8 +1,8 @@
 package com.steven.solomon.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.steven.solomon.base.model.BaseEntity;
 import com.steven.solomon.minio.graphics2D.entity.MinIo;
+import com.steven.solomon.model.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.UUID;

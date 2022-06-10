@@ -1,7 +1,5 @@
 package com.steven.solomon.pojo.enums;
 
-import com.steven.solomon.base.enums.BaseEnum;
-
 public enum RoomTypeEnum implements BaseEnum {
   /**
    * 单间
