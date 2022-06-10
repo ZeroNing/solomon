@@ -1,6 +1,6 @@
 package com.steven.solomon.pojo.param;
 
-import com.steven.solomon.base.model.BasePageParam;
+import com.steven.solomon.param.BasePageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
