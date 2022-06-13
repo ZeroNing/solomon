@@ -66,7 +66,7 @@ public class RabbitUtils {
   public boolean resetQueueConcurrentConsumers(String queueName, int concurrentConsumers) {
     Assert.state(concurrentConsumers > 0, "参数 'concurrentConsumers' 必须大于0.");
     DirectMessageListenerContainer container = (DirectMessageListenerContainer)findContainerByQueueName(queueName);
-    if (container.isActive() && container.isRunning()) {
+    if (ValidateUtils.isNotEmpty(container) && container.isActive() && container.isRunning()) {
       container.setConsumersPerQueue(concurrentConsumers);
       return true;
     }
@@ -82,6 +82,10 @@ public class RabbitUtils {
       return false;
     }
     DirectMessageListenerContainer container = (DirectMessageListenerContainer)findContainerByQueueName(queueName);
+    if(ValidateUtils.isEmpty(container)){
+      logger.info("restartMessageListener 停止队列失败,没有这个监听器");
+      return false;
+    }
     Assert.state(!container.isRunning(), String.format("消息队列%s对应的监听容器正在运行！", queueName));
     container.start();
     return true;
@@ -91,10 +95,14 @@ public class RabbitUtils {
    */
   public boolean stopMessageListener(String queueName) {
     if(ValidateUtils.isEmpty(queueName)){
-      logger.info("restartMessageListener 停止队列失败,传入队列名为空!");
+      logger.info("stopMessageListener 停止队列失败,传入队列名为空!");
       return false;
     }
     DirectMessageListenerContainer container = (DirectMessageListenerContainer)findContainerByQueueName(queueName);
+    if(ValidateUtils.isEmpty(container)){
+      logger.info("stopMessageListener 停止队列失败,没有这个监听器");
+      return false;
+    }
     Assert.state(container.isRunning(), String.format("消息队列%s对应的监听容器未运行！", queueName));
     container.stop();
     return true;
