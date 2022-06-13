@@ -1,4 +1,4 @@
-package com.steven.solomon.utils.ajax;
+package com.steven.solomon.ajax;
 
 import com.steven.solomon.constant.code.BaseCode;
 import com.steven.solomon.json.JackJsonUtils;

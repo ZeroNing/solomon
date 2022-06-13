@@ -1,9 +1,10 @@
 package com.steven.solomon.base.model;
 
 import com.steven.solomon.constant.code.BaseCode;
+import java.io.Serializable;
 import org.springframework.http.HttpStatus;
 
-public class BaseResponseVO extends BaseVO {
+public class BaseResponseVO implements Serializable {
 
   private String message;
 

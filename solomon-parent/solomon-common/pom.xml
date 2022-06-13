@@ -35,13 +35,6 @@
       <artifactId>easyexcel</artifactId>
     </dependency>
 
-    <!-- 去除图片Exif -->
-    <dependency>
-      <groupId>com.drewnoakes</groupId>
-      <artifactId>metadata-extractor</artifactId>
-    </dependency>
-
-
   </dependencies>
 
 </project>

@@ -1,5 +1,7 @@
 package com.steven.solomon.pojo.enums;
 
+import com.steven.solomon.enums.BaseEnum;
+
 public enum HouseConfigTypeEnum implements BaseEnum {
   /**
    * 楼层房间数配置

@@ -1,6 +1,7 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
+import com.steven.solomon.config.RedisTenantsHandler;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.graphics2D.DepositReceiptService;
 import com.steven.solomon.graphics2D.ReceiptService;
@@ -14,6 +15,7 @@ import io.swagger.annotations.Api;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,9 +31,6 @@ public class AreaController extends BaseController {
   private AreaService areaService;
 
   @Resource
-  private ICacheService iCacheService;
-
-  @Resource
   private DepositReceiptService depositReceiptService;
 
   @Resource
@@ -39,7 +38,8 @@ public class AreaController extends BaseController {
 
   @PostMapping("/list")
   public String list(@RequestBody AreaListParam param) throws IOException, BaseException {
-    return super.responseSuccessJson(areaService.findByAreaCode(param));
+    Object a = areaService.findByAreaCode(param);
+    return super.responseSuccessJson(a);
   }
 
 

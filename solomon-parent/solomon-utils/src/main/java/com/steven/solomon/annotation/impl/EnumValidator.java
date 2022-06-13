@@ -1,7 +1,7 @@
 package com.steven.solomon.annotation.impl;
 
 import com.steven.solomon.annotation.CheckEnum;
-import com.steven.solomon.utils.enums.EnumUtils;
+import com.steven.solomon.enums.EnumUtils;
 import com.steven.solomon.verification.ValidateUtils;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

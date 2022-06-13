@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.steven.solomon.base.enums.DelFlagEnum;
 import com.steven.solomon.code.TenancyErrorCode;
+import com.steven.solomon.enums.DelFlagEnum;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.lambda.LambdaUtils;
 import com.steven.solomon.mapper.HouseMapper;
@@ -149,7 +149,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
   @Override
   public HouseVO get(HouseGetParam param) {
     LambdaQueryWrapper<House> queryWrapper = new LambdaQueryWrapper<House>();
-    queryWrapper.eq(House::getDelFlag,DelFlagEnum.NOT_DELETE.Value());
+    queryWrapper.eq(House::getDelFlag, DelFlagEnum.NOT_DELETE.Value());
     queryWrapper.eq(House::getId,param.getId());
     HouseVO house = this.baseMapper.get(queryWrapper);
     if (ValidateUtils.isNotEmpty(house)) {

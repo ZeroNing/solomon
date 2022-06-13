@@ -1,4 +1,4 @@
-package com.steven.solomon.base.model;
+package com.steven.solomon.model;
 
 import java.io.Serializable;
 
