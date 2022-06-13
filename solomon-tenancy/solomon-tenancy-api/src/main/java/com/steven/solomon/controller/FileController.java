@@ -1,6 +1,7 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
+import com.steven.solomon.base.model.BaseResponseVO;
 import com.steven.solomon.service.FileService;
 import io.swagger.annotations.Api;
 import javax.annotation.Resource;
@@ -19,7 +20,7 @@ public class FileController extends BaseController {
   private FileService fileService;
 
   @PostMapping("/upload")
-  public String upload(@RequestBody MultipartFile file) throws Exception {
-    return super.responseSuccessJson(fileService.upload(file));
+  public BaseResponseVO<String> upload(@RequestBody MultipartFile file) throws Exception {
+    return new BaseResponseVO(fileService.upload(file));
   }
 }

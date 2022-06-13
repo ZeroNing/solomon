@@ -19,6 +19,13 @@ public class BaseResponseVO<T> implements Serializable {
     this.status = HttpStatus.OK.value();
   }
 
+  public BaseResponseVO(){
+    super();
+    this.message = BaseCode.DEFAULT_SUCCESS_PHRASE;
+    this.data = null;
+    this.status = HttpStatus.OK.value();
+  }
+
   public String getMessage() {
     return message;
   }

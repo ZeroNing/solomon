@@ -31,31 +31,8 @@ public class AreaController extends BaseController {
   @Resource
   private AreaService areaService;
 
-  @Resource
-  private DepositReceiptService depositReceiptService;
-
-  @Resource
-  private ReceiptService receiptService;
-
   @PostMapping("/list")
-  public BaseResponseVO<List<Area>> list(@RequestBody AreaListParam param) throws IOException, BaseException {
+  public BaseResponseVO<List<Area>> list(@RequestBody AreaListParam param) {
     return new BaseResponseVO(areaService.findByAreaCode(param));
-  }
-
-
-  @GetMapping("/test")
-  public String test() throws Exception {
-    DepositReceipt depositReceipt = new DepositReceipt();
-    depositReceipt.setTenantName("11111");
-    depositReceipt.setAddress("111111");
-    depositReceipt.setPayee("11111111");
-    depositReceiptService.drawReceipt(depositReceipt);
-    Receipt receipt = new Receipt();
-    receipt.setAddress("1111111111");
-    receipt.setPayee("111111111111");
-    receipt.setRent("111111111");
-    receipt.setTenantName("1111111111");
-    receiptService.drawReceipt(receipt);
-    return super.responseSuccessJson();
   }
 }
