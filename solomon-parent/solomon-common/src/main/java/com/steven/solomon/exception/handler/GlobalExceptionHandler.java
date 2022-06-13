@@ -1,8 +1,8 @@
 package com.steven.solomon.exception.handler;
 
+import com.steven.solomon.ajax.AjaxResultUtils;
 import com.steven.solomon.base.excetion.BaseGlobalExceptionHandler;
 import com.steven.solomon.logger.LoggerUtils;
-import com.steven.solomon.utils.ajax.AjaxResultUtils;
 import com.steven.solomon.vo.BaseExceptionVO;
 import java.io.IOException;
 import java.util.Locale;

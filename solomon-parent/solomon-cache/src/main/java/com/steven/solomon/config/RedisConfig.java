@@ -10,6 +10,7 @@ import com.steven.solomon.serializer.BaseRedisSerializer;
 import com.steven.solomon.spring.SpringUtil;
 import com.steven.solomon.template.DynamicRedisTemplate;
 import com.steven.solomon.verification.ValidateUtils;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class RedisConfig extends CachingConfigurerSupport {
       genericObjectPoolConfig.setMinIdle(ValidateUtils.getOrDefault(pool.getMinIdle(),0));
       genericObjectPoolConfig.setMaxTotal(ValidateUtils.getOrDefault(pool.getMaxActive(),8));
       genericObjectPoolConfig.setMaxWaitMillis(ValidateUtils.getOrDefault(pool.getMaxWait().toMillis(),-1L));
-      genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(ValidateUtils.getOrDefault(pool.getTimeBetweenEvictionRuns().toMillis(),60L));
+      genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(ValidateUtils.getOrDefault(ValidateUtils.getOrDefault(pool.getTimeBetweenEvictionRuns(), Duration.ofMillis(60L)).toMillis(),60L));
     }
     RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
     redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
