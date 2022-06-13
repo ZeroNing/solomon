@@ -1,7 +1,6 @@
 package com.steven.solomon.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.model.BaseResponseVO;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.pojo.param.TenantInfoGetParam;
@@ -12,16 +11,18 @@ import com.steven.solomon.pojo.vo.TenantInfoVO;
 import com.steven.solomon.service.TenantInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/tenant-info")
 @Api(tags  = "租户信息接口")
-public class TenantInfoController extends BaseController {
+public class TenantInfoController {
 
     @Resource
     private TenantInfoService tenantInfoService;

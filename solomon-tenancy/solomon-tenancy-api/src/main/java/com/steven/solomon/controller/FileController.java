@@ -1,6 +1,5 @@
 package com.steven.solomon.controller;
 
-import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.model.BaseResponseVO;
 import com.steven.solomon.service.FileService;
 import io.swagger.annotations.Api;
@@ -14,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/file")
 @Api(tags  = "文件接口")
-public class FileController extends BaseController {
+public class FileController {
 
   @Resource
   private FileService fileService;

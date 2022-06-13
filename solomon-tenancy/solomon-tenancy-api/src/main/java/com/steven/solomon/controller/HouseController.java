@@ -1,7 +1,6 @@
 package com.steven.solomon.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.steven.solomon.base.controller.BaseController;
 import com.steven.solomon.base.model.BaseResponseVO;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.pojo.param.HouseConfigSaveParam;
@@ -20,18 +19,22 @@ import com.steven.solomon.service.HouseService;
 import com.steven.solomon.service.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/house")
 @Api(tags  = "房屋接口")
-public class HouseController extends BaseController {
+public class HouseController {
 
   @Resource
   private HouseService houseService;
