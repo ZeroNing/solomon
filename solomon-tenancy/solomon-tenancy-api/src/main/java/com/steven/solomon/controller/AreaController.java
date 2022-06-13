@@ -1,6 +1,7 @@
 package com.steven.solomon.controller;
 
 import com.steven.solomon.base.controller.BaseController;
+import com.steven.solomon.base.model.BaseResponseVO;
 import com.steven.solomon.config.RedisTenantsHandler;
 import com.steven.solomon.exception.BaseException;
 import com.steven.solomon.graphics2D.DepositReceiptService;
@@ -37,9 +38,8 @@ public class AreaController extends BaseController {
   private ReceiptService receiptService;
 
   @PostMapping("/list")
-  public String list(@RequestBody AreaListParam param) throws IOException, BaseException {
-    Object a = areaService.findByAreaCode(param);
-    return super.responseSuccessJson(a);
+  public BaseResponseVO<List<Area>> list(@RequestBody AreaListParam param) throws IOException, BaseException {
+    return new BaseResponseVO(areaService.findByAreaCode(param));
   }
 
 
